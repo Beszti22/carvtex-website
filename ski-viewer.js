@@ -87,9 +87,15 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     var visibleHeight = 2 * cameraDistance * Math.tan(vFov / 2);
     var visibleWidth = visibleHeight * aspect;
     var fill = 0.72;
-    var scale = Math.min((visibleWidth * fill) / modelSize.x, (visibleHeight * fill) / modelSize.y);
+    var panOffset = visibleWidth * PAN_FRACTION;
+    // The pan shifts the model off-center, so the tighter edge (right side,
+    // since we pan right) sets how much horizontal room is actually free —
+    // use that instead of the full visibleWidth, or the panned model clips
+    // past the right edge of the canvas.
+    var availableWidth = (visibleWidth / 2 - panOffset) * 2;
+    var scale = Math.min((availableWidth * fill) / modelSize.x, (visibleHeight * fill) / modelSize.y);
     model.scale.setScalar(scale);
-    rig.position.x = visibleWidth * PAN_FRACTION;
+    rig.position.x = panOffset;
   }
 
   var loader = new GLTFLoader();
