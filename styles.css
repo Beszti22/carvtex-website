@@ -172,14 +172,14 @@ header.site-header{
 /* Wordmark (mountain icon + lettered "CarvteX" + sub-label) sits
    directly above the headline as one unified block. */
 .hero-brand{margin-bottom:var(--space-lg);}
-.hero-brand-icon{display:block;width:clamp(96px,11vw,170px);height:auto;color:#fff;margin-bottom:6px;}
+.hero-brand-icon{display:block;width:clamp(120px,14.5vw,230px);height:auto;color:#fff;margin-bottom:8px;}
 .hero-brand-word{
-  display:inline-block;font-family:var(--font-display);font-size:clamp(46px,7vw,84px);
-  letter-spacing:0.03em;text-transform:uppercase;color:#fff;line-height:1;
+  position:relative;display:inline-block;font-family:var(--font-display);font-size:clamp(54px,8.5vw,104px);
+  letter-spacing:0.03em;text-transform:uppercase;color:#fff;line-height:1;overflow:hidden;
 }
 .hero-brand-word .accent{color:var(--color-accent);}
 .hero-brand-sub{
-  display:block;margin-top:8px;font-family:var(--font-body);font-weight:700;font-size:clamp(12px,1.4vw,15px);
+  display:block;margin-top:10px;font-family:var(--font-body);font-weight:700;font-size:clamp(13px,1.6vw,17px);
   letter-spacing:0.34em;text-transform:uppercase;color:var(--color-accent);
 }
 /* Reveal mask: the inner span/svg holds the real content, the outer
@@ -210,24 +210,42 @@ header.site-header{
 
 /* Entrance on load (hero is above the fold, so this runs immediately
    rather than on scroll like .reveal does elsewhere): the mountain
-   icon rises first, then "CarvteX" unveils one letter at a time, then
-   the sub-label, then the headline copy below follows in sequence. */
+   icon rises first, then "CarvteX" unveils one letter at a time with a
+   deliberate, unhurried pace, then a light sweep crosses the finished
+   wordmark like a brand stamp, then the sub-label, then the headline
+   copy below follows in sequence. Slower + the sweep is what gives it
+   the "premium reveal" feel rather than a quick, generic fade-in. */
 @media (prefers-reduced-motion: no-preference){
   .mask-reveal > *{
-    display:inline-block;transform:translateY(100%);animation:heroUnveil 700ms cubic-bezier(0.22,1,0.36,1) forwards;
+    display:inline-block;transform:translateY(100%);animation:heroUnveil 900ms cubic-bezier(0.19,1,0.22,1) forwards;
   }
-  .hero-brand > .mask-reveal--icon > *{animation-delay:40ms;}
-  .hero-brand-word .mask-reveal > *{animation-delay:calc(260ms + var(--i) * 55ms);}
-  .hero-brand > .mask-reveal:last-child > *{animation-delay:660ms;}
+  .hero-brand > .mask-reveal--icon > *{animation-delay:80ms;}
+  .hero-brand-word .mask-reveal > *{animation-delay:calc(420ms + var(--i) * 95ms);}
+  .hero-brand > .mask-reveal:last-child > *{animation-delay:1060ms;}
 
-  .hero-content > :not(.hero-brand){opacity:0;transform:translateY(16px);animation:heroRise 650ms var(--ease) forwards;}
-  .hero-content h1{animation-delay:820ms;}
-  .hero-content .hero-sub{animation-delay:940ms;}
-  .hero-content .hero-ctas{animation-delay:1060ms;}
-  .hero-content .hero-badges{animation-delay:1160ms;}
+  /* Expanding letter-spacing on the wordmark itself, underneath the
+     per-letter reveal, reads as the brand "settling into place". */
+  .hero-brand-word{animation:heroLetterSpacing 1300ms cubic-bezier(0.19,1,0.22,1) 420ms forwards;}
+
+  /* A soft diagonal light sweep once the last letter has landed —
+     a single, restrained flourish rather than a gimmick. */
+  .hero-brand-word::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%);
+    transform:translateX(-130%);
+    animation:heroShimmer 1000ms cubic-bezier(0.4,0,0.2,1) 1200ms forwards;
+  }
+
+  .hero-content > :not(.hero-brand){opacity:0;transform:translateY(16px);animation:heroRise 750ms var(--ease) forwards;}
+  .hero-content h1{animation-delay:1500ms;}
+  .hero-content .hero-sub{animation-delay:1660ms;}
+  .hero-content .hero-ctas{animation-delay:1820ms;}
+  .hero-content .hero-badges{animation-delay:1950ms;}
 }
 @keyframes heroRise{to{opacity:1;transform:none;}}
 @keyframes heroUnveil{to{transform:translateY(0);}}
+@keyframes heroLetterSpacing{from{letter-spacing:-0.015em;}to{letter-spacing:0.03em;}}
+@keyframes heroShimmer{to{transform:translateX(130%);}}
 
 /* ---------- 3D SKI STORY — sticky canvas, scroll-driven steps ---------- */
 /* A full 100vh canvas left a lot of dark empty space above/below the
