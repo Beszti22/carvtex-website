@@ -163,26 +163,46 @@ header.site-header{
   content:"";position:absolute;inset:0;
   background:
     linear-gradient(90deg, rgba(11,28,44,0.92) 0%, rgba(11,28,44,0.76) 36%, rgba(11,28,44,0.34) 66%, rgba(11,28,44,0.1) 100%),
-    linear-gradient(0deg, rgba(11,28,44,0.55) 0%, rgba(11,28,44,0) 40%);
+    /* Fades all the way to fully opaque --color-primary by the very
+       bottom edge, so the photo dissolves into flat navy before the
+       section boundary instead of cutting from visible photo texture
+       straight to a solid color - that hard seam was the "gagyi" jump
+       into the 3D ski section below. */
+    linear-gradient(0deg, rgba(11,28,44,1) 0%, rgba(11,28,44,0.55) 14%, rgba(11,28,44,0) 55%);
 }
 
 .hero-content{position:relative;z-index:1;max-width:620px;padding:64px 24px;}
 @media (min-width:860px){ .hero-content{padding-left:8%;} }
 
 /* Wordmark (mountain skyline + lettered "CarvteX" + sub-label) sits
-   directly above the headline as one unified block. The skyline spans
-   the full width of the content column, like a horizon strip, rather
-   than sitting in a small boxed-in icon. */
-.hero-brand{margin-bottom:var(--space-lg);}
+   directly above the headline as one unified block, centered as a
+   group so the skyline, the word and the sub-label read as one
+   stacked mark rather than three independently-aligned pieces. The
+   skyline itself still spans the full width of the content column,
+   like a horizon strip, rather than sitting in a small boxed-in icon;
+   its peaks cluster near the middle, so a centered word/sub-label
+   underneath lines up with it visually. */
+.hero-brand{
+  --bw-size:clamp(54px,8.5vw,104px);
+  margin-bottom:var(--space-lg);text-align:center;
+}
 .hero-skyline{display:block;position:relative;overflow:hidden;width:100%;height:clamp(60px,8.5vw,118px);margin-bottom:10px;}
 .hero-brand-icon{display:block;width:100%;height:100%;color:#fff;}
 .hero-brand-word{
-  position:relative;display:inline-block;font-family:var(--font-display);font-size:clamp(54px,8.5vw,104px);
-  letter-spacing:0.03em;text-transform:uppercase;color:#fff;line-height:1;overflow:hidden;
+  /* Bebas Neue carries a lot of extra line-box space below its visible
+     cap-height even at line-height:1 - a tighter unitless line-height
+     shrinks that phantom space directly (it scales with font-size on
+     its own, letters included, since it's inherited as a multiplier). */
+  position:relative;display:inline-block;font-family:var(--font-display);font-size:var(--bw-size);
+  letter-spacing:0.03em;text-transform:uppercase;color:#fff;line-height:0.78;overflow:hidden;
 }
 .hero-brand-word .accent{color:var(--color-accent);}
 .hero-brand-sub{
-  display:block;margin-top:10px;font-family:var(--font-body);font-weight:700;font-size:clamp(13px,1.6vw,17px);
+  /* Small extra nudge on top of the line-height fix above, scaled to
+     the wordmark's own size (--bw-size, set on the shared .hero-brand
+     ancestor) so it stays right at mobile sizes too. */
+  display:block;margin-top:calc(var(--bw-size) * -0.04);
+  font-family:var(--font-body);font-weight:700;font-size:clamp(13px,1.6vw,17px);
   letter-spacing:0.34em;text-transform:uppercase;color:var(--color-accent);
 }
 /* Reveal mask: the inner span/svg holds the real content, the outer

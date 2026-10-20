@@ -217,7 +217,12 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   // angle per step so the part being described is actually what's facing
   // the camera, instead of an arbitrary incremental spin.
   var STEP_ROTATIONS = {
-    all: 0,
+    // A small non-zero start (instead of sitting dead still at 0) means
+    // the ski is already gently turning the moment the section comes
+    // into view, rather than appearing static until the first real step
+    // kicks in - that static beat right after the hero was reading as a
+    // jarring stop, not an intentional pause.
+    all: 0.15,
     topsheet: 0.4,
     steel_edges: Math.PI / 2,
     'base,sidewall': Math.PI,
