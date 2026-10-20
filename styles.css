@@ -158,7 +158,7 @@ header.site-header{
 /* ---------- Hero (static banner photo) ---------- */
 .hero{position:relative;padding:0;border-top:none;min-height:74vh;display:flex;align-items:flex-end;overflow:hidden;background:var(--color-primary);}
 .hero-media{position:absolute;inset:0;}
-.hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 14%;display:block;}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 88%;display:block;}
 .hero-media::after{
   content:"";position:absolute;inset:0;
   background:
