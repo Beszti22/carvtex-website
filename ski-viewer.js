@@ -59,24 +59,20 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var rig = new THREE.Group();
   scene.add(rig);
 
-  // part base name -> array of materials belonging to it (both Left/Right skis)
+  // part base name (the mesh's immediate parent node name in the glb,
+  // e.g. "topsheet", "steel_edges", "binding") -> array of materials
+  // belonging to it.
   var partMaterials = {};
   var modelLoaded = false;
   var model = null;
   var modelSize = null;
 
-  // The source model's length runs along its own local Y axis (the pair-
-  // offset between the two skis runs along local X). Left as-is, the ski
-  // stands up tall and thin on a wide screen. Rotate it a quarter turn
-  // around Z so the length reads left-to-right — the Z axis (camera-facing
-  // thickness/topsheet) is untouched by this. The topsheet texture's logo
-  // end is at local Y = +0.825 (verified against the UV data), which with a
-  // +90° rotation lands on screen-left — right under the text column. Use
-  // -90° instead so the branded tip lands on screen-right, in the clear.
-  var MODEL_Z_CORRECTION = -Math.PI / 2;
-  // The text column sits over the left ~40% of the canvas, so bias the
-  // model rightward within the frame instead of centering it dead-center.
-  var PAN_FRACTION = 0.14;
+  // This model's length already runs along its own local X axis and its
+  // topsheet logo sits at the +X tip (verified against the UV data), which
+  // lands on screen-right by default — no rotation correction needed here,
+  // unlike the earlier model. A small rightward pan still keeps it clear of
+  // the text column on the left.
+  var PAN_FRACTION = 0.08;
 
   function fitModelToView() {
     if (!model || !modelSize) return;
@@ -104,7 +100,6 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     function (gltf) {
       model = gltf.scene;
       rig.add(model);
-      model.rotation.z = MODEL_Z_CORRECTION;
 
       var box = new THREE.Box3().setFromObject(model);
       var size = new THREE.Vector3();
@@ -115,10 +110,24 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
       modelSize = size;
       fitModelToView();
 
+      // Named "container" nodes that map to our scroll steps. The ski-group
+      // meshes (base, steel_edges, ...) carry their mesh directly on the
+      // named node itself, while the binding is one flat parent with ~70
+      // small named sub-parts underneath it - so we walk up from each mesh
+      // until we hit one of these known names, which naturally groups all
+      // binding sub-parts together under "binding".
+      var KNOWN_PARTS = ['base', 'steel_edges', 'sidewall', 'topsheet', 'tip_guard', 'tail_protector', 'binding'];
       model.traverse(function (node) {
         if (!node.isMesh) return;
-        var parentName = (node.parent && node.parent.name) || '';
-        var partName = parentName.replace(/_Left$|_Right$/, '');
+        var partName = '';
+        var cur = node;
+        while (cur) {
+          if (cur.name && KNOWN_PARTS.indexOf(cur.name) !== -1) {
+            partName = cur.name;
+            break;
+          }
+          cur = cur.parent;
+        }
         if (!partName) return;
         if (!partMaterials[partName]) partMaterials[partName] = [];
         var mats = Array.isArray(node.material) ? node.material : [node.material];
@@ -209,13 +218,13 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   // the camera, instead of an arbitrary incremental spin.
   var STEP_ROTATIONS = {
     all: 0,
-    Topsheet: 0.4,
-    SteelEdge: Math.PI / 2,
-    'Base,Sidewall': Math.PI,
-    // A full turn back past Base/Sidewall's 180°, so it keeps spinning the
+    topsheet: 0.4,
+    steel_edges: Math.PI / 2,
+    'base,sidewall': Math.PI,
+    // A full turn back past base/sidewall's 180°, so it keeps spinning the
     // same direction instead of snapping backward, and lands back on the
     // topsheet/binding face.
-    Binding: Math.PI * 2
+    binding: Math.PI * 2
   };
 
   var io = new IntersectionObserver(
