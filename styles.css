@@ -223,10 +223,15 @@ header.site-header{
 @keyframes heroUnveil{to{transform:translateY(0);}}
 
 /* ---------- 3D SKI STORY — sticky canvas, scroll-driven steps ---------- */
-.ski-story{position:relative;background:var(--color-primary);border-top:none;}
+/* A full 100vh canvas left a lot of dark empty space above/below the
+   ski — it's a thin, wide object, not a tall one. Use a shorter,
+   capped viewer height instead (one variable drives the sticky
+   canvas, the steps' negative overlap and each step's scroll length,
+   so they stay in sync). */
+.ski-story{position:relative;background:var(--color-primary);border-top:none;--ski-vh:min(66vh,620px);}
 
 .ski-story-sticky{
-  position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));
+  position:sticky;top:var(--nav-h);height:var(--ski-vh);
   overflow:hidden;z-index:1;pointer-events:none;
 }
 #skiCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
@@ -245,9 +250,9 @@ header.site-header{
 @keyframes skiHintBob{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,6px);}}
 @media (prefers-reduced-motion: reduce){ .ski-story-hint{animation:none;} }
 
-.ski-story-steps{position:relative;z-index:2;margin-top:calc(-100vh + var(--nav-h));pointer-events:none;}
+.ski-story-steps{position:relative;z-index:2;margin-top:calc(-1 * var(--ski-vh));pointer-events:none;}
 .ski-step{
-  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  min-height:var(--ski-vh);display:flex;flex-direction:column;justify-content:center;
   max-width:440px;padding:0 24px;pointer-events:none;opacity:0.25;transition:opacity 350ms ease;
 }
 .ski-step.active{opacity:1;pointer-events:auto;}
@@ -257,7 +262,7 @@ header.site-header{
 .ski-step .hero-sub,.ski-step p{max-width:420px;margin-top:18px;color:rgba(255,255,255,0.78);font-size:16.5px;line-height:1.65;}
 .ski-step .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:var(--space-lg);}
 @media (max-width:640px){
-  .ski-step{min-height:70vh;}
+  .ski-story{--ski-vh:min(78vh,560px);}
 }
 
 /* ---------- Services (flat cards, thin border, no rounded pills) ---------- */
