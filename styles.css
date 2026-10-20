@@ -182,6 +182,17 @@ header.site-header{
   .hero-content{padding-top:96px;}
 }
 
+/* Staggered entrance on load (hero is above the fold, so this runs
+   immediately rather than on scroll like .reveal does elsewhere). */
+@media (prefers-reduced-motion: no-preference){
+  .hero-content > *{opacity:0;transform:translateY(16px);animation:heroRise 650ms var(--ease) forwards;}
+  .hero-content h1{animation-delay:150ms;}
+  .hero-content .hero-sub{animation-delay:300ms;}
+  .hero-content .hero-ctas{animation-delay:440ms;}
+  .hero-content .hero-badges{animation-delay:560ms;}
+}
+@keyframes heroRise{to{opacity:1;transform:none;}}
+
 /* ---------- 3D SKI STORY — sticky canvas, scroll-driven steps ---------- */
 .ski-story{position:relative;background:var(--color-primary);border-top:none;}
 
