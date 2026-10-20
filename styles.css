@@ -158,13 +158,26 @@ header.site-header{
 /* ---------- Hero (static banner photo) ---------- */
 .hero{position:relative;padding:0;border-top:none;min-height:74vh;display:flex;align-items:flex-end;overflow:hidden;background:var(--color-primary);}
 .hero-media{position:absolute;inset:0;}
-.hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 88%;display:block;}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 72%;display:block;}
 .hero-media::after{
   content:"";position:absolute;inset:0;
   background:
     linear-gradient(90deg, rgba(11,28,44,0.92) 0%, rgba(11,28,44,0.74) 34%, rgba(11,28,44,0.3) 64%, rgba(11,28,44,0.08) 100%),
     linear-gradient(0deg, rgba(11,28,44,0.6) 0%, rgba(11,28,44,0) 46%);
 }
+.hero-brand{position:relative;z-index:1;text-align:center;padding:56px 24px 0;}
+.hero-brand-word{
+  display:inline-flex;font-family:var(--font-display);font-size:clamp(42px,8vw,88px);
+  letter-spacing:0.03em;text-transform:uppercase;color:#fff;line-height:1;
+}
+.hero-brand-word span{display:inline-block;}
+.hero-brand-word .accent{color:var(--color-accent);}
+.hero-brand-sub{
+  display:block;margin-top:10px;font-family:var(--font-body);font-weight:700;font-size:clamp(11px,1.4vw,15px);
+  letter-spacing:0.32em;text-transform:uppercase;color:var(--color-accent);
+}
+@media (max-width:640px){ .hero-brand{padding-top:32px;} }
+
 .hero-content{position:relative;z-index:1;max-width:560px;padding:var(--space-3xl) 24px calc(var(--space-3xl) + 8px);}
 .hero-content h1{font-size:clamp(34px,5.4vw,58px);color:#fff;margin-top:16px;}
 .hero-content h1 span{color:var(--color-accent);}
@@ -183,15 +196,21 @@ header.site-header{
 }
 
 /* Staggered entrance on load (hero is above the fold, so this runs
-   immediately rather than on scroll like .reveal does elsewhere). */
+   immediately rather than on scroll like .reveal does elsewhere):
+   the brand wordmark types/rises in letter by letter first, then the
+   subtitle, then the headline copy below it follows. */
 @media (prefers-reduced-motion: no-preference){
+  .hero-brand-word span{opacity:0;transform:translateY(0.6em);animation:heroLetterRise 520ms var(--ease) forwards;animation-delay:calc(120ms + var(--i) * 55ms);}
+  .hero-brand-sub{opacity:0;transform:translateY(10px);animation:heroRise 500ms var(--ease) forwards;animation-delay:620ms;}
+
   .hero-content > *{opacity:0;transform:translateY(16px);animation:heroRise 650ms var(--ease) forwards;}
-  .hero-content h1{animation-delay:150ms;}
-  .hero-content .hero-sub{animation-delay:300ms;}
-  .hero-content .hero-ctas{animation-delay:440ms;}
-  .hero-content .hero-badges{animation-delay:560ms;}
+  .hero-content h1{animation-delay:780ms;}
+  .hero-content .hero-sub{animation-delay:900ms;}
+  .hero-content .hero-ctas{animation-delay:1020ms;}
+  .hero-content .hero-badges{animation-delay:1120ms;}
 }
 @keyframes heroRise{to{opacity:1;transform:none;}}
+@keyframes heroLetterRise{to{opacity:1;transform:none;}}
 
 /* ---------- 3D SKI STORY — sticky canvas, scroll-driven steps ---------- */
 .ski-story{position:relative;background:var(--color-primary);border-top:none;}
