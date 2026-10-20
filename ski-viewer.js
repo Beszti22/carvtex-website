@@ -69,8 +69,14 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   // offset between the two skis runs along local X). Left as-is, the ski
   // stands up tall and thin on a wide screen. Rotate it a quarter turn
   // around Z so the length reads left-to-right — the Z axis (camera-facing
-  // thickness/topsheet) is untouched by this.
-  var MODEL_Z_CORRECTION = Math.PI / 2;
+  // thickness/topsheet) is untouched by this. The topsheet texture's logo
+  // end is at local Y = +0.825 (verified against the UV data), which with a
+  // +90° rotation lands on screen-left — right under the text column. Use
+  // -90° instead so the branded tip lands on screen-right, in the clear.
+  var MODEL_Z_CORRECTION = -Math.PI / 2;
+  // The text column sits over the left ~40% of the canvas, so bias the
+  // model rightward within the frame instead of centering it dead-center.
+  var PAN_FRACTION = 0.14;
 
   function fitModelToView() {
     if (!model || !modelSize) return;
@@ -80,9 +86,10 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     var vFov = (camera.fov * Math.PI) / 180;
     var visibleHeight = 2 * cameraDistance * Math.tan(vFov / 2);
     var visibleWidth = visibleHeight * aspect;
-    var fill = 0.8;
+    var fill = 0.72;
     var scale = Math.min((visibleWidth * fill) / modelSize.x, (visibleHeight * fill) / modelSize.y);
     model.scale.setScalar(scale);
+    rig.position.x = visibleWidth * PAN_FRACTION;
   }
 
   var loader = new GLTFLoader();
