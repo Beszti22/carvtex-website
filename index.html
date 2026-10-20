@@ -49,59 +49,25 @@
 
 <main id="main">
 
-<!-- 3D SKI STORY (hero) -->
-  <section class="ski-story" id="skiStory" aria-label="CarvteX síléc — interaktív bemutató">
-    <div class="ski-story-sticky">
-      <canvas id="skiCanvas" aria-hidden="true"></canvas>
-      <div class="ski-story-fallback">
-        <strong>CARVTEX</strong>
-        <span data-i18n="viewerFallback">A 3D nézethez modern böngésző szükséges — lent minden más ugyanúgy működik.</span>
-      </div>
-      <div class="ski-story-hint" aria-hidden="true">
-        <span data-i18n="scrollHint">Görgess tovább</span>
-        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-      </div>
+<!-- HERO (static banner photo) -->
+  <section class="hero" id="hero" aria-label="CarvteX Síszerviz">
+    <div class="hero-media">
+      <img src="/assets/hero-banner.jpg" alt="CarvteX Síszerviz — havas hegyi panoráma, előtérben két síléc" width="1251" height="1251">
     </div>
-    <div class="ski-story-steps" id="skiSteps">
-      <div class="ski-step active" data-part="all">
-        <span class="eyebrow">CarvteX Síszerviz</span>
-        <h1 data-i18n="heroH1">Precíz gondoskodás<br>a <span>síléced</span> számára.</h1>
-        <p class="hero-sub" data-i18n="heroSub">CarvteX Síszerviz — élezés, waxolás és kötésbeállítás egy korábbi alpesi síedzőtől, aki pontosan tudja, mire van szüksége a lécednek.</p>
-        <div class="hero-ctas">
-          <a href="/#contact" class="btn btn-primary">
-            <span data-i18n="heroCta1">Időpontfoglalás</span>
-            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-          <a href="/#services" class="btn btn-outline" data-i18n="heroCta2">Szolgáltatások</a>
-        </div>
-        <div class="hero-badges">
-          <div data-i18n="badge1">Korábbi szövetségi kapitány</div>
-          <div data-i18n="badge2">Alpesi síedző 2011 óta</div>
-          <div data-i18n="badge3">Saját kezű, precíz munka</div>
-        </div>
+    <div class="hero-content">
+      <h1 data-i18n="heroH1">Precíz gondoskodás<br>a <span>síléced</span> számára.</h1>
+      <p class="hero-sub" data-i18n="heroSub">CarvteX Síszerviz — élezés, waxolás és kötésbeállítás egy korábbi alpesi síedzőtől, aki pontosan tudja, mire van szüksége a lécednek.</p>
+      <div class="hero-ctas">
+        <a href="/#contact" class="btn btn-primary">
+          <span data-i18n="heroCta1">Időpontfoglalás</span>
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="/#services" class="btn btn-outline" data-i18n="heroCta2">Szolgáltatások</a>
       </div>
-      <div class="ski-step" data-part="Topsheet">
-        <span class="eyebrow" data-i18n="stepTopsheetEyebrow">Minden lécen</span>
-        <h2 data-i18n="stepTopsheetH2">A felszín is számít</h2>
-        <p data-i18n="stepTopsheetP">A topsheet nem csak dizájn — védi a léc szerkezetét, és első ránézésre elárulja, mennyire gondozott egy felszerelés.</p>
-      </div>
-      <div class="ski-step" data-part="SteelEdge">
-        <span class="eyebrow" data-i18n="svc1Title">Alapszerviz</span>
-        <h2 data-i18n="stepEdgeH2">Élezés</h2>
-        <p data-i18n="stepEdgeP">A pontos élszög és a tiszta élezés adja a fogást havon és jégen — ez minden szerviz alapja.</p>
-      </div>
-      <div class="ski-step" data-part="Base,Sidewall">
-        <span class="eyebrow" data-i18n="svc2Title">Prémium szerviz</span>
-        <h2 data-i18n="stepBaseH2">Talpfeltöltés &amp; waxolás</h2>
-        <p data-i18n="stepBaseP">A sérült talp feltöltése és a megfelelő wax selymes siklást ad, bármilyen hóban.</p>
-      </div>
-      <div class="ski-step" data-part="Binding">
-        <span class="eyebrow" data-i18n="svc3Title">Kötésbeállítás</span>
-        <h2 data-i18n="stepBindingH2">Pontos, biztonságos rögzítés</h2>
-        <p data-i18n="stepBindingP">A kötés a bakancsodhoz és a DIN-értékedhez igazítva — se túl laza, se túl szoros.</p>
-        <div class="hero-ctas">
-          <a href="/#services" class="btn btn-primary" data-i18n="heroCta2">Szolgáltatások</a>
-        </div>
+      <div class="hero-badges">
+        <div data-i18n="badge1">Korábbi szövetségi kapitány</div>
+        <div data-i18n="badge2">Alpesi síedző 2011 óta</div>
+        <div data-i18n="badge3">Saját kezű, precíz munka</div>
       </div>
     </div>
   </section>
@@ -272,14 +238,5 @@
 <script src="/i18n.js"></script>
 <script src="/main.js"></script>
 <script src="/contact-form.js"></script>
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
-  }
-}
-</script>
-<script type="module" src="/ski-viewer.js"></script>
 </body>
 </html>

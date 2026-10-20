@@ -155,49 +155,31 @@ header.site-header{
 }
 .lang-switch button[aria-pressed="true"]{background:var(--color-accent);color:#fff;}
 
-/* ---------- 3D SKI STORY (hero) — sticky canvas, scroll-driven steps ---------- */
-.ski-story{position:relative;background:var(--color-primary);border-top:none;}
-
-.ski-story-sticky{
-  position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));
-  overflow:hidden;z-index:1;pointer-events:none;
+/* ---------- Hero (static banner photo) ---------- */
+.hero{position:relative;padding:0;border-top:none;min-height:74vh;display:flex;align-items:flex-end;overflow:hidden;background:var(--color-primary);}
+.hero-media{position:absolute;inset:0;}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 38%;display:block;}
+.hero-media::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(90deg, rgba(11,28,44,0.92) 0%, rgba(11,28,44,0.74) 34%, rgba(11,28,44,0.3) 64%, rgba(11,28,44,0.08) 100%),
+    linear-gradient(0deg, rgba(11,28,44,0.6) 0%, rgba(11,28,44,0) 46%);
 }
-#skiCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
-.ski-story-fallback{display:none;}
-.ski-story.no-webgl .ski-story-sticky{display:flex;align-items:center;justify-content:center;}
-.ski-story.no-webgl #skiCanvas{display:none;}
-.ski-story.no-webgl .ski-story-fallback{
-  display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center;color:rgba(255,255,255,0.45);
-}
-.ski-story.no-webgl .ski-story-fallback strong{font-family:var(--font-display);font-size:28px;letter-spacing:0.05em;color:rgba(255,255,255,0.7);}
-.ski-story-hint{
-  position:absolute;left:50%;bottom:28px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;
-  color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
-  animation:skiHintBob 1.8s ease-in-out infinite;
-}
-@keyframes skiHintBob{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,6px);}}
-@media (prefers-reduced-motion: reduce){ .ski-story-hint{animation:none;} }
-
-.ski-story-steps{position:relative;z-index:2;margin-top:calc(-100vh + var(--nav-h));pointer-events:none;}
-.ski-step{
-  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
-  max-width:440px;padding:0 24px;pointer-events:none;opacity:0.25;transition:opacity 350ms ease;
-}
-.ski-step.active{opacity:1;pointer-events:auto;}
-@media (min-width:860px){ .ski-step{padding:0 0 0 8%;} }
-.ski-step .eyebrow{color:var(--color-accent);}
-.ski-step h1,.ski-step h2{font-size:clamp(34px,5.4vw,58px);color:#fff;margin-top:16px;}
-.ski-step h1 span{color:var(--color-accent);}
-.ski-step .hero-sub,.ski-step p{max-width:420px;margin-top:18px;color:rgba(255,255,255,0.78);font-size:16.5px;line-height:1.65;}
-.ski-step .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:var(--space-lg);}
-.ski-step .hero-badges{display:flex;flex-direction:column;gap:12px;margin-top:var(--space-xl);}
-.ski-step .hero-badges div{
+.hero-content{position:relative;z-index:1;max-width:560px;padding:var(--space-3xl) 24px calc(var(--space-3xl) + 8px);}
+.hero-content h1{font-size:clamp(34px,5.4vw,58px);color:#fff;margin-top:16px;}
+.hero-content h1 span{color:var(--color-accent);}
+.hero-content .hero-sub{max-width:440px;margin-top:18px;color:rgba(255,255,255,0.85);font-size:16.5px;line-height:1.65;}
+.hero-content .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:var(--space-lg);}
+.hero-content .hero-badges{display:flex;flex-direction:column;gap:12px;margin-top:var(--space-xl);}
+.hero-content .hero-badges div{
   display:flex;align-items:center;gap:12px;font-size:12.5px;letter-spacing:0.03em;text-transform:uppercase;
-  font-weight:700;color:rgba(255,255,255,0.8);
+  font-weight:700;color:rgba(255,255,255,0.85);
 }
-.ski-step .hero-badges div::before{content:"";width:8px;height:8px;background:var(--color-accent);flex-shrink:0;}
+.hero-content .hero-badges div::before{content:"";width:8px;height:8px;background:var(--color-accent);flex-shrink:0;}
+@media (min-width:860px){ .hero-content{padding-left:8%;} }
 @media (max-width:640px){
-  .ski-step{min-height:70vh;}
+  .hero{min-height:88vh;}
+  .hero-content{padding-top:96px;}
 }
 
 /* ---------- Services (flat cards, thin border, no rounded pills) ---------- */
