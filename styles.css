@@ -169,10 +169,13 @@ header.site-header{
 .hero-content{position:relative;z-index:1;max-width:620px;padding:64px 24px;}
 @media (min-width:860px){ .hero-content{padding-left:8%;} }
 
-/* Wordmark (mountain icon + lettered "CarvteX" + sub-label) sits
-   directly above the headline as one unified block. */
+/* Wordmark (mountain skyline + lettered "CarvteX" + sub-label) sits
+   directly above the headline as one unified block. The skyline spans
+   the full width of the content column, like a horizon strip, rather
+   than sitting in a small boxed-in icon. */
 .hero-brand{margin-bottom:var(--space-lg);}
-.hero-brand-icon{display:block;width:clamp(120px,14.5vw,230px);height:auto;color:#fff;margin-bottom:8px;}
+.hero-skyline{display:block;position:relative;overflow:hidden;width:100%;height:clamp(60px,8.5vw,118px);margin-bottom:10px;}
+.hero-brand-icon{display:block;width:100%;height:100%;color:#fff;}
 .hero-brand-word{
   position:relative;display:inline-block;font-family:var(--font-display);font-size:clamp(54px,8.5vw,104px);
   letter-spacing:0.03em;text-transform:uppercase;color:#fff;line-height:1;overflow:hidden;
@@ -210,16 +213,17 @@ header.site-header{
 
 /* Entrance on load (hero is above the fold, so this runs immediately
    rather than on scroll like .reveal does elsewhere): the mountain
-   icon rises first, then "CarvteX" unveils one letter at a time with a
-   deliberate, unhurried pace, then a light sweep crosses the finished
-   wordmark like a brand stamp, then the sub-label, then the headline
-   copy below follows in sequence. Slower + the sweep is what gives it
-   the "premium reveal" feel rather than a quick, generic fade-in. */
+   skyline sweeps in left-to-right across the full width of the band
+   (not a single block popping up), then "CarvteX" unveils one letter
+   at a time with a deliberate, unhurried pace, then a light sweep
+   crosses the finished wordmark like a brand stamp, then the
+   sub-label, then the headline copy below follows in sequence. */
 @media (prefers-reduced-motion: no-preference){
+  .hero-skyline{clip-path:inset(0 100% 0 0);animation:heroSkylineWipe 1250ms cubic-bezier(0.19,1,0.22,1) 80ms forwards;}
+
   .mask-reveal > *{
     display:inline-block;transform:translateY(100%);animation:heroUnveil 900ms cubic-bezier(0.19,1,0.22,1) forwards;
   }
-  .hero-brand > .mask-reveal--icon > *{animation-delay:80ms;}
   .hero-brand-word .mask-reveal > *{animation-delay:calc(420ms + var(--i) * 95ms);}
   .hero-brand > .mask-reveal:last-child > *{animation-delay:1060ms;}
 
@@ -244,6 +248,7 @@ header.site-header{
 }
 @keyframes heroRise{to{opacity:1;transform:none;}}
 @keyframes heroUnveil{to{transform:translateY(0);}}
+@keyframes heroSkylineWipe{to{clip-path:inset(0 0 0 0);}}
 @keyframes heroLetterSpacing{from{letter-spacing:-0.015em;}to{letter-spacing:0.03em;}}
 @keyframes heroShimmer{to{transform:translateX(130%);}}
 
