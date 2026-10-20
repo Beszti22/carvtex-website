@@ -202,17 +202,34 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     renderFrame();
   });
 
+  // Rotating around the vertical (Y) axis turns the ski like a turntable:
+  // 0° shows the topsheet/binding face (the default hero angle), ~90° shows
+  // it edge-on, and ~180° swings all the way around to the base. Pick the
+  // angle per step so the part being described is actually what's facing
+  // the camera, instead of an arbitrary incremental spin.
+  var STEP_ROTATIONS = {
+    all: 0,
+    Topsheet: 0.4,
+    SteelEdge: Math.PI / 2,
+    'Base,Sidewall': Math.PI,
+    // A full turn back past Base/Sidewall's 180°, so it keeps spinning the
+    // same direction instead of snapping backward, and lands back on the
+    // topsheet/binding face.
+    Binding: Math.PI * 2
+  };
+
   var io = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-          var idx = steps.indexOf(entry.target);
           steps.forEach(function (s) {
             s.classList.remove('active');
           });
           entry.target.classList.add('active');
           activePart = entry.target.getAttribute('data-part') || 'all';
-          targetRotY = idx * 0.85;
+          targetRotY = Object.prototype.hasOwnProperty.call(STEP_ROTATIONS, activePart)
+            ? STEP_ROTATIONS[activePart]
+            : 0;
           if (modelLoaded) applyHighlight(activePart);
           if (prefersReduced) renderFrame();
         }
