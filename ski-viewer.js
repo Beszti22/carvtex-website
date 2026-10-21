@@ -59,6 +59,10 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var rig = new THREE.Group();
   scene.add(rig);
 
+  // TEMP DEBUG (Kristóf/Claude): lets the binding angle be found live in
+  // the browser console instead of guessing blind. Remove once finalized.
+  window.__ski = { rig: rig, camera: camera, renderFrame: function () { renderFrame(); } };
+
   // part base name (the mesh's immediate parent node name in the glb,
   // e.g. "topsheet", "steel_edges", "binding") -> array of materials
   // belonging to it.
@@ -213,16 +217,31 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var targetRotX = Math.PI / 2;
   var currentRotX = Math.PI / 2;
   var running = false;
+  var manualOverride = false; // TEMP DEBUG (see window.__ski below)
 
   function animate() {
     if (!running) return;
     requestAnimationFrame(animate);
+    if (manualOverride) {
+      renderFrame();
+      return;
+    }
     currentRotY += (targetRotY - currentRotY) * 0.07;
     currentRotX += (targetRotX - currentRotX) * 0.07;
     rig.rotation.y = currentRotY;
     rig.rotation.x = currentRotX;
     renderFrame();
   }
+
+  window.__ski.setAngles = function (x, y) {
+    manualOverride = true;
+    rig.rotation.x = x;
+    rig.rotation.y = y;
+    renderFrame();
+  };
+  window.__ski.release = function () {
+    manualOverride = false;
+  };
 
   function startLoop() {
     if (running) return;
