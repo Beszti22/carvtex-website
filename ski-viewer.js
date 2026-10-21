@@ -59,6 +59,12 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var rig = new THREE.Group();
   scene.add(rig);
 
+  // TEMP DEBUG HOOK (Kristóf/Claude): exposes the live scene so rotation
+  // values can be iterated from the browser console without a redeploy
+  // per attempt. Safe to leave in (does nothing unless called), but can be
+  // removed once the per-step angles are finalized.
+  window.__ski = { rig: rig, camera: camera, renderFrame: function () { renderFrame(); } };
+
   // part base name (the mesh's immediate parent node name in the glb,
   // e.g. "topsheet", "steel_edges", "binding") -> array of materials
   // belonging to it.
