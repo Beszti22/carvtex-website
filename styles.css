@@ -1,6 +1,25 @@
 /* CarvteX design system — Swiss/minimalist, generated via ui-ux-pro-max and
    corrected to the client's own navy + blue brand. See design-system/carvtex/MASTER.md */
 
+/* ---------- Breakpoint reference ----------
+   Plain CSS can't read custom properties inside @media conditions, so this
+   is a documented scale rather than enforced variables — every max-width/
+   min-width value used below should match one of these. Existing values
+   were deliberately chosen per component and are NOT renumbered here (that
+   would shift behavior in the 700-900px tablet band); this table just
+   gives future edits one place to check before introducing a new number.
+
+   480  — small-phone-only rules (1-column fallbacks: testimonial-grid, footer-grid)
+   520  — (legacy, same intent as 480 — testimonial-grid/footer-grid still use this exact value)
+   640  — phone/tablet boundary (hero, ski-story, contact-fab sizing)
+   760  — (legacy, same intent as 768 — about-grid still uses this exact value)
+   768  — phone/tablet boundary (generic section padding)
+   820  — (legacy, same intent as 860 — footer-grid 2-col still uses this exact value)
+   860  — small-desktop/tablet boundary (hero-content, ski-step, service-grid)
+   900  — small-desktop/tablet boundary (contact-grid)
+   920  — nav collapse boundary (mobile menu, mobile CTA)
+   ------------------------------------------- */
+
 :root{
   --color-primary:#0B1C2C;
   --color-secondary:#13283D;
@@ -53,6 +72,11 @@ body{
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
 }
+/* Set by main.js while the mobile fullscreen nav is open, so the page
+   behind it can't be scrolled with it still showing. nav-toggle (the only
+   control that can add this class) is display:none above the 920px nav
+   breakpoint, so this never engages on desktop. */
+body.nav-open{overflow:hidden;}
 img,svg{display:block;max-width:100%;}
 a{color:inherit;text-decoration:none;}
 ul{list-style:none;margin:0;padding:0;}
@@ -149,6 +173,8 @@ header.site-header{
     padding:var(--space-lg) 24px;gap:0;transform:translateX(100%);transition:transform 260ms ease;overflow-y:auto;
   }
   .nav-links.open{transform:translateX(0);}
+  /* .nav-toggle is only visible under this same breakpoint, so body.nav-open
+     can never be set from a desktop click — safe to leave unscoped by width. */
   .nav-links a{display:block;width:100%;padding:16px 2px;font-size:17px;border-bottom:1px solid rgba(255,255,255,0.1);}
   .nav-actions .btn-primary{display:none;}
   .nav-toggle{display:inline-flex;}
@@ -166,6 +192,12 @@ header.site-header{
 
 /* ---------- Hero (static banner photo) ---------- */
 .hero{position:relative;padding:0;border-top:none;min-height:min(78vh,760px);display:flex;align-items:center;overflow:hidden;background:var(--color-primary);}
+/* dvh re-declared after the vh fallback: browsers that don't know the unit
+   discard this line as invalid and keep the vh value above: no regression
+   on older engines, and on modern mobile browsers it fixes the hero's
+   height jumping when the address bar shows/hides (100vh locks to the
+   tallest state, dvh tracks the actual visible viewport). */
+.hero{min-height:min(78dvh,760px);}
 .hero-media{position:absolute;inset:0;}
 .hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 72%;display:block;}
 .hero-media::after{
@@ -237,6 +269,7 @@ header.site-header{
 .hero-content .hero-badges div::before{content:"";width:8px;height:8px;background:var(--color-accent);flex-shrink:0;}
 @media (max-width:640px){
   .hero{min-height:92vh;}
+  .hero{min-height:92dvh;}
   .hero-content{padding-top:120px;padding-bottom:48px;}
 }
 
@@ -288,6 +321,7 @@ header.site-header{
    canvas, the steps' negative overlap and each step's scroll length,
    so they stay in sync). */
 .ski-story{position:relative;background:var(--color-primary);border-top:none;--ski-vh:min(66vh,620px);}
+.ski-story{--ski-vh:min(66dvh,620px);} /* dvh fallback-pattern, see .hero above */
 
 .ski-story-sticky{
   position:sticky;top:var(--nav-h);height:var(--ski-vh);
@@ -322,6 +356,7 @@ header.site-header{
 .ski-step .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:var(--space-lg);}
 @media (max-width:640px){
   .ski-story{--ski-vh:min(78vh,560px);}
+  .ski-story{--ski-vh:min(78dvh,560px);}
 }
 
 /* ---------- Services (flat cards, thin border, no rounded pills) ---------- */

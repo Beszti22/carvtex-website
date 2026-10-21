@@ -4,11 +4,13 @@
   toggle.addEventListener('click', function(){
     var open = links.classList.toggle('open');
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.classList.toggle('nav-open', open);
   });
   links.querySelectorAll('a').forEach(function(a){
     a.addEventListener('click', function(){
       links.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
     });
   });
 
