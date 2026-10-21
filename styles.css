@@ -388,6 +388,15 @@ header.site-header{
 }
 .contact-address-label{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent);}
 .contact-address strong{font-size:16px;color:var(--color-primary);}
+
+.contact-details{
+  display:flex;flex-direction:column;gap:16px;padding:var(--space-md);
+  background:var(--color-card);border:1px solid var(--color-border);
+}
+.contact-details-row{display:flex;flex-direction:column;gap:3px;}
+.contact-details-row strong,.contact-details-row a{font-size:16px;color:var(--color-primary);font-weight:700;}
+.contact-details-row a{text-decoration:none;}
+.contact-details-row a:hover{color:var(--color-accent-dark);}
 @media (max-width:900px){
   .contact-grid{grid-template-columns:1fr;}
   .contact-side{position:static;}

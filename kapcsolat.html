@@ -29,8 +29,8 @@
       </span>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Primary">
-      <a href="/szolgaltatasok" data-i18n="navServices">Szolgáltatások</a>
       <a href="/#about" data-i18n="navAbout">Rólunk</a>
+      <a href="/szolgaltatasok" data-i18n="navServices">Szolgáltatások</a>
       <a href="/kapcsolat" aria-current="page" data-i18n="navContact">Kapcsolat</a>
       <a href="/kapcsolat" class="btn btn-primary mobile-cta" data-i18n="navBook">Időpontfoglalás</a>
     </nav>
@@ -105,14 +105,29 @@
           </form>
         </div>
         <div class="contact-side reveal">
+          <div class="contact-details">
+            <div class="contact-details-row">
+              <span class="contact-address-label" data-i18n="contactNameLabel">Név</span>
+              <strong>Szappanos Bence</strong>
+            </div>
+            <div class="contact-details-row">
+              <span class="contact-address-label" data-i18n="contactPhoneLabel">Telefon</span>
+              <!-- TODO(Kristóf): swap the placeholder number below for the real one (same as the floating call button). -->
+              <a href="tel:+36000000000">+36 00 000 0000</a>
+            </div>
+            <div class="contact-details-row">
+              <span class="contact-address-label" data-i18n="contactEmailLabel">Email</span>
+              <a href="mailto:carvtexszerviz@gmail.com">carvtexszerviz@gmail.com</a>
+            </div>
+            <div class="contact-details-row">
+              <span class="contact-address-label" data-i18n="contactAddressLabel">Helyszín</span>
+              <strong data-i18n="contactAddressValue">Délegyháza, Magyarország</strong>
+            </div>
+          </div>
           <div class="contact-map">
             <iframe
               src="https://www.google.com/maps?q=D%C3%A9legyh%C3%A1za,+Magyarorsz%C3%A1g&output=embed"
               title="CarvteX Síszerviz — térkép" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-          <div class="contact-address">
-            <span class="contact-address-label" data-i18n="contactAddressLabel">Helyszín</span>
-            <strong data-i18n="contactAddressValue">Délegyháza, Magyarország</strong>
           </div>
         </div>
       </div>
