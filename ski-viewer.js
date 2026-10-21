@@ -219,16 +219,31 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var targetRotX = -0.18;
   var currentRotX = -0.18;
   var running = false;
+  var manualOverride = false; // TEMP DEBUG (see window.__ski below)
 
   function animate() {
     if (!running) return;
     requestAnimationFrame(animate);
+    if (manualOverride) {
+      renderFrame();
+      return;
+    }
     currentRotY += (targetRotY - currentRotY) * 0.07;
     currentRotX += (targetRotX - currentRotX) * 0.07;
     rig.rotation.y = currentRotY;
     rig.rotation.x = currentRotX;
     renderFrame();
   }
+
+  window.__ski.setAngles = function (x, y) {
+    manualOverride = true;
+    rig.rotation.x = x;
+    rig.rotation.y = y;
+    renderFrame();
+  };
+  window.__ski.release = function () {
+    manualOverride = false;
+  };
 
   function startLoop() {
     if (running) return;
