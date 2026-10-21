@@ -151,15 +151,22 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   );
 
   function applyHighlight(partSpec) {
+    // Previously this dimmed every non-active part to 20% opacity, which
+    // read as the whole ski going washed-out/see-through whenever a single
+    // part (e.g. the binding) was highlighted - most of the visible surface
+    // belongs to parts other than the one being called out, so the ski as
+    // a whole looked faded and its contours disappeared. Keep everything
+    // fully solid at all times and use only the emissive glow to call out
+    // the active part.
     var activeNames = partSpec === 'all' ? null : partSpec.split(',');
     Object.keys(partMaterials).forEach(function (name) {
       var isActive = !activeNames || activeNames.indexOf(name) !== -1;
       partMaterials[name].forEach(function (m) {
-        m.opacity = isActive ? 1 : 0.2;
+        m.opacity = 1;
         if (m.emissive) {
           if (isActive && activeNames) {
             m.emissive.setHex(0x1e9be0);
-            m.emissiveIntensity = 0.3;
+            m.emissiveIntensity = 0.35;
           } else {
             m.emissiveIntensity = 0;
           }
@@ -183,9 +190,13 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     renderer.render(scene, camera);
   }
 
-  var activePart = 'all';
-  var targetRotY = 0.15;
-  var currentRotY = 0.15;
+  // The story now opens on the binding view (tip toward camera) instead of
+  // a generic intro angle, so the resting pose before any step's
+  // intersection threshold fires should already match it - otherwise the
+  // ski visibly snaps into place the instant scrolling starts.
+  var activePart = 'binding';
+  var targetRotY = Math.PI / 2;
+  var currentRotY = Math.PI / 2;
   var targetRotX = -0.18;
   var currentRotX = -0.18;
   var running = false;
@@ -225,22 +236,19 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   // Each step below sets both explicitly rather than only ever turning the
   // one "turntable" knob, so the geometry that's actually being described
   // is what's actually facing the viewer.
+  // Story order: binding (opening/"foundation" view) -> edge (sharpening)
+  // -> base (waxing/maintenance) - matching the order the steps appear in
+  // the markup.
   var STEP_ROTATIONS = {
-    // A small non-zero yaw start (instead of sitting dead still at 0) means
-    // the ski is already gently turning the moment the section comes into
-    // view, rather than appearing static until the first real step kicks
-    // in - that static beat right after the hero was reading as a jarring
-    // stop, not an intentional pause.
-    all: { y: 0.15, x: -0.18 },
-    topsheet: { y: 0.4, x: -0.18 },
+    // Yaw 90° - the tip points straight at the camera, the natural angle
+    // for looking down at the binding mounted on top. This is the opening
+    // pose (see activePart/targetRotY/targetRotX above).
+    binding: { y: Math.PI / 2, x: -0.18 },
     // Roll 90° onto the edge - length stays horizontal, the thin edge
     // profile faces the camera square-on.
     steel_edges: { y: 0, x: Math.PI / 2 },
     // Roll a further 90° (180° total) so the base faces the camera.
-    'base,sidewall': { y: 0, x: Math.PI },
-    // Yaw 90° instead of rolling - the tip points straight at the camera,
-    // which is the natural angle for looking at the binding mounted on top.
-    binding: { y: Math.PI / 2, x: -0.18 }
+    'base,sidewall': { y: 0, x: Math.PI }
   };
 
   var io = new IntersectionObserver(
