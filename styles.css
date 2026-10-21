@@ -293,7 +293,7 @@ header.site-header{
   position:sticky;top:var(--nav-h);height:var(--ski-vh);
   overflow:hidden;z-index:1;pointer-events:none;
 }
-#skiCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
+#skiCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:auto;}
 .ski-story-fallback{display:none;}
 .ski-story.no-webgl .ski-story-sticky{display:flex;align-items:center;justify-content:center;}
 .ski-story.no-webgl #skiCanvas{display:none;}
