@@ -39,7 +39,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 20);
-  var cameraDistance = 3.3;
+  var cameraDistance = 2.6;
   camera.position.set(0, 0.25, cameraDistance);
   camera.lookAt(0, 0, 0);
 
@@ -58,6 +58,11 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
   var rig = new THREE.Group();
   scene.add(rig);
+
+  // TEMP DEBUG (Kristóf/Claude): lets the binding top-down angle be found
+  // live in the browser console instead of guessing blind. Remove once
+  // finalized.
+  window.__ski = { rig: rig, camera: camera, renderFrame: function () { renderFrame(); } };
 
   // part base name (the mesh's immediate parent node name in the glb,
   // e.g. "topsheet", "steel_edges", "binding") -> array of materials
@@ -82,7 +87,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     var vFov = (camera.fov * Math.PI) / 180;
     var visibleHeight = 2 * cameraDistance * Math.tan(vFov / 2);
     var visibleWidth = visibleHeight * aspect;
-    var fill = 0.72;
+    var fill = 0.92;
     var panOffset = visibleWidth * PAN_FRACTION;
     // The pan shifts the model off-center, so the tighter edge (right side,
     // since we pan right) sets how much horizontal room is actually free —
@@ -213,16 +218,31 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var targetRotX = -0.18;
   var currentRotX = -0.18;
   var running = false;
+  var manualOverride = false; // TEMP DEBUG (see window.__ski below)
 
   function animate() {
     if (!running) return;
     requestAnimationFrame(animate);
+    if (manualOverride) {
+      renderFrame();
+      return;
+    }
     currentRotY += (targetRotY - currentRotY) * 0.07;
     currentRotX += (targetRotX - currentRotX) * 0.07;
     rig.rotation.y = currentRotY;
     rig.rotation.x = currentRotX;
     renderFrame();
   }
+
+  window.__ski.setAngles = function (x, y) {
+    manualOverride = true;
+    rig.rotation.x = x;
+    rig.rotation.y = y;
+    renderFrame();
+  };
+  window.__ski.release = function () {
+    manualOverride = false;
+  };
 
   function startLoop() {
     if (running) return;
