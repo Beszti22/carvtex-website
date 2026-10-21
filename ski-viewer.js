@@ -328,7 +328,14 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
             : { y: 0, x: -0.18 };
           targetRotY = rot.y;
           targetRotX = rot.x;
-          if (modelLoaded) applyHighlight(activePart);
+          // data-highlight lets a step glow a narrower part than the one
+          // driving its pose/click-target (data-part) - the base step uses
+          // this because its camera angle already shows the base filling
+          // almost the whole frame, so tinting the base material itself
+          // with the active-part glow reads as the whole ski turning blue
+          // instead of calling out a feature.
+          var highlightSpec = entry.target.getAttribute('data-highlight') || activePart;
+          if (modelLoaded) applyHighlight(highlightSpec);
           if (prefersReduced) renderFrame();
         }
       });
