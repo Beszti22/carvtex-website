@@ -59,10 +59,6 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var rig = new THREE.Group();
   scene.add(rig);
 
-  // TEMP DEBUG (Kristóf/Claude): lets the edge-step angle be found live in
-  // the browser console instead of guessing blind. Remove once finalized.
-  window.__ski = { rig: rig, camera: camera, renderFrame: function () { renderFrame(); } };
-
   // part base name (the mesh's immediate parent node name in the glb,
   // e.g. "topsheet", "steel_edges", "binding") -> array of materials
   // belonging to it.
@@ -217,31 +213,16 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var targetRotX = 0.7;
   var currentRotX = 0.7;
   var running = false;
-  var manualOverride = false; // TEMP DEBUG (see window.__ski below)
 
   function animate() {
     if (!running) return;
     requestAnimationFrame(animate);
-    if (manualOverride) {
-      renderFrame();
-      return;
-    }
     currentRotY += (targetRotY - currentRotY) * 0.07;
     currentRotX += (targetRotX - currentRotX) * 0.07;
     rig.rotation.y = currentRotY;
     rig.rotation.x = currentRotX;
     renderFrame();
   }
-
-  window.__ski.setAngles = function (x, y) {
-    manualOverride = true;
-    rig.rotation.x = x;
-    rig.rotation.y = y;
-    renderFrame();
-  };
-  window.__ski.release = function () {
-    manualOverride = false;
-  };
 
   function startLoop() {
     if (running) return;
@@ -323,12 +304,12 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     // viewer, topsheet and binding both readable. This is the opening pose
     // (see activePart/targetRotY/targetRotX above).
     binding: { y: -0.75, x: 0.7 },
-    // Elevated 3/4 angle too, for visual consistency with the binding step,
-    // mirrored (opposite yaw) so the two steps don't look identical as the
-    // page scrolls. The steel edge itself is a thin strip on a flat board
-    // seen from any real angle other than dead-on, so the emissive
-    // highlight (not the camera angle) is what makes it read clearly here.
-    steel_edges: { y: 0.75, x: 0.7 },
+    // Same diagonal/elevated composition as the binding step (mirrored yaw
+    // so the two steps don't look identical), but pitched 90 degrees further
+    // so the ski is standing on its steel edge rather than lying flat on its
+    // base/topsheet - the edge itself reads as a clear profile line here,
+    // reinforced by the emissive highlight on the active part.
+    steel_edges: { y: 0.75, x: 0.7 - Math.PI / 2 },
     // Pitch -90° - clean top-down view of the base surface, facing up
     // toward the camera rather than viewed from underneath.
     'base,sidewall': { y: 0, x: -Math.PI / 2 }
