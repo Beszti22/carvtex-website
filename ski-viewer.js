@@ -184,8 +184,8 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   }
 
   var activePart = 'all';
-  var targetRotY = 0;
-  var currentRotY = 0;
+  var targetRotY = 0.15;
+  var currentRotY = 0.15;
   var targetRotX = -0.18;
   var currentRotX = -0.18;
   var running = false;
@@ -211,25 +211,36 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     renderFrame();
   });
 
-  // Rotating around the vertical (Y) axis turns the ski like a turntable:
-  // 0° shows the topsheet/binding face (the default hero angle), ~90° shows
-  // it edge-on, and ~180° swings all the way around to the base. Pick the
-  // angle per step so the part being described is actually what's facing
-  // the camera, instead of an arbitrary incremental spin.
+  // Two separate axes are in play, and conflating them was the bug:
+  // - rotation.y (yaw) spins the ski like a turntable around the vertical
+  //   axis. Since the model's length runs along local X and points
+  //   screen-right at yaw 0, a 90° yaw swings that length axis to point
+  //   toward the camera instead - i.e. the TIP comes straight at the
+  //   viewer. That's the right view for the binding, not an edge view.
+  // - rotation.x (roll, around the ski's own length axis) is what actually
+  //   rolls the board over on its long axis: 90° brings the thin edge face
+  //   around to face the camera while the length stays stretched out
+  //   horizontally on screen, and 180° flips it fully over so the base
+  //   faces the camera instead of the topsheet.
+  // Each step below sets both explicitly rather than only ever turning the
+  // one "turntable" knob, so the geometry that's actually being described
+  // is what's actually facing the viewer.
   var STEP_ROTATIONS = {
-    // A small non-zero start (instead of sitting dead still at 0) means
-    // the ski is already gently turning the moment the section comes
-    // into view, rather than appearing static until the first real step
-    // kicks in - that static beat right after the hero was reading as a
-    // jarring stop, not an intentional pause.
-    all: 0.15,
-    topsheet: 0.4,
-    steel_edges: Math.PI / 2,
-    'base,sidewall': Math.PI,
-    // A full turn back past base/sidewall's 180°, so it keeps spinning the
-    // same direction instead of snapping backward, and lands back on the
-    // topsheet/binding face.
-    binding: Math.PI * 2
+    // A small non-zero yaw start (instead of sitting dead still at 0) means
+    // the ski is already gently turning the moment the section comes into
+    // view, rather than appearing static until the first real step kicks
+    // in - that static beat right after the hero was reading as a jarring
+    // stop, not an intentional pause.
+    all: { y: 0.15, x: -0.18 },
+    topsheet: { y: 0.4, x: -0.18 },
+    // Roll 90° onto the edge - length stays horizontal, the thin edge
+    // profile faces the camera square-on.
+    steel_edges: { y: 0, x: Math.PI / 2 },
+    // Roll a further 90° (180° total) so the base faces the camera.
+    'base,sidewall': { y: 0, x: Math.PI },
+    // Yaw 90° instead of rolling - the tip points straight at the camera,
+    // which is the natural angle for looking at the binding mounted on top.
+    binding: { y: Math.PI / 2, x: -0.18 }
   };
 
   var io = new IntersectionObserver(
@@ -241,9 +252,11 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
           });
           entry.target.classList.add('active');
           activePart = entry.target.getAttribute('data-part') || 'all';
-          targetRotY = Object.prototype.hasOwnProperty.call(STEP_ROTATIONS, activePart)
+          var rot = Object.prototype.hasOwnProperty.call(STEP_ROTATIONS, activePart)
             ? STEP_ROTATIONS[activePart]
-            : 0;
+            : { y: 0, x: -0.18 };
+          targetRotY = rot.y;
+          targetRotX = rot.x;
           if (modelLoaded) applyHighlight(activePart);
           if (prefersReduced) renderFrame();
         }
