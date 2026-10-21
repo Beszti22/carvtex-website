@@ -177,11 +177,48 @@
         <span class="eyebrow" data-i18n="aboutEyebrow">A CarvteX-ről</span>
         <h2 data-i18n="aboutH2">Ismerd meg Bencét</h2>
       </div>
-      <div class="about-copy reveal">
-        <p data-i18n="aboutP1">Szappanos Bence vagyok, a CarvteX Síszerviz alapítója. A síelés az életem része — a precizitás pedig a munkám alapja.</p>
-        <p data-i18n="aboutP2">2011 óta dolgozom alpesi síedzőként. A Magyar Sí Szövetségi munkám alatt több olyan szakember mellett tanulhattam, akik világkupás klasszisokkal dolgoztak együtt — a hegyen, a pályán és a tanítványaim mellett pedig megtanultam, mennyit számítanak az apró részletek. Egy jól előkészített síléc, a megfelelő élezés és a gondosan megválasztott wax nem csupán technikai kérdés: mind hozzájárulnak ahhoz, hogy a síelő magabiztosabban, jobb érzéssel csússzon.</p>
-        <p data-i18n="aboutP3">Edzőként mindig fontosnak tartottam, hogy a felszerelés ne hátráltassa, hanem segítse a síelőt. Ezt a szemléletet viszem tovább a CarvteX Síszervizben is — minden felszereléshez úgy állok hozzá, ahogyan edzőként is dolgoztam: odafigyeléssel és a részletekre koncentrálva.</p>
-        <p data-i18n="aboutP4">A célom egyszerű: olyan síléceket adni vissza, amelyekkel öröm pályára állni — legyen szó egy családi síelésről, egy intenzív edzésről vagy egy igazán jó napról a hegyen.</p>
+      <div class="about-grid">
+        <figure class="about-portrait reveal">
+          <img src="/assets/bence-portrait.jpg" alt="Szappanos Bence, a CarvteX Síszerviz alapítója, síversenypályán" width="1000" height="1333" loading="lazy">
+          <figcaption>
+            <strong>Szappanos Bence</strong>
+            <span data-i18n="aboutPortraitRole">Alapító · Alpesi síedző</span>
+          </figcaption>
+        </figure>
+        <div class="about-copy reveal">
+          <p data-i18n="aboutP1">Szappanos Bence vagyok, a CarvteX Síszerviz alapítója. A síelés az életem része — a precizitás pedig a munkám alapja.</p>
+          <p data-i18n="aboutP2">2011 óta dolgozom alpesi síedzőként. A Magyar Sí Szövetségi munkám alatt több olyan szakember mellett tanulhattam, akik világkupás klasszisokkal dolgoztak együtt — a hegyen, a pályán és a tanítványaim mellett pedig megtanultam, mennyit számítanak az apró részletek. Egy jól előkészített síléc, a megfelelő élezés és a gondosan megválasztott wax nem csupán technikai kérdés: mind hozzájárulnak ahhoz, hogy a síelő magabiztosabban, jobb érzéssel csússzon.</p>
+          <p data-i18n="aboutP3">Edzőként mindig fontosnak tartottam, hogy a felszerelés ne hátráltassa, hanem segítse a síelőt. Ezt a szemléletet viszem tovább a CarvteX Síszervizben is — minden felszereléshez úgy állok hozzá, ahogyan edzőként is dolgoztam: odafigyeléssel és a részletekre koncentrálva.</p>
+          <p data-i18n="aboutP4">A célom egyszerű: olyan síléceket adni vissza, amelyekkel öröm pályára állni — legyen szó egy családi síelésről, egy intenzív edzésről vagy egy igazán jó napról a hegyen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-i18n="testimonialsEyebrow">Mit mondanak rólunk</span>
+        <h2 data-i18n="testimonialsH2">Megbíznak bennünk</h2>
+      </div>
+      <div class="testimonial-grid">
+        <figure class="testimonial-card reveal">
+          <blockquote>Csak ajánlani tudom! 👏</blockquote>
+          <figcaption>— György</figcaption>
+        </figure>
+        <figure class="testimonial-card reveal">
+          <blockquote>Sok sikert hozzá! 🙌</blockquote>
+          <figcaption>— Csaba</figcaption>
+        </figure>
+        <figure class="testimonial-card reveal">
+          <blockquote>Gratulálok!</blockquote>
+          <figcaption>— Levente</figcaption>
+        </figure>
+        <figure class="testimonial-card reveal">
+          <blockquote>Yeah! Hajrá! 💪</blockquote>
+          <figcaption>— Ádám</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -202,52 +239,67 @@
 
 <!-- CONTACT -->
   <section id="contact">
-    <div class="container" style="max-width:600px;">
-      <div class="section-head reveal">
-        <span class="eyebrow" data-i18n="contactEyebrow">Lépj kapcsolatba</span>
-        <h2 data-i18n="contactH2">Időpontfoglalás</h2>
-        <p data-i18n="contactLead">Mesélj a léceidről és arról, mire van szükséged — hamarosan válaszolunk az időpont egyeztetéséhez.</p>
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-form-wrap">
+          <div class="section-head reveal">
+            <span class="eyebrow" data-i18n="contactEyebrow">Lépj kapcsolatba</span>
+            <h2 data-i18n="contactH2">Időpontfoglalás</h2>
+            <p data-i18n="contactLead">Mesélj a léceidről és arról, mire van szükséged — hamarosan válaszolunk az időpont egyeztetéséhez.</p>
+          </div>
+          <form class="reveal" id="contactForm" novalidate>
+            <div class="form-field">
+              <label for="cName" data-i18n="formName">Név</label>
+              <input type="text" id="cName" name="name" required>
+            </div>
+            <div class="form-field">
+              <label for="cEmail" data-i18n="formEmail">Email</label>
+              <input type="email" id="cEmail" name="email" required>
+            </div>
+            <div class="form-field">
+              <label for="cPhone" data-i18n="formPhone">Telefon (opcionális)</label>
+              <input type="tel" id="cPhone" name="phone">
+            </div>
+            <div class="form-field">
+              <label for="cService" data-i18n="formService">Szolgáltatás</label>
+              <select id="cService" name="service">
+                <option value="" data-i18n="formServiceOpt0">Még nem tudom</option>
+                <option value="Alapszerviz" data-i18n="formServiceOpt1">Alapszerviz</option>
+                <option value="Prémium szerviz" data-i18n="formServiceOpt2">Prémium szerviz</option>
+                <option value="Kötésbeállítás" data-i18n="formServiceOpt3">Kötésbeállítás</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="cMessage" data-i18n="formMessage">Üzenet</label>
+              <textarea id="cMessage" name="message" rows="4"></textarea>
+            </div>
+            <label class="form-consent" for="cConsent">
+              <input type="checkbox" id="cConsent" name="consent" required>
+              <span data-i18n="formConsent">Hozzájárulok, hogy a CarvteX Síszerviz ezeket az adatokat a megkeresésem megválaszolásához felhasználja.</span>
+            </label>
+            <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
+              <label for="cBotcheck">Leave this field empty</label>
+              <input type="text" id="cBotcheck" name="botcheck" tabindex="-1" autocomplete="off">
+            </div>
+            <button type="submit" class="btn btn-primary" id="contactSubmitBtn" data-i18n="formSubmit">Küldés</button>
+            <p class="contact-status" id="contactStatus" role="status"></p>
+            <span id="i18nContactSending" data-i18n="formSending" hidden>Küldés...</span>
+            <span id="i18nContactSuccess" data-i18n="formSuccess" hidden>Köszönjük, a megkeresésed megérkezett. Hamarosan jelentkezünk.</span>
+            <span id="i18nContactError" data-i18n="formError" hidden>Hiba történt. Kérjük, próbáld újra, vagy írj nekünk emailt közvetlenül.</span>
+          </form>
+        </div>
+        <div class="contact-side reveal">
+          <div class="contact-map">
+            <iframe
+              src="https://www.google.com/maps?q=D%C3%A9legyh%C3%A1za,+Magyarorsz%C3%A1g&output=embed"
+              title="CarvteX Síszerviz — térkép" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <div class="contact-address">
+            <span class="contact-address-label" data-i18n="contactAddressLabel">Helyszín</span>
+            <strong data-i18n="contactAddressValue">Délegyháza, Magyarország</strong>
+          </div>
+        </div>
       </div>
-      <form class="reveal" id="contactForm" novalidate>
-        <div class="form-field">
-          <label for="cName" data-i18n="formName">Név</label>
-          <input type="text" id="cName" name="name" required>
-        </div>
-        <div class="form-field">
-          <label for="cEmail" data-i18n="formEmail">Email</label>
-          <input type="email" id="cEmail" name="email" required>
-        </div>
-        <div class="form-field">
-          <label for="cPhone" data-i18n="formPhone">Telefon (opcionális)</label>
-          <input type="tel" id="cPhone" name="phone">
-        </div>
-        <div class="form-field">
-          <label for="cService" data-i18n="formService">Szolgáltatás</label>
-          <select id="cService" name="service">
-            <option value="" data-i18n="formServiceOpt0">Még nem tudom</option>
-            <option value="Alapszerviz" data-i18n="formServiceOpt1">Alapszerviz</option>
-            <option value="Prémium szerviz" data-i18n="formServiceOpt2">Prémium szerviz</option>
-            <option value="Kötésbeállítás" data-i18n="formServiceOpt3">Kötésbeállítás</option>
-          </select>
-        </div>
-        <div class="form-field">
-          <label for="cMessage" data-i18n="formMessage">Üzenet</label>
-          <textarea id="cMessage" name="message" rows="4"></textarea>
-        </div>
-        <label class="form-consent" for="cConsent">
-          <input type="checkbox" id="cConsent" name="consent" required>
-          <span data-i18n="formConsent">Hozzájárulok, hogy a CarvteX Síszerviz ezeket az adatokat a megkeresésem megválaszolásához felhasználja.</span>
-        </label>
-        <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
-          <label for="cBotcheck">Leave this field empty</label>
-          <input type="text" id="cBotcheck" name="botcheck" tabindex="-1" autocomplete="off">
-        </div>
-        <button type="submit" class="btn btn-primary" id="contactSubmitBtn" data-i18n="formSubmit">Küldés</button>
-        <p class="contact-status" id="contactStatus" role="status"></p>
-        <span id="i18nContactSending" data-i18n="formSending" hidden>Küldés...</span>
-        <span id="i18nContactSuccess" data-i18n="formSuccess" hidden>Köszönjük, a megkeresésed megérkezett. Hamarosan jelentkezünk.</span>
-        <span id="i18nContactError" data-i18n="formError" hidden>Hiba történt. Kérjük, próbáld újra, vagy írj nekünk emailt közvetlenül.</span>
-      </form>
     </div>
   </section>
 
@@ -261,6 +313,11 @@
         CarvteX
       </a>
       <p data-i18n="footerBrandDesc">Síléc élezés, waxolás és kötésbeállítás egy korábbi alpesi síedzőtől — Budapest.</p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/profile.php?id=61595442238344" target="_blank" rel="noopener" aria-label="Kövess minket Facebookon" class="footer-social-link">
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 9H15V6h-1.5C11.57 6 10 7.57 10 9.5V11H8v3h2v7h3v-7h2.1l.4-3H13v-1.5c0-.28.22-.5.5-.5z"/></svg>
+        </a>
+      </div>
     </div>
     <div class="footer-col">
       <h4 data-i18n="footerQuickLinks">Gyorslinkek</h4>
@@ -293,6 +350,11 @@
     </a>
   </div>
 </footer>
+
+<!-- Floating call button — TODO(Kristóf): swap the placeholder number below for the real one. -->
+<a href="tel:+36000000000" class="phone-fab" aria-label="Hívj minket">
+  <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+</a>
 
 <script src="/i18n.js"></script>
 <script src="/main.js"></script>

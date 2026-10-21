@@ -329,8 +329,37 @@ header.site-header{
 
 
 /* ---------- About ---------- */
+.about-grid{display:grid;grid-template-columns:minmax(240px,340px) 1fr;gap:var(--space-2xl);align-items:start;}
+.about-portrait{position:relative;border:1px solid var(--color-border);overflow:hidden;}
+.about-portrait img{width:100%;height:auto;display:block;}
+.about-portrait figcaption{
+  position:absolute;left:0;right:0;bottom:0;padding:16px 18px;
+  background:linear-gradient(0deg, rgba(11,28,44,0.9) 0%, rgba(11,28,44,0.55) 55%, rgba(11,28,44,0) 100%);
+  color:#fff;
+}
+.about-portrait figcaption strong{display:block;font-family:var(--font-display);letter-spacing:0.02em;font-size:20px;text-transform:uppercase;}
+.about-portrait figcaption span{display:block;margin-top:2px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent);font-weight:700;}
 .about-copy{max-width:720px;color:var(--color-text-muted);font-size:17px;line-height:1.75;display:flex;flex-direction:column;gap:var(--space-md);}
 .about-copy p strong{color:var(--color-primary);}
+@media (max-width:760px){
+  .about-grid{grid-template-columns:1fr;}
+  .about-portrait{max-width:360px;margin:0 auto;}
+}
+
+/* ---------- Testimonials ---------- */
+.testimonial-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-md);}
+.testimonial-card{
+  background:var(--color-card);border:1px solid var(--color-border);padding:var(--space-lg) var(--space-md);
+  display:flex;flex-direction:column;gap:14px;position:relative;
+}
+.testimonial-card::before{
+  content:"\201C";position:absolute;top:10px;left:16px;font-family:Georgia,serif;font-size:46px;line-height:1;
+  color:var(--color-accent);opacity:0.25;
+}
+.testimonial-card blockquote{margin:18px 0 0;font-size:16px;line-height:1.5;color:var(--color-primary);font-weight:600;}
+.testimonial-card figcaption{font-size:13px;letter-spacing:0.03em;color:var(--color-text-muted);}
+@media (max-width:860px){ .testimonial-grid{grid-template-columns:1fr 1fr;} }
+@media (max-width:520px){ .testimonial-grid{grid-template-columns:1fr;} }
 
 /* ---------- CTA banner ---------- */
 .cta-banner{background:var(--color-primary);color:#fff;padding:var(--space-2xl) 0;}
@@ -338,6 +367,22 @@ header.site-header{
 .cta-banner h2{font-size:clamp(28px,4vw,42px);color:#fff;}
 .cta-banner p{margin-top:16px;color:rgba(255,255,255,0.78);font-size:16px;}
 .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:var(--space-lg);}
+
+/* ---------- Contact ---------- */
+.contact-grid{display:grid;grid-template-columns:minmax(0,560px) minmax(260px,340px);gap:var(--space-2xl);align-items:start;}
+.contact-side{display:flex;flex-direction:column;gap:14px;position:sticky;top:calc(var(--nav-h) + var(--space-lg));}
+.contact-map{border:1px solid var(--color-border);overflow:hidden;background:var(--color-card);}
+.contact-map iframe{display:block;width:100%;height:260px;border:0;}
+.contact-address{
+  display:flex;flex-direction:column;gap:4px;padding:var(--space-md);
+  background:var(--color-card);border:1px solid var(--color-border);
+}
+.contact-address-label{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent);}
+.contact-address strong{font-size:16px;color:var(--color-primary);}
+@media (max-width:900px){
+  .contact-grid{grid-template-columns:1fr;}
+  .contact-side{position:static;}
+}
 
 /* ---------- Contact form ---------- */
 .form-field{margin-bottom:var(--space-md);}
@@ -357,6 +402,12 @@ header.site-header{
 footer{background:var(--color-primary);color:rgba(255,255,255,0.85);}
 .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:var(--space-xl);padding:var(--space-2xl) 0 var(--space-xl);}
 .footer-brand p{margin-top:var(--space-sm);font-size:14px;color:rgba(255,255,255,0.6);max-width:280px;}
+.footer-social{display:flex;gap:10px;margin-top:var(--space-md);}
+.footer-social-link{
+  display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;
+  background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.75);transition:background-color 180ms ease, color 180ms ease;
+}
+.footer-social-link:hover{background:var(--color-accent);color:#fff;}
 .footer-col h4{font-family:var(--font-body);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;font-size:12.5px;color:rgba(255,255,255,0.5);margin-bottom:var(--space-md);}
 .footer-col ul{display:flex;flex-direction:column;gap:10px;}
 .footer-col a{font-size:14px;color:rgba(255,255,255,0.78);transition:color 180ms ease;}
@@ -381,4 +432,28 @@ footer{background:var(--color-primary);color:rgba(255,255,255,0.85);}
 .scroll-progress{
   position:fixed;top:0;left:0;right:0;height:2px;background:var(--color-accent);
   transform:scaleX(0);transform-origin:left;z-index:600;transition:transform 80ms linear;
+}
+
+/* ---------- Floating call button ---------- */
+.phone-fab{
+  position:fixed;right:22px;bottom:26px;z-index:500;
+  width:56px;height:56px;border-radius:50%;
+  background:var(--color-accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--shadow-lg);
+  transition:background-color 180ms ease, transform 180ms ease;
+}
+.phone-fab:hover{background:var(--color-accent-dark);transform:scale(1.06);}
+.phone-fab::before{
+  content:"";position:absolute;inset:0;border-radius:50%;background:var(--color-accent);z-index:-1;
+}
+@media (prefers-reduced-motion: no-preference){
+  .phone-fab::before{animation:phoneFabPulse 2.2s ease-out infinite;}
+}
+@keyframes phoneFabPulse{
+  0%{transform:scale(1);opacity:0.55;}
+  100%{transform:scale(1.9);opacity:0;}
+}
+@media (max-width:640px){
+  .phone-fab{right:16px;bottom:16px;width:50px;height:50px;}
 }

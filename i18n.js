@@ -43,6 +43,9 @@
       aboutP2: `I've worked as an alpine ski coach since 2011. Through my years with the Hungarian Ski Federation, I learned from specialists who worked with World Cup-level athletes — and on the hill, with my own athletes, I learned just how much the small details matter. A well-prepared ski, correct sharpening and the right wax aren't just technical details: they're what lets a skier feel confident and in control.`,
       aboutP3: `As a coach, I always believed the equipment should help the skier, never hold them back. That's the approach I bring to CarvteX Ski Service — every pair of skis gets the same care and attention I'd want for my own athletes.`,
       aboutP4: `My goal is simple: to hand skis back in a state where you actually enjoy being on the mountain — whether that's a family ski day, a hard training session, or just a great day in the snow.`,
+      aboutPortraitRole: `Founder · Alpine Ski Coach`,
+      testimonialsEyebrow: `What people say`,
+      testimonialsH2: `Trusted on the hill`,
       ctaH2: `Ready for the season?`,
       ctaLead: `Book your skis in for a service — sharpening, waxing or a full race prep, done with a coach's eye for detail.`,
       ctaBtn1: `Book a Service`,
@@ -50,6 +53,8 @@
       contactEyebrow: `Get in touch`,
       contactH2: `Book a Service`,
       contactLead: `Tell us about your skis and what you need — we'll get back to you to confirm details and timing.`,
+      contactAddressLabel: `Location`,
+      contactAddressValue: `Délegyháza, Hungary`,
       formName: `Name`,
       formEmail: `Email`,
       formPhone: `Phone (optional)`,
@@ -69,7 +74,9 @@
       footerServices: `Services`,
       footerContactTitle: `Contact`,
       footerCopyright: `© 2026 CarvteX Ski Service. All rights reserved.`,
-      footerCredit: `Made by: Beszterczey Web`
+      footerCredit: `Made by: Beszterczey Web`,
+      socialFacebook: `Follow us on Facebook`,
+      phoneFab: `Call us`
     },
     hu: {
       skip: `Ugrás a tartalomra`,
@@ -114,6 +121,9 @@
       aboutP2: `2011 óta dolgozom alpesi síedzőként. A Magyar Sí Szövetségi munkám alatt több olyan szakember mellett tanulhattam, akik világkupás klasszisokkal dolgoztak együtt — a hegyen, a pályán és a tanítványaim mellett pedig megtanultam, mennyit számítanak az apró részletek. Egy jól előkészített síléc, a megfelelő élezés és a gondosan megválasztott wax nem csupán technikai kérdés: mind hozzájárulnak ahhoz, hogy a síelő magabiztosabban, jobb érzéssel csússzon.`,
       aboutP3: `Edzőként mindig fontosnak tartottam, hogy a felszerelés ne hátráltassa, hanem segítse a síelőt. Ezt a szemléletet viszem tovább a CarvteX Síszervizben is — minden felszereléshez úgy állok hozzá, ahogyan edzőként is dolgoztam: odafigyeléssel és a részletekre koncentrálva.`,
       aboutP4: `A célom egyszerű: olyan síléceket adni vissza, amelyekkel öröm pályára állni — legyen szó egy családi síelésről, egy intenzív edzésről vagy egy igazán jó napról a hegyen.`,
+      aboutPortraitRole: `Alapító · Alpesi síedző`,
+      testimonialsEyebrow: `Mit mondanak rólunk`,
+      testimonialsH2: `Megbíznak bennünk`,
       ctaH2: `Készen állsz a szezonra?`,
       ctaLead: `Hozd be a léceidet szervizre — élezés, waxolás vagy teljes versenyfelkészítés, edzői szemmel elvégezve.`,
       ctaBtn1: `Időpontfoglalás`,
@@ -121,6 +131,8 @@
       contactEyebrow: `Lépj kapcsolatba`,
       contactH2: `Időpontfoglalás`,
       contactLead: `Mesélj a léceidről és arról, mire van szükséged — hamarosan válaszolunk az időpont egyeztetéséhez.`,
+      contactAddressLabel: `Helyszín`,
+      contactAddressValue: `Délegyháza, Magyarország`,
       formName: `Név`,
       formEmail: `Email`,
       formPhone: `Telefon (opcionális)`,
@@ -140,7 +152,9 @@
       footerServices: `Szolgáltatások`,
       footerContactTitle: `Kapcsolat`,
       footerCopyright: `© 2026 CarvteX Síszerviz. Minden jog fenntartva.`,
-      footerCredit: `Készítette: Beszterczey Web`
+      footerCredit: `Készítette: Beszterczey Web`,
+      socialFacebook: `Kövess minket Facebookon`,
+      phoneFab: `Hívj minket`
     }
   };
 
