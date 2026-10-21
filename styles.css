@@ -144,7 +144,7 @@ section:first-of-type{border-top:none;}
 .page-intro-services{
   position:relative;
   background:
-    linear-gradient(115deg, rgba(20,21,24,0.92) 0%, rgba(32,33,37,0.8) 42%, rgba(48,49,54,0.55) 100%),
+    linear-gradient(115deg, rgba(23,24,27,0.95) 0%, rgba(42,43,47,0.88) 45%, rgba(60,61,66,0.78) 100%),
     url('/assets/services-hero-bg.webp') center 38%/cover no-repeat;
   background-color:#17181b;
 }
