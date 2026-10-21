@@ -139,6 +139,16 @@ section:first-of-type{border-top:none;}
 }
 .page-intro p{margin-top:14px;max-width:640px;color:rgba(255,255,255,0.75);font-size:16px;line-height:1.65;}
 
+/* Services page intro: workbench photo background, faded under a dark-grey
+   gradient so the white heading/eyebrow stay readable over the busy image. */
+.page-intro-services{
+  position:relative;
+  background:
+    linear-gradient(115deg, rgba(20,21,24,0.92) 0%, rgba(32,33,37,0.8) 42%, rgba(48,49,54,0.55) 100%),
+    url('/assets/services-hero-bg.webp') center 38%/cover no-repeat;
+  background-color:#17181b;
+}
+
 /* ---------- NAV ---------- */
 header.site-header{
   position:sticky;top:0;z-index:500;
