@@ -452,26 +452,67 @@ footer{background:var(--color-primary);color:rgba(255,255,255,0.85);}
   transform:scaleX(0);transform-origin:left;z-index:600;transition:transform 80ms linear;
 }
 
-/* ---------- Floating call button ---------- */
-.phone-fab{
+/* ---------- Floating contact button (call / WhatsApp speed-dial) ---------- */
+.contact-fab{
   position:fixed;right:22px;bottom:26px;z-index:500;
-  width:56px;height:56px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:flex-end;
+}
+.contact-fab-actions{
+  display:flex;flex-direction:column;align-items:flex-end;gap:12px;
+  margin-bottom:14px;
+}
+.contact-fab-action{
+  display:flex;align-items:center;gap:10px;text-decoration:none;
+  opacity:0;transform:translateY(10px) scale(0.85);pointer-events:none;
+  transition:opacity 200ms ease, transform 200ms ease;
+}
+.contact-fab.open .contact-fab-action{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+.contact-fab.open .contact-fab-whatsapp{transition-delay:120ms;}
+.contact-fab.open .contact-fab-call{transition-delay:40ms;}
+.contact-fab-label{
+  background:var(--color-primary);color:#fff;font-family:var(--font-body);
+  font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;
+  white-space:nowrap;box-shadow:var(--shadow-md);
+}
+.contact-fab-icon{
+  width:48px;height:48px;border-radius:50%;flex:none;
+  display:flex;align-items:center;justify-content:center;color:#fff;
+  box-shadow:var(--shadow-lg);transition:transform 160ms ease;
+}
+.contact-fab-action:hover .contact-fab-icon{transform:scale(1.08);}
+.contact-fab-call .contact-fab-icon{background:var(--color-accent);}
+.contact-fab-call:hover .contact-fab-icon{background:var(--color-accent-dark);}
+.contact-fab-whatsapp .contact-fab-icon{background:#25D366;}
+.contact-fab-whatsapp:hover .contact-fab-icon{background:#1DA851;}
+.contact-fab-toggle{
+  position:relative;width:56px;height:56px;border-radius:50%;border:0;cursor:pointer;
   background:var(--color-accent);color:#fff;
   display:flex;align-items:center;justify-content:center;
   box-shadow:var(--shadow-lg);
   transition:background-color 180ms ease, transform 180ms ease;
 }
-.phone-fab:hover{background:var(--color-accent-dark);transform:scale(1.06);}
-.phone-fab::before{
+.contact-fab-toggle:hover{background:var(--color-accent-dark);transform:scale(1.06);}
+.contact-fab-toggle::before{
   content:"";position:absolute;inset:0;border-radius:50%;background:var(--color-accent);z-index:-1;
 }
+.contact-fab.open .contact-fab-toggle::before{animation:none;opacity:0;}
 @media (prefers-reduced-motion: no-preference){
-  .phone-fab::before{animation:phoneFabPulse 2.2s ease-out infinite;}
+  .contact-fab-toggle::before{animation:phoneFabPulse 2.2s ease-out infinite;}
 }
 @keyframes phoneFabPulse{
   0%{transform:scale(1);opacity:0.55;}
   100%{transform:scale(1.9);opacity:0;}
 }
+.contact-fab-toggle .icon-phone,
+.contact-fab-toggle .icon-close{
+  position:absolute;transition:opacity 180ms ease, transform 180ms ease;
+}
+.contact-fab-toggle .icon-close{opacity:0;transform:rotate(-45deg) scale(0.6);}
+.contact-fab.open .contact-fab-toggle .icon-phone{opacity:0;transform:rotate(45deg) scale(0.6);}
+.contact-fab.open .contact-fab-toggle .icon-close{opacity:1;transform:rotate(0) scale(1);}
 @media (max-width:640px){
-  .phone-fab{right:16px;bottom:16px;width:50px;height:50px;}
+  .contact-fab{right:16px;bottom:16px;}
+  .contact-fab-toggle{width:50px;height:50px;}
+  .contact-fab-icon{width:44px;height:44px;}
+  .contact-fab-label{display:none;}
 }

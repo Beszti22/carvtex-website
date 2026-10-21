@@ -150,6 +150,29 @@
     }, { passive: true });
   }
 
+  /* ----- Floating contact button (call / WhatsApp speed-dial) ----- */
+  var contactFab = document.getElementById('contactFab');
+  var contactFabToggle = document.getElementById('contactFabToggle');
+  if(contactFab && contactFabToggle){
+    function closeFab(){
+      contactFab.classList.remove('open');
+      contactFabToggle.setAttribute('aria-expanded', 'false');
+    }
+    contactFabToggle.addEventListener('click', function(){
+      var open = contactFab.classList.toggle('open');
+      contactFabToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('click', function(e){
+      if(contactFab.classList.contains('open') && !contactFab.contains(e.target)){ closeFab(); }
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && contactFab.classList.contains('open')){
+        closeFab();
+        contactFabToggle.focus();
+      }
+    });
+  }
+
   /* ----- Newsletter signup (footer form, present on every page) ----- */
   var newsletterForm = document.getElementById('newsletterForm');
   if(newsletterForm){

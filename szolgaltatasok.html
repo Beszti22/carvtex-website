@@ -182,6 +182,8 @@
       <h4 data-i18n="footerContactTitle">Kapcsolat</h4>
       <ul>
         <li><a href="mailto:carvtexszerviz@gmail.com">carvtexszerviz@gmail.com</a></li>
+        <li><a href="tel:+36707717945">+36 70 771 7945</a></li>
+        <li><a href="https://wa.me/36707717945" target="_blank" rel="noopener">WhatsApp</a></li>
       </ul>
     </div>
   </div>
@@ -194,10 +196,27 @@
   </div>
 </footer>
 
-<!-- Floating call button — TODO(Kristóf): swap the placeholder number below for the real one. -->
-<a href="tel:+36000000000" class="phone-fab" aria-label="Hívj minket">
-  <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-</a>
+<!-- Floating contact button: tap to reveal Call / WhatsApp -->
+<div class="contact-fab" id="contactFab">
+  <div class="contact-fab-actions">
+    <a href="https://wa.me/36707717945" target="_blank" rel="noopener" class="contact-fab-action contact-fab-whatsapp" aria-label="Írj nekünk WhatsAppon">
+      <span class="contact-fab-label">WhatsApp</span>
+      <span class="contact-fab-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.69.44 3.33 1.28 4.78L2 22l5.44-1.38c1.4.76 2.98 1.16 4.6 1.16h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.03c-.24.68-1.19 1.25-1.95 1.4-.52.1-1.19.19-3.47-.74-2.91-1.2-4.78-4.14-4.93-4.33-.14-.2-1.18-1.57-1.18-3 0-1.42.75-2.12 1.01-2.41.26-.28.57-.35.76-.35.19 0 .38 0 .55.01.17.01.41-.07.64.49.24.58.81 2 .88 2.14.07.14.12.31.02.5-.1.19-.15.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.29-.12.57.17.28.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.34 1.46.28.14.44.12.6-.07.17-.19.72-.84.91-1.13.19-.28.38-.24.64-.14.26.1 1.65.78 1.93.93.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg>
+      </span>
+    </a>
+    <a href="tel:+36707717945" class="contact-fab-action contact-fab-call" aria-label="Hívj minket">
+      <span class="contact-fab-label">Hívás</span>
+      <span class="contact-fab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </span>
+    </a>
+  </div>
+  <button type="button" class="contact-fab-toggle" id="contactFabToggle" aria-expanded="false" aria-label="Kapcsolat lehetőségek">
+    <svg class="icon-phone" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    <svg class="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+</div>
 
 <script src="/i18n.js"></script>
 <script src="/main.js"></script>
