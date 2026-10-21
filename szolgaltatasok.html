@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/assets/favicon-96x96.png" sizes="96x96" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="CarvteX" />
+<title>Szolgáltatások — CarvteX Síszerviz</title>
+<meta name="description" content="Élezés, waxolás, talpfeltöltés és kötésbeállítás — nézd meg interaktív 3D bemutatónkban, hogyan dolgozunk a síléceden.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<a href="#main" class="skip-link" data-i18n="skip">Ugrás a tartalomra</a>
+
+<header class="site-header">
+  <div class="container nav">
+    <a href="/" class="brand">
+      <img src="/assets/logo-icon.png" alt="CarvteX" class="brand-icon-img">
+      <span class="brand-text">
+        <span class="brand-name">CarvteX</span>
+        <span class="brand-sub">Síszerviz</span>
+      </span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Primary">
+      <a href="/szolgaltatasok" aria-current="page" data-i18n="navServices">Szolgáltatások</a>
+      <a href="/#about" data-i18n="navAbout">Rólunk</a>
+      <a href="/kapcsolat" data-i18n="navContact">Kapcsolat</a>
+      <a href="/kapcsolat" class="btn btn-primary mobile-cta" data-i18n="navBook">Időpontfoglalás</a>
+    </nav>
+    <div class="nav-actions">
+      <div class="lang-switch" role="group" aria-label="Nyelvválasztó / Language switch">
+        <button type="button" id="btnHu" aria-pressed="true">HU</button>
+        <button type="button" id="btnEn" aria-pressed="false">EN</button>
+      </div>
+      <a href="/kapcsolat" class="btn btn-primary" data-i18n="navBook">Időpontfoglalás</a>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">
+        <svg class="icon" id="menuIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- PAGE INTRO -->
+  <section class="page-intro">
+    <div class="container">
+      <span class="eyebrow" data-i18n="servicesEyebrow">Amit csinálunk</span>
+      <h1 data-i18n="servicesH2">Szolgáltatások</h1>
+      <p data-i18n="servicesLead">Egy gyors él- és wax-frissítéstől a teljes versenyfelkészítésig — minden léc ugyanazt a odafigyelést kapja.</p>
+    </div>
+  </section>
+
+<!-- 3D SKI STORY — sticky canvas, scroll-driven steps -->
+  <section class="ski-story" id="skiStory" aria-label="CarvteX síléc — interaktív bemutató">
+    <div class="ski-story-sticky">
+      <canvas id="skiCanvas" aria-hidden="true"></canvas>
+      <div class="ski-story-fallback">
+        <strong>CARVTEX</strong>
+        <span data-i18n="viewerFallback">A 3D nézethez modern böngésző szükséges — lent minden más ugyanúgy működik.</span>
+      </div>
+      <div class="ski-story-hint" aria-hidden="true">
+        <span data-i18n="scrollHint">Görgess tovább</span>
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      </div>
+    </div>
+    <div class="ski-story-steps" id="skiSteps">
+      <div class="ski-step active" data-part="all">
+        <span class="eyebrow" data-i18n="storyEyebrow">Közelről</span>
+        <h2 data-i18n="storyH2">Minden részlet számít</h2>
+        <p data-i18n="storyLead">Görgess tovább, és nézd meg, hogyan készítjük fel a léced élét, talpát és kötését.</p>
+      </div>
+      <div class="ski-step" data-part="topsheet">
+        <span class="eyebrow" data-i18n="stepTopsheetEyebrow">Minden lécen</span>
+        <h2 data-i18n="stepTopsheetH2">A felszín is számít</h2>
+        <p data-i18n="stepTopsheetP">A topsheet nem csak dizájn — védi a léc szerkezetét, és első ránézésre elárulja, mennyire gondozott egy felszerelés.</p>
+      </div>
+      <div class="ski-step" data-part="steel_edges">
+        <span class="eyebrow" data-i18n="svc1Title">Alapszerviz</span>
+        <h2 data-i18n="stepEdgeH2">Élezés</h2>
+        <p data-i18n="stepEdgeP">A pontos élszög és a tiszta élezés adja a fogást havon és jégen — ez minden szerviz alapja.</p>
+      </div>
+      <div class="ski-step" data-part="base,sidewall">
+        <span class="eyebrow" data-i18n="svc2Title">Prémium szerviz</span>
+        <h2 data-i18n="stepBaseH2">Talpfeltöltés &amp; waxolás</h2>
+        <p data-i18n="stepBaseP">A sérült talp feltöltése és a megfelelő wax selymes siklást ad, bármilyen hóban.</p>
+      </div>
+      <div class="ski-step" data-part="binding">
+        <span class="eyebrow" data-i18n="svc3Title">Kötésbeállítás</span>
+        <h2 data-i18n="stepBindingH2">Pontos, biztonságos rögzítés</h2>
+        <p data-i18n="stepBindingP">A kötés a bakancsodhoz és a DIN-értékedhez igazítva — se túl laza, se túl szoros.</p>
+        <div class="hero-ctas">
+          <a href="/kapcsolat" class="btn btn-primary" data-i18n="heroCta1">Időpontfoglalás</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- SERVICE TIER RECAP -->
+  <section id="services">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-i18n="tiersEyebrow">Válassz csomagot</span>
+        <h2 data-i18n="tiersH2">Szerviz csomagok</h2>
+      </div>
+      <div class="service-grid">
+        <div class="service-card reveal">
+          <span class="service-index">01</span>
+          <h3 data-i18n="svc1Title">Alapszerviz</h3>
+          <p data-i18n="svc1Desc">Élezés, waxolás — az alapok, ahogy kell.</p>
+          <a href="/kapcsolat" class="card-link">
+            <span data-i18n="svcCta">Érdeklődöm</span>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <div class="service-card reveal">
+          <span class="service-index">02</span>
+          <h3 data-i18n="svc2Title">Prémium szerviz</h3>
+          <p data-i18n="svc2Desc">Élezés, waxolás, talpfeltöltés, oldalélcsiszolás és kötésbeállítás — teljes felkészítés komoly síeléshez.</p>
+          <a href="/kapcsolat" class="card-link">
+            <span data-i18n="svcCta">Érdeklődöm</span>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+        <div class="service-card reveal">
+          <span class="service-index">03</span>
+          <h3 data-i18n="svc3Title">Kötésbeállítás</h3>
+          <p data-i18n="svc3Desc">Pontos kötésbeállítás a bakancsodhoz és a DIN-értékedhez igazítva.</p>
+          <a href="/kapcsolat" class="card-link">
+            <span data-i18n="svcCta">Érdeklődöm</span>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- CTA BANNER -->
+  <section style="padding:0;border-top:none;">
+    <div class="cta-banner reveal">
+      <div class="container cta-banner-inner">
+        <h2 data-i18n="ctaH2">Készen állsz a szezonra?</h2>
+        <p data-i18n="ctaLead">Hozd be a léceidet szervizre — élezés, waxolás vagy teljes versenyfelkészítés, edzői szemmel elvégezve.</p>
+        <div class="cta-actions">
+          <a href="/kapcsolat" class="btn btn-primary" data-i18n="ctaBtn1">Időpontfoglalás</a>
+          <a href="mailto:carvtexszerviz@gmail.com" class="btn btn-outline" data-i18n="ctaBtn2">Írj emailt</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="brand" style="color:#fff;">
+        <img src="/assets/logo-icon.png" alt="CarvteX" class="footer-icon-img">
+        CarvteX
+      </a>
+      <p data-i18n="footerBrandDesc">Síléc élezés, waxolás és kötésbeállítás egy korábbi alpesi síedzőtől — Budapest.</p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/profile.php?id=61595442238344" target="_blank" rel="noopener" aria-label="Kövess minket Facebookon" class="footer-social-link">
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 9H15V6h-1.5C11.57 6 10 7.57 10 9.5V11H8v3h2v7h3v-7h2.1l.4-3H13v-1.5c0-.28.22-.5.5-.5z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footerQuickLinks">Gyorslinkek</h4>
+      <ul>
+        <li><a href="/#about" data-i18n="navAbout">Rólunk</a></li>
+        <li><a href="/szolgaltatasok" data-i18n="navServices">Szolgáltatások</a></li>
+        <li><a href="/kapcsolat" data-i18n="navContact">Kapcsolat</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footerServices">Szolgáltatások</h4>
+      <ul>
+        <li><a href="/szolgaltatasok" data-i18n="svc1Title">Alapszerviz</a></li>
+        <li><a href="/szolgaltatasok" data-i18n="svc2Title">Prémium szerviz</a></li>
+        <li><a href="/szolgaltatasok" data-i18n="svc3Title">Kötésbeállítás</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footerContactTitle">Kapcsolat</h4>
+      <ul>
+        <li><a href="mailto:carvtexszerviz@gmail.com">carvtexszerviz@gmail.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span data-i18n="footerCopyright">© 2026 CarvteX Síszerviz. Minden jog fenntartva.</span>
+    <a href="https://beszterczey.com/" target="_blank" rel="noopener" class="credit-badge">
+      <img src="/assets/Besztweb.png" alt="Beszterczey Web" class="credit-badge-icon">
+      <span data-i18n="footerCredit">Készítette: Beszterczey Web</span>
+    </a>
+  </div>
+</footer>
+
+<!-- Floating call button — TODO(Kristóf): swap the placeholder number below for the real one. -->
+<a href="tel:+36000000000" class="phone-fab" aria-label="Hívj minket">
+  <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+</a>
+
+<script src="/i18n.js"></script>
+<script src="/main.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="/ski-viewer.js"></script>
+</body>
+</html>

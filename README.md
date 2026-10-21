@@ -4,7 +4,10 @@ Statikus HTML/CSS/JS oldal, GitHub + Vercel + Resend stack (ugyanaz a felépít�
 
 ## Struktúra
 
-- `index.html` — főoldal (szolgáltatások, rólunk, kapcsolat űrlap, 3D viewer helyőrző)
+- `index.html` — főoldal (hero, rólunk, vélemények)
+- `szolgaltatasok.html` — szolgáltatások (interaktív 3D síléc-bemutató + csomagok)
+- `kapcsolat.html` — kapcsolat űrlap + térkép
+- `vercel.json` — `cleanUrls: true`, hogy a fenti oldalak `.html` nélkül érhetők el
 - `i18n.js` — HU/EN fordítások, `data-i18n` kulcsok alapján
 - `styles.css` — CSS custom property-kre épülő stílus (CarvteX szín: navy + kék accent)
 - `main.js` — nav, nyelvváltó, scroll reveal, scroll progress

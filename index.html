@@ -7,7 +7,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
 <meta name="apple-mobile-web-app-title" content="CarvteX" />
 <title>CarvteX Síszerviz — Élezés, waxolás, kötésbeállítás</title>
-<meta name="description" content="CarvteX Síszerviz: síléc élezés, waxolás, talpfeltöltés és kötésbeállítás Szappanos Bence korábbi alpesi síedzőtől, Budapesten.">
+<meta name="description" content="CarvteX Síszerviz: síléc élezés, waxolás, talpfeltöltés és kötésbeállítás Szappanos Bence korábbi alpesi síedzőtől, Délegyházán.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -29,17 +29,17 @@
       </span>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Primary">
-      <a href="/#services" data-i18n="navServices">Szolgáltatások</a>
-      <a href="/#about" data-i18n="navAbout">Rólunk</a>
-      <a href="/#contact" data-i18n="navContact">Kapcsolat</a>
-      <a href="/#contact" class="btn btn-primary mobile-cta" data-i18n="navBook">Időpontfoglalás</a>
+      <a href="/szolgaltatasok" data-i18n="navServices">Szolgáltatások</a>
+      <a href="/#about" aria-current="page" data-i18n="navAbout">Rólunk</a>
+      <a href="/kapcsolat" data-i18n="navContact">Kapcsolat</a>
+      <a href="/kapcsolat" class="btn btn-primary mobile-cta" data-i18n="navBook">Időpontfoglalás</a>
     </nav>
     <div class="nav-actions">
       <div class="lang-switch" role="group" aria-label="Nyelvválasztó / Language switch">
         <button type="button" id="btnHu" aria-pressed="true">HU</button>
         <button type="button" id="btnEn" aria-pressed="false">EN</button>
       </div>
-      <a href="/#contact" class="btn btn-primary" data-i18n="navBook">Időpontfoglalás</a>
+      <a href="/kapcsolat" class="btn btn-primary" data-i18n="navBook">Időpontfoglalás</a>
       <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">
         <svg class="icon" id="menuIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
       </button>
@@ -71,101 +71,16 @@
       <h1 data-i18n="heroH1">Precíz gondoskodás<br>a <span>síléced</span> számára.</h1>
       <p class="hero-sub" data-i18n="heroSub">CarvteX Síszerviz — élezés, waxolás és kötésbeállítás egy korábbi alpesi síedzőtől, aki pontosan tudja, mire van szüksége a lécednek.</p>
       <div class="hero-ctas">
-        <a href="/#contact" class="btn btn-primary">
+        <a href="/kapcsolat" class="btn btn-primary">
           <span data-i18n="heroCta1">Időpontfoglalás</span>
           <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
-        <a href="/#services" class="btn btn-outline" data-i18n="heroCta2">Szolgáltatások</a>
+        <a href="/szolgaltatasok" class="btn btn-outline" data-i18n="heroCta2">Szolgáltatások</a>
       </div>
       <div class="hero-badges">
         <div data-i18n="badge1">Korábbi szövetségi kapitány</div>
         <div data-i18n="badge2">Alpesi síedző 2011 óta</div>
         <div data-i18n="badge3">Saját kezű, precíz munka</div>
-      </div>
-    </div>
-  </section>
-
-<!-- 3D SKI STORY — sticky canvas, scroll-driven steps -->
-  <section class="ski-story" id="skiStory" aria-label="CarvteX síléc — interaktív bemutató">
-    <div class="ski-story-sticky">
-      <canvas id="skiCanvas" aria-hidden="true"></canvas>
-      <div class="ski-story-fallback">
-        <strong>CARVTEX</strong>
-        <span data-i18n="viewerFallback">A 3D nézethez modern böngésző szükséges — lent minden más ugyanúgy működik.</span>
-      </div>
-      <div class="ski-story-hint" aria-hidden="true">
-        <span data-i18n="scrollHint">Görgess tovább</span>
-        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-      </div>
-    </div>
-    <div class="ski-story-steps" id="skiSteps">
-      <div class="ski-step active" data-part="all">
-        <span class="eyebrow" data-i18n="storyEyebrow">Közelről</span>
-        <h2 data-i18n="storyH2">Minden részlet számít</h2>
-        <p data-i18n="storyLead">Görgess tovább, és nézd meg, hogyan készítjük fel a léced élét, talpát és kötését.</p>
-      </div>
-      <div class="ski-step" data-part="topsheet">
-        <span class="eyebrow" data-i18n="stepTopsheetEyebrow">Minden lécen</span>
-        <h2 data-i18n="stepTopsheetH2">A felszín is számít</h2>
-        <p data-i18n="stepTopsheetP">A topsheet nem csak dizájn — védi a léc szerkezetét, és első ránézésre elárulja, mennyire gondozott egy felszerelés.</p>
-      </div>
-      <div class="ski-step" data-part="steel_edges">
-        <span class="eyebrow" data-i18n="svc1Title">Alapszerviz</span>
-        <h2 data-i18n="stepEdgeH2">Élezés</h2>
-        <p data-i18n="stepEdgeP">A pontos élszög és a tiszta élezés adja a fogást havon és jégen — ez minden szerviz alapja.</p>
-      </div>
-      <div class="ski-step" data-part="base,sidewall">
-        <span class="eyebrow" data-i18n="svc2Title">Prémium szerviz</span>
-        <h2 data-i18n="stepBaseH2">Talpfeltöltés &amp; waxolás</h2>
-        <p data-i18n="stepBaseP">A sérült talp feltöltése és a megfelelő wax selymes siklást ad, bármilyen hóban.</p>
-      </div>
-      <div class="ski-step" data-part="binding">
-        <span class="eyebrow" data-i18n="svc3Title">Kötésbeállítás</span>
-        <h2 data-i18n="stepBindingH2">Pontos, biztonságos rögzítés</h2>
-        <p data-i18n="stepBindingP">A kötés a bakancsodhoz és a DIN-értékedhez igazítva — se túl laza, se túl szoros.</p>
-        <div class="hero-ctas">
-          <a href="/#services" class="btn btn-primary" data-i18n="heroCta2">Szolgáltatások</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-<!-- SERVICES -->
-  <section id="services">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow" data-i18n="servicesEyebrow">Amit csinálunk</span>
-        <h2 data-i18n="servicesH2">Szolgáltatások</h2>
-        <p data-i18n="servicesLead">Egy gyors él- és wax-frissítéstől a teljes versenyfelkészítésig — minden léc ugyanazt a odafigyelést kapja.</p>
-      </div>
-      <div class="service-grid">
-        <div class="service-card reveal">
-          <span class="service-index">01</span>
-          <h3 data-i18n="svc1Title">Alapszerviz</h3>
-          <p data-i18n="svc1Desc">Élezés, waxolás — az alapok, ahogy kell.</p>
-          <a href="/#contact" class="card-link">
-            <span data-i18n="svcCta">Érdeklődöm</span>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-        </div>
-        <div class="service-card reveal">
-          <span class="service-index">02</span>
-          <h3 data-i18n="svc2Title">Prémium szerviz</h3>
-          <p data-i18n="svc2Desc">Élezés, waxolás, talpfeltöltés, oldalélcsiszolás és kötésbeállítás — teljes felkészítés komoly síeléshez.</p>
-          <a href="/#contact" class="card-link">
-            <span data-i18n="svcCta">Érdeklődöm</span>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-        </div>
-        <div class="service-card reveal">
-          <span class="service-index">03</span>
-          <h3 data-i18n="svc3Title">Kötésbeállítás</h3>
-          <p data-i18n="svc3Desc">Pontos kötésbeállítás a bakancsodhoz és a DIN-értékedhez igazítva.</p>
-          <a href="/#contact" class="card-link">
-            <span data-i18n="svcCta">Érdeklődöm</span>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-        </div>
       </div>
     </div>
   </section>
@@ -223,86 +138,6 @@
     </div>
   </section>
 
-<!-- CTA BANNER -->
-  <section style="padding:0;border-top:none;">
-    <div class="cta-banner reveal">
-      <div class="container cta-banner-inner">
-        <h2 data-i18n="ctaH2">Készen állsz a szezonra?</h2>
-        <p data-i18n="ctaLead">Hozd be a léceidet szervizre — élezés, waxolás vagy teljes versenyfelkészítés, edzői szemmel elvégezve.</p>
-        <div class="cta-actions">
-          <a href="/#contact" class="btn btn-primary" data-i18n="ctaBtn1">Időpontfoglalás</a>
-          <a href="mailto:carvtexszerviz@gmail.com" class="btn btn-outline" data-i18n="ctaBtn2">Írj emailt</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-<!-- CONTACT -->
-  <section id="contact">
-    <div class="container">
-      <div class="contact-grid">
-        <div class="contact-form-wrap">
-          <div class="section-head reveal">
-            <span class="eyebrow" data-i18n="contactEyebrow">Lépj kapcsolatba</span>
-            <h2 data-i18n="contactH2">Időpontfoglalás</h2>
-            <p data-i18n="contactLead">Mesélj a léceidről és arról, mire van szükséged — hamarosan válaszolunk az időpont egyeztetéséhez.</p>
-          </div>
-          <form class="reveal" id="contactForm" novalidate>
-            <div class="form-field">
-              <label for="cName" data-i18n="formName">Név</label>
-              <input type="text" id="cName" name="name" required>
-            </div>
-            <div class="form-field">
-              <label for="cEmail" data-i18n="formEmail">Email</label>
-              <input type="email" id="cEmail" name="email" required>
-            </div>
-            <div class="form-field">
-              <label for="cPhone" data-i18n="formPhone">Telefon (opcionális)</label>
-              <input type="tel" id="cPhone" name="phone">
-            </div>
-            <div class="form-field">
-              <label for="cService" data-i18n="formService">Szolgáltatás</label>
-              <select id="cService" name="service">
-                <option value="" data-i18n="formServiceOpt0">Még nem tudom</option>
-                <option value="Alapszerviz" data-i18n="formServiceOpt1">Alapszerviz</option>
-                <option value="Prémium szerviz" data-i18n="formServiceOpt2">Prémium szerviz</option>
-                <option value="Kötésbeállítás" data-i18n="formServiceOpt3">Kötésbeállítás</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="cMessage" data-i18n="formMessage">Üzenet</label>
-              <textarea id="cMessage" name="message" rows="4"></textarea>
-            </div>
-            <label class="form-consent" for="cConsent">
-              <input type="checkbox" id="cConsent" name="consent" required>
-              <span data-i18n="formConsent">Hozzájárulok, hogy a CarvteX Síszerviz ezeket az adatokat a megkeresésem megválaszolásához felhasználja.</span>
-            </label>
-            <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
-              <label for="cBotcheck">Leave this field empty</label>
-              <input type="text" id="cBotcheck" name="botcheck" tabindex="-1" autocomplete="off">
-            </div>
-            <button type="submit" class="btn btn-primary" id="contactSubmitBtn" data-i18n="formSubmit">Küldés</button>
-            <p class="contact-status" id="contactStatus" role="status"></p>
-            <span id="i18nContactSending" data-i18n="formSending" hidden>Küldés...</span>
-            <span id="i18nContactSuccess" data-i18n="formSuccess" hidden>Köszönjük, a megkeresésed megérkezett. Hamarosan jelentkezünk.</span>
-            <span id="i18nContactError" data-i18n="formError" hidden>Hiba történt. Kérjük, próbáld újra, vagy írj nekünk emailt közvetlenül.</span>
-          </form>
-        </div>
-        <div class="contact-side reveal">
-          <div class="contact-map">
-            <iframe
-              src="https://www.google.com/maps?q=D%C3%A9legyh%C3%A1za,+Magyarorsz%C3%A1g&output=embed"
-              title="CarvteX Síszerviz — térkép" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-          <div class="contact-address">
-            <span class="contact-address-label" data-i18n="contactAddressLabel">Helyszín</span>
-            <strong data-i18n="contactAddressValue">Délegyháza, Magyarország</strong>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
 </main>
 
 <footer>
@@ -323,16 +158,16 @@
       <h4 data-i18n="footerQuickLinks">Gyorslinkek</h4>
       <ul>
         <li><a href="/#about" data-i18n="navAbout">Rólunk</a></li>
-        <li><a href="/#services" data-i18n="navServices">Szolgáltatások</a></li>
-        <li><a href="/#contact" data-i18n="navContact">Kapcsolat</a></li>
+        <li><a href="/szolgaltatasok" data-i18n="navServices">Szolgáltatások</a></li>
+        <li><a href="/kapcsolat" data-i18n="navContact">Kapcsolat</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4 data-i18n="footerServices">Szolgáltatások</h4>
       <ul>
-        <li><a href="/#services" data-i18n="svc1Title">Alapszerviz</a></li>
-        <li><a href="/#services" data-i18n="svc2Title">Prémium szerviz</a></li>
-        <li><a href="/#services" data-i18n="svc3Title">Kötésbeállítás</a></li>
+        <li><a href="/szolgaltatasok" data-i18n="svc1Title">Alapszerviz</a></li>
+        <li><a href="/szolgaltatasok" data-i18n="svc2Title">Prémium szerviz</a></li>
+        <li><a href="/szolgaltatasok" data-i18n="svc3Title">Kötésbeállítás</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -358,15 +193,5 @@
 
 <script src="/i18n.js"></script>
 <script src="/main.js"></script>
-<script src="/contact-form.js"></script>
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
-  }
-}
-</script>
-<script type="module" src="/ski-viewer.js"></script>
 </body>
 </html>

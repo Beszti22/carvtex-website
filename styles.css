@@ -107,6 +107,14 @@ section:first-of-type{border-top:none;}
 
 .icon{width:20px;height:20px;flex-shrink:0;}
 
+/* ---------- PAGE INTRO (sub-page top band, no photo) ---------- */
+.page-intro{background:var(--color-primary);color:#fff;padding:var(--space-2xl) 0;border-top:none;}
+.page-intro h1{
+  font-family:var(--font-display);font-size:clamp(32px,5vw,52px);letter-spacing:0.02em;
+  text-transform:uppercase;margin-top:12px;color:#fff;
+}
+.page-intro p{margin-top:14px;max-width:640px;color:rgba(255,255,255,0.75);font-size:16px;line-height:1.65;}
+
 /* ---------- NAV ---------- */
 header.site-header{
   position:sticky;top:0;z-index:500;
@@ -127,6 +135,7 @@ header.site-header{
   padding:8px 2px;border-bottom:2px solid transparent;transition:color 180ms ease, border-color 180ms ease;
 }
 .nav-links a:hover{color:#fff;border-color:var(--color-accent);}
+.nav-links a[aria-current="page"]{color:#fff;border-color:var(--color-accent);}
 
 .nav-actions{display:flex;align-items:center;gap:16px;}
 .nav-toggle{
