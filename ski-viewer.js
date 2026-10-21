@@ -65,7 +65,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var partMaterials = {};
   var modelLoaded = false;
   var model = null;
-  var modelSize = null;
+  var modelRadius = null;
 
   // This model's length already runs along its own local X axis and its
   // topsheet logo sits at the +X tip (verified against the UV data), which
@@ -75,7 +75,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var PAN_FRACTION = 0.08;
 
   function fitModelToView() {
-    if (!model || !modelSize) return;
+    if (!model || modelRadius === null) return;
     var w = canvas.clientWidth || 1;
     var h = canvas.clientHeight || 1;
     var aspect = w / h;
@@ -89,7 +89,17 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     // use that instead of the full visibleWidth, or the panned model clips
     // past the right edge of the canvas.
     var availableWidth = (visibleWidth / 2 - panOffset) * 2;
-    var scale = Math.min((availableWidth * fill) / modelSize.x, (visibleHeight * fill) / modelSize.y);
+    // Scale off the model's bounding-SPHERE radius rather than its raw X/Y
+    // box extents. The box extents only describe a good fit at the model's
+    // rest orientation (length along local X, filling the screen
+    // horizontally) - but each story step now rotates the rig onto a
+    // different face (yaw for the nose-on binding view, roll for the
+    // edge/base views). After a 90° yaw the long length axis points into
+    // depth instead of across the screen, and a box-based scale (tuned to
+    // make that long axis fill the frame) rendered the model as a tiny
+    // sliver in the corner. A sphere's apparent size is rotation-invariant,
+    // so this keeps the model consistently framed at every step.
+    var scale = (Math.min(availableWidth, visibleHeight) * fill) / (modelRadius * 2);
     model.scale.setScalar(scale);
     rig.position.x = panOffset;
   }
@@ -107,7 +117,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
       var center = new THREE.Vector3();
       box.getCenter(center);
       model.position.sub(center);
-      modelSize = size;
+      modelRadius = size.length() / 2;
       fitModelToView();
 
       // Named "container" nodes that map to our scroll steps. The ski-group
@@ -129,6 +139,9 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
           cur = cur.parent;
         }
         if (!partName) return;
+        // Tag the mesh itself so a raycast hit can be traced back to a
+        // part name directly, for click-to-select.
+        node.userData.partName = partName;
         if (!partMaterials[partName]) partMaterials[partName] = [];
         var mats = Array.isArray(node.material) ? node.material : [node.material];
         mats.forEach(function (m) {
@@ -222,6 +235,50 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     renderFrame();
   });
 
+  // Click-to-select: tapping a part of the ski in the 3D view jumps the
+  // page to that part's story step, instead of only being reachable by
+  // scrolling. Each step's own IntersectionObserver (further down) still
+  // owns rotation/highlight/text, so this only needs to scroll the right
+  // step into view and the rest follows automatically.
+  var partToStep = {};
+  steps.forEach(function (stepEl) {
+    (stepEl.getAttribute('data-part') || '').split(',').forEach(function (p) {
+      p = p.trim();
+      if (p) partToStep[p] = stepEl;
+    });
+  });
+
+  var raycaster = new THREE.Raycaster();
+  var pointerNDC = new THREE.Vector2();
+
+  function selectAtPoint(clientX, clientY) {
+    if (!modelLoaded || !model) return;
+    var rect = canvas.getBoundingClientRect();
+    pointerNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    pointerNDC.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(pointerNDC, camera);
+    var hits = raycaster.intersectObject(model, true);
+    if (!hits.length) return;
+    var obj = hits[0].object;
+    var partName = '';
+    while (obj) {
+      if (obj.userData && obj.userData.partName) {
+        partName = obj.userData.partName;
+        break;
+      }
+      obj = obj.parent;
+    }
+    var targetStep = partName && partToStep[partName];
+    if (targetStep) {
+      targetStep.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'center' });
+    }
+  }
+
+  canvas.style.cursor = 'pointer';
+  canvas.addEventListener('click', function (e) {
+    selectAtPoint(e.clientX, e.clientY);
+  });
+
   // Two separate axes are in play, and conflating them was the bug:
   // - rotation.y (yaw) spins the ski like a turntable around the vertical
   //   axis. Since the model's length runs along local X and points
@@ -247,8 +304,15 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     // Roll 90° onto the edge - length stays horizontal, the thin edge
     // profile faces the camera square-on.
     steel_edges: { y: 0, x: Math.PI / 2 },
-    // Roll a further 90° (180° total) so the base faces the camera.
-    'base,sidewall': { y: 0, x: Math.PI }
+    // A full 180° roll (base = Math.PI exactly) flips which face points at
+    // the camera, but it ALSO mirrors the small -0.18 "camera looks
+    // slightly down from above" pitch into its opposite sense: π - 0.18
+    // over-rotates further past the flip in the same direction the roll
+    // was already going, which reads as looking up at the base from
+    // underneath instead of down onto it. π + 0.18 rotates back slightly
+    // from the exact flip point instead, restoring the same "from above"
+    // feel on the new face.
+    'base,sidewall': { y: 0, x: Math.PI + 0.18 }
   };
 
   var io = new IntersectionObserver(
