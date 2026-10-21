@@ -59,10 +59,6 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var rig = new THREE.Group();
   scene.add(rig);
 
-  // TEMP DEBUG (Kristóf/Claude): lets the edge-step angle be found live in
-  // the browser console instead of guessing blind. Remove once finalized.
-  window.__ski = { rig: rig, camera: camera, renderFrame: function () { renderFrame(); } };
-
   // part base name (the mesh's immediate parent node name in the glb,
   // e.g. "topsheet", "steel_edges", "binding") -> array of materials
   // belonging to it.
@@ -217,31 +213,16 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var targetRotX = 0.7;
   var currentRotX = 0.7;
   var running = false;
-  var manualOverride = false; // TEMP DEBUG (see window.__ski below)
 
   function animate() {
     if (!running) return;
     requestAnimationFrame(animate);
-    if (manualOverride) {
-      renderFrame();
-      return;
-    }
     currentRotY += (targetRotY - currentRotY) * 0.07;
     currentRotX += (targetRotX - currentRotX) * 0.07;
     rig.rotation.y = currentRotY;
     rig.rotation.x = currentRotX;
     renderFrame();
   }
-
-  window.__ski.setAngles = function (x, y) {
-    manualOverride = true;
-    rig.rotation.x = x;
-    rig.rotation.y = y;
-    renderFrame();
-  };
-  window.__ski.release = function () {
-    manualOverride = false;
-  };
 
   function startLoop() {
     if (running) return;
@@ -323,12 +304,12 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     // viewer, topsheet and binding both readable. This is the opening pose
     // (see activePart/targetRotY/targetRotX above).
     binding: { y: -0.75, x: 0.7 },
-    // Close, steep diagonal angle modeled on a reference photo of a ski
-    // clamped edge-up in a vice being sharpened - the length recedes
-    // diagonally into the frame (tip far/upper-left) with the edge/base
-    // facing the camera rather than the topsheet, reinforced by the
-    // emissive highlight on the active part.
-    steel_edges: { y: 1.0, x: -0.6 },
+    // Near top-down (-90° pitch, nudged by 0.15 rad for a touch of depth)
+    // but rotated diagonally in frame like a flat-lay product shot, tip
+    // upper-left/tail lower-right - the base/edge faces the camera rather
+    // than the topsheet, reinforced by the emissive highlight on the
+    // active part.
+    steel_edges: { y: 0.6, x: -Math.PI / 2 + 0.15 },
     // Pitch -90° - clean top-down view of the base surface, facing up
     // toward the camera rather than viewed from underneath.
     'base,sidewall': { y: 0, x: -Math.PI / 2 }
