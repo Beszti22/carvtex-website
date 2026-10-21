@@ -59,12 +59,6 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var rig = new THREE.Group();
   scene.add(rig);
 
-  // TEMP DEBUG HOOK (Kristóf/Claude): exposes the live scene so rotation
-  // values can be iterated from the browser console without a redeploy
-  // per attempt. Safe to leave in (does nothing unless called), but can be
-  // removed once the per-step angles are finalized.
-  window.__ski = { rig: rig, camera: camera, renderFrame: function () { renderFrame(); } };
-
   // part base name (the mesh's immediate parent node name in the glb,
   // e.g. "topsheet", "steel_edges", "binding") -> array of materials
   // belonging to it.
@@ -219,31 +213,16 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var targetRotX = -0.18;
   var currentRotX = -0.18;
   var running = false;
-  var manualOverride = false; // TEMP DEBUG (see window.__ski below)
 
   function animate() {
     if (!running) return;
     requestAnimationFrame(animate);
-    if (manualOverride) {
-      renderFrame();
-      return;
-    }
     currentRotY += (targetRotY - currentRotY) * 0.07;
     currentRotX += (targetRotX - currentRotX) * 0.07;
     rig.rotation.y = currentRotY;
     rig.rotation.x = currentRotX;
     renderFrame();
   }
-
-  window.__ski.setAngles = function (x, y) {
-    manualOverride = true;
-    rig.rotation.x = x;
-    rig.rotation.y = y;
-    renderFrame();
-  };
-  window.__ski.release = function () {
-    manualOverride = false;
-  };
 
   function startLoop() {
     if (running) return;
@@ -300,20 +279,24 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     selectAtPoint(e.clientX, e.clientY);
   });
 
-  // Two separate axes are in play, and conflating them was the bug:
+  // Two separate axes are in play:
   // - rotation.y (yaw) spins the ski like a turntable around the vertical
   //   axis. Since the model's length runs along local X and points
   //   screen-right at yaw 0, a 90° yaw swings that length axis to point
   //   toward the camera instead - i.e. the TIP comes straight at the
-  //   viewer. That's the right view for the binding, not an edge view.
-  // - rotation.x (roll, around the ski's own length axis) is what actually
-  //   rolls the board over on its long axis: 90° brings the thin edge face
-  //   around to face the camera while the length stays stretched out
-  //   horizontally on screen, and 180° flips it fully over so the base
-  //   faces the camera instead of the topsheet.
-  // Each step below sets both explicitly rather than only ever turning the
-  // one "turntable" knob, so the geometry that's actually being described
-  // is what's actually facing the viewer.
+  //   viewer. That's the right view for the binding.
+  // - rotation.x is actually a PITCH/tilt axis (verified live, not a "roll
+  //   that flips topsheet vs base" as earlier comments here used to claim):
+  //     x = 0           -> side/edge-profile silhouette (the steel edge
+  //                         faces the camera, length stays horizontal)
+  //     x = +Math.PI/2  -> clean top-down view of the TOPSHEET
+  //     x = -Math.PI/2  -> clean top-down view of the BASE (the correct
+  //                         "talp felfelé" view - distinct dark surface,
+  //                         binding plate visible from underneath)
+  //     x = Math.PI     -> looks almost identical to x = 0 (NOT a base
+  //                         view - a flipped flat object seen edge-on
+  //                         looks the same either way)
+  // Each step below sets both explicitly, using the verified angles above.
   // Story order: binding (opening/"foundation" view) -> edge (sharpening)
   // -> base (waxing/maintenance) - matching the order the steps appear in
   // the markup.
@@ -322,18 +305,12 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     // for looking down at the binding mounted on top. This is the opening
     // pose (see activePart/targetRotY/targetRotX above).
     binding: { y: Math.PI / 2, x: -0.18 },
-    // Roll 90° onto the edge - length stays horizontal, the thin edge
-    // profile faces the camera square-on.
-    steel_edges: { y: 0, x: Math.PI / 2 },
-    // A full 180° roll (base = Math.PI exactly) flips which face points at
-    // the camera, but it ALSO mirrors the small -0.18 "camera looks
-    // slightly down from above" pitch into its opposite sense: π - 0.18
-    // over-rotates further past the flip in the same direction the roll
-    // was already going, which reads as looking up at the base from
-    // underneath instead of down onto it. π + 0.18 rotates back slightly
-    // from the exact flip point instead, restoring the same "from above"
-    // feel on the new face.
-    'base,sidewall': { y: 0, x: Math.PI + 0.18 }
+    // Side/edge-profile view - the thin steel edge faces the camera
+    // square-on, length stays horizontal.
+    steel_edges: { y: 0, x: 0 },
+    // Pitch -90° - clean top-down view of the base surface, facing up
+    // toward the camera rather than viewed from underneath.
+    'base,sidewall': { y: 0, x: -Math.PI / 2 }
   };
 
   var io = new IntersectionObserver(
