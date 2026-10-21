@@ -59,11 +59,6 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   var rig = new THREE.Group();
   scene.add(rig);
 
-  // TEMP DEBUG (Kristóf/Claude): lets the binding top-down angle be found
-  // live in the browser console instead of guessing blind. Remove once
-  // finalized.
-  window.__ski = { rig: rig, camera: camera, renderFrame: function () { renderFrame(); } };
-
   // part base name (the mesh's immediate parent node name in the glb,
   // e.g. "topsheet", "steel_edges", "binding") -> array of materials
   // belonging to it.
@@ -87,7 +82,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     var vFov = (camera.fov * Math.PI) / 180;
     var visibleHeight = 2 * cameraDistance * Math.tan(vFov / 2);
     var visibleWidth = visibleHeight * aspect;
-    var fill = 0.92;
+    var fill = 1.35;
     var panOffset = visibleWidth * PAN_FRACTION;
     // The pan shifts the model off-center, so the tighter edge (right side,
     // since we pan right) sets how much horizontal room is actually free —
@@ -208,41 +203,26 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     renderer.render(scene, camera);
   }
 
-  // The story now opens on the binding view (tip toward camera) instead of
-  // a generic intro angle, so the resting pose before any step's
-  // intersection threshold fires should already match it - otherwise the
-  // ski visibly snaps into place the instant scrolling starts.
+  // The story now opens on the binding view (top-down) instead of a generic
+  // intro angle, so the resting pose before any step's intersection
+  // threshold fires should already match it - otherwise the ski visibly
+  // snaps into place the instant scrolling starts.
   var activePart = 'binding';
-  var targetRotY = Math.PI / 2;
-  var currentRotY = Math.PI / 2;
-  var targetRotX = -0.18;
-  var currentRotX = -0.18;
+  var targetRotY = 0;
+  var currentRotY = 0;
+  var targetRotX = Math.PI / 2;
+  var currentRotX = Math.PI / 2;
   var running = false;
-  var manualOverride = false; // TEMP DEBUG (see window.__ski below)
 
   function animate() {
     if (!running) return;
     requestAnimationFrame(animate);
-    if (manualOverride) {
-      renderFrame();
-      return;
-    }
     currentRotY += (targetRotY - currentRotY) * 0.07;
     currentRotX += (targetRotX - currentRotX) * 0.07;
     rig.rotation.y = currentRotY;
     rig.rotation.x = currentRotX;
     renderFrame();
   }
-
-  window.__ski.setAngles = function (x, y) {
-    manualOverride = true;
-    rig.rotation.x = x;
-    rig.rotation.y = y;
-    renderFrame();
-  };
-  window.__ski.release = function () {
-    manualOverride = false;
-  };
 
   function startLoop() {
     if (running) return;
@@ -301,15 +281,14 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
   // Two separate axes are in play:
   // - rotation.y (yaw) spins the ski like a turntable around the vertical
-  //   axis. Since the model's length runs along local X and points
-  //   screen-right at yaw 0, a 90° yaw swings that length axis to point
-  //   toward the camera instead - i.e. the TIP comes straight at the
-  //   viewer. That's the right view for the binding.
-  // - rotation.x is actually a PITCH/tilt axis (verified live, not a "roll
-  //   that flips topsheet vs base" as earlier comments here used to claim):
+  //   axis. At yaw 0 the model's length runs along local X, screen-horizontal.
+  // - rotation.x is a PITCH/tilt axis (verified live):
   //     x = 0           -> side/edge-profile silhouette (the steel edge
-  //                         faces the camera, length stays horizontal)
-  //     x = +Math.PI/2  -> clean top-down view of the TOPSHEET
+  //                         faces the camera, length stays horizontal) -
+  //                         the "élén áll" (standing on its edge) look.
+  //     x = +Math.PI/2  -> clean top-down view of the TOPSHEET, full flat
+  //                         view with the logo and binding both readable -
+  //                         the "from above" look for the binding.
   //     x = -Math.PI/2  -> clean top-down view of the BASE (the correct
   //                         "talp felfelé" view - distinct dark surface,
   //                         binding plate visible from underneath)
@@ -321,12 +300,13 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   // -> base (waxing/maintenance) - matching the order the steps appear in
   // the markup.
   var STEP_ROTATIONS = {
-    // Yaw 90° - the tip points straight at the camera, the natural angle
-    // for looking down at the binding mounted on top. This is the opening
-    // pose (see activePart/targetRotY/targetRotX above).
-    binding: { y: Math.PI / 2, x: -0.18 },
+    // Full top-down view (pitch 90°, no yaw) - looking straight down at the
+    // topsheet with the binding front and center. This is the opening pose
+    // (see activePart/targetRotY/targetRotX above).
+    binding: { y: 0, x: Math.PI / 2 },
     // Side/edge-profile view - the thin steel edge faces the camera
-    // square-on, length stays horizontal.
+    // square-on, length stays horizontal, as if the ski is standing on its
+    // edge.
     steel_edges: { y: 0, x: 0 },
     // Pitch -90° - clean top-down view of the base surface, facing up
     // toward the camera rather than viewed from underneath.
