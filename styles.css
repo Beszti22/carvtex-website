@@ -477,13 +477,6 @@ header.site-header{
 .about-portrait figcaption strong{display:block;font-family:var(--font-display);letter-spacing:0.02em;font-size:20px;text-transform:uppercase;}
 .about-portrait figcaption span{display:block;margin-top:2px;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent);font-weight:700;}
 
-.about-credentials{display:flex;flex-wrap:wrap;gap:10px;margin:2px 0 4px;}
-.about-credentials li{
-  display:inline-flex;align-items:center;
-  background:var(--color-card);border:1px solid var(--color-border);border-radius:999px;
-  padding:7px 14px;font-size:12.5px;font-weight:700;letter-spacing:0.01em;color:var(--color-primary);
-}
-
 .about-copy{max-width:720px;color:var(--color-text-muted);font-size:17px;line-height:1.75;display:flex;flex-direction:column;gap:var(--space-md);}
 .about-copy p strong{color:var(--color-primary);}
 @media (max-width:760px){
