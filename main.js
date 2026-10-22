@@ -152,6 +152,26 @@
     }, { passive: true });
   }
 
+  /* ----- About portrait: pointer-driven 3D tilt -----
+     Skipped on touch devices (no real pointer to track - a tap would
+     just leave the card stuck at whatever angle the synthetic mouse
+     event implied) and when the visitor prefers reduced motion. */
+  var aboutPortrait = document.getElementById('aboutPortrait');
+  if(aboutPortrait && !prefersReduced && window.matchMedia('(hover: hover)').matches){
+    var tiltMax = 8;
+    aboutPortrait.addEventListener('mousemove', function(e){
+      var rect = aboutPortrait.getBoundingClientRect();
+      var px = (e.clientX - rect.left) / rect.width;
+      var py = (e.clientY - rect.top) / rect.height;
+      var rotY = (px - 0.5) * tiltMax * 2;
+      var rotX = (0.5 - py) * tiltMax * 2;
+      aboutPortrait.style.transform = 'rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg)';
+    });
+    aboutPortrait.addEventListener('mouseleave', function(){
+      aboutPortrait.style.transform = 'rotateX(0deg) rotateY(0deg)';
+    });
+  }
+
   /* ----- Floating contact button (call / WhatsApp speed-dial) ----- */
   var contactFab = document.getElementById('contactFab');
   var contactFabToggle = document.getElementById('contactFabToggle');
