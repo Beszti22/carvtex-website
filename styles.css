@@ -456,19 +456,15 @@ header.site-header{
 /* ---------- About ---------- */
 .about-grid{display:grid;grid-template-columns:minmax(240px,340px) 1fr;gap:var(--space-2xl);align-items:start;}
 
-/* Layered "card behind card" depth treatment (flat, bold accent block
-   offset behind the photo - no glow/blur, matches the brand's Swiss-flat
-   language) plus a pointer-driven 3D tilt on the photo itself, wired up
-   in main.js. perspective lives on the wrap so the tilted child reads as
-   a physical plane rather than a flat skew. */
+/* Clean single-plane photo card, no backing block - just a subtle border
+   and shadow consistent with the rest of the site. A pointer-driven 3D
+   tilt on the photo itself is wired up in main.js; perspective lives on
+   the wrap so the tilted child reads as a physical plane rather than a
+   flat skew. */
 .about-portrait-wrap{position:relative;perspective:1200px;}
-.about-portrait-wrap::before{
-  content:"";position:absolute;top:20px;left:20px;right:-20px;bottom:-20px;z-index:0;
-  background:linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
-}
 .about-portrait{
   position:relative;z-index:1;border:1px solid var(--color-border);overflow:hidden;background:var(--color-background);
-  transform-style:preserve-3d;box-shadow:var(--shadow-xl);
+  transform-style:preserve-3d;box-shadow:var(--shadow-md);
   transition:transform 450ms cubic-bezier(0.22,1,0.36,1);
   will-change:transform;
 }
