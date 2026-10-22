@@ -139,23 +139,30 @@ section:first-of-type{border-top:none;}
 }
 .page-intro p{margin-top:14px;max-width:640px;color:rgba(255,255,255,0.75);font-size:16px;line-height:1.65;}
 
-/* Services page intro: workbench photo background, desaturated to true
-   grey (the source photo's red backdrop would otherwise tint the whole
-   band) and faded under a dark gradient so the white heading/eyebrow
-   stay readable over the busy image. Two pseudo-elements instead of a
-   layered background shorthand because filter: grayscale() only applies
-   to an element's own paint, not to one layer of a background image. */
-.page-intro-services{position:relative;overflow:hidden;background:#1c1d20;}
-.page-intro-services::before{
-  content:"";position:absolute;inset:0;
-  background:url('/assets/services-hero-bg.webp') center 38%/cover no-repeat;
-  filter:grayscale(1) brightness(0.6) contrast(1.05);
+/* Services hero visual: one shared workbench-photo background spanning
+   both the page-intro band AND the 3D ski-story section below it, so the
+   photo reads as continuous across the whole top of the Services tab
+   instead of stopping at the intro. Desaturated to true grey (the source
+   photo's red backdrop would otherwise tint everything) via a pseudo-
+   element with filter: grayscale(), since filter on a background-image
+   layer isn't possible directly. background-attachment:fixed sizes the
+   cover crop against the viewport rather than this tall wrapper's own
+   box, which keeps the whole desk in frame (a viewport is close to the
+   photo's own aspect ratio; the wrapper itself is much taller/narrower
+   and would crop far more aggressively if sized against its own bounds).
+   Both child sections drop their own background so this shows through. */
+.services-visual-hero{position:relative;isolation:isolate;}
+.services-visual-hero::before{
+  content:"";position:absolute;inset:0;z-index:0;
+  background:url('/assets/services-hero-bg.webp') center 42%/cover fixed no-repeat;
+  filter:grayscale(1) brightness(0.62) contrast(1.05);
 }
-.page-intro-services::after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(115deg, rgba(14,15,17,0.88) 0%, rgba(28,29,32,0.6) 45%, rgba(40,41,45,0.3) 100%);
+.services-visual-hero::after{
+  content:"";position:absolute;inset:0;z-index:0;
+  background:linear-gradient(100deg, rgba(12,13,15,0.82) 0%, rgba(20,21,24,0.6) 40%, rgba(28,29,32,0.38) 100%);
 }
-.page-intro-services .container{position:relative;z-index:1;}
+.services-visual-hero > section{position:relative;z-index:1;background:transparent;}
+.page-intro-services{border-top:none;}
 
 /* ---------- NAV ---------- */
 header.site-header{
@@ -338,7 +345,7 @@ header.site-header{
    capped viewer height instead (one variable drives the sticky
    canvas, the steps' negative overlap and each step's scroll length,
    so they stay in sync). */
-.ski-story{position:relative;background:var(--color-primary);border-top:none;--ski-vh:min(66vh,620px);}
+.ski-story{position:relative;background:transparent;border-top:none;--ski-vh:min(66vh,620px);}
 .ski-story{--ski-vh:min(66dvh,620px);} /* dvh fallback-pattern, see .hero above */
 
 .ski-story-sticky{
@@ -364,7 +371,7 @@ header.site-header{
 .ski-story-steps{position:relative;z-index:2;margin-top:calc(-1 * var(--ski-vh));pointer-events:none;}
 .ski-step{
   min-height:var(--ski-vh);display:flex;flex-direction:column;justify-content:center;
-  max-width:440px;padding:0 24px;pointer-events:none;opacity:0.25;transition:opacity 350ms ease;
+  max-width:440px;padding:0 24px;pointer-events:none;opacity:0;transition:opacity 350ms ease;
 }
 .ski-step.active{opacity:1;pointer-events:auto;}
 @media (min-width:860px){ .ski-step{padding:0 0 0 8%;} }
