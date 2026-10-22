@@ -82,7 +82,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     var vFov = (camera.fov * Math.PI) / 180;
     var visibleHeight = 2 * cameraDistance * Math.tan(vFov / 2);
     var visibleWidth = visibleHeight * aspect;
-    var fill = 1.35;
+    var fill = 1.65;
     var panOffset = visibleWidth * PAN_FRACTION;
     // The pan shifts the model off-center, so the tighter edge (right side,
     // since we pan right) sets how much horizontal room is actually free —
@@ -208,6 +208,10 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   // intersection threshold fires should already match it - otherwise the
   // ski visibly snaps into place the instant scrolling starts.
   var activePart = 'binding';
+  // Mirrors activePart onto the section so CSS can target the part-specific
+  // annotation arrows (see .ski-annotation in styles.css) without any JS
+  // driving their visibility directly.
+  section.setAttribute('data-active-part', activePart);
   var targetRotY = -0.75;
   var currentRotY = -0.75;
   var targetRotX = 0.7;
@@ -323,6 +327,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
           });
           entry.target.classList.add('active');
           activePart = entry.target.getAttribute('data-part') || 'all';
+          section.setAttribute('data-active-part', activePart);
           var rot = Object.prototype.hasOwnProperty.call(STEP_ROTATIONS, activePart)
             ? STEP_ROTATIONS[activePart]
             : { y: 0, x: -0.18 };

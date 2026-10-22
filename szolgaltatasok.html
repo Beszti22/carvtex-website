@@ -72,6 +72,22 @@
         <span data-i18n="scrollHint">Görgess tovább</span>
         <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
       </div>
+      <!-- Part-callout arrows: only the one matching the section's
+           data-active-part (set by ski-viewer.js) is shown, via CSS. -->
+      <div class="ski-annotations" aria-hidden="true">
+        <div class="ski-annotation" data-for="binding" style="--ax:58%;--ay:42%;">
+          <span class="ski-annotation-dot"></span>
+          <span class="ski-annotation-label" data-i18n="annotBinding">Kötés</span>
+        </div>
+        <div class="ski-annotation" data-for="steel_edges" style="--ax:63%;--ay:50%;">
+          <span class="ski-annotation-dot"></span>
+          <span class="ski-annotation-label" data-i18n="annotEdge">Acélél</span>
+        </div>
+        <div class="ski-annotation" data-for="base,sidewall" style="--ax:50%;--ay:54%;">
+          <span class="ski-annotation-dot"></span>
+          <span class="ski-annotation-label" data-i18n="annotBase">Talp</span>
+        </div>
+      </div>
     </div>
     <div class="ski-story-steps" id="skiSteps">
       <div class="ski-step active" data-part="binding">
