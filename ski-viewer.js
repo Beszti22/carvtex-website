@@ -72,7 +72,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   // lands on screen-right by default — no rotation correction needed here,
   // unlike the earlier model. A small rightward pan still keeps it clear of
   // the text column on the left.
-  var PAN_FRACTION = 0.08;
+  var PAN_FRACTION = 0.12;
 
   function fitModelToView() {
     if (!model || modelRadius === null) return;
