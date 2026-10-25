@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 (function () {
   var section = document.getElementById('skiStory');
@@ -105,6 +106,10 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   }
 
   var loader = new GLTFLoader();
+  // The .glb is meshopt-compressed (gltf-transform --compress meshopt) to
+  // keep it under a few MB instead of 30+ - the decoder must be wired up
+  // before load() or GLTFLoader throws on the compressed buffer views.
+  loader.setMeshoptDecoder(MeshoptDecoder);
   loader.load(
     '/assets/CarvteX_3D.glb',
     function (gltf) {
