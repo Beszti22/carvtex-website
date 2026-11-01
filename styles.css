@@ -1039,29 +1039,146 @@ header.site-header{
   .footer-grid{gap:20px;padding:32px 0 20px;}
 }
 
-/* ---------- Contact ---------- */
-.contact-grid{display:grid;grid-template-columns:minmax(0,560px) minmax(260px,340px);gap:var(--space-2xl);align-items:start;}
-.contact-side{display:flex;flex-direction:column;gap:14px;position:sticky;top:calc(var(--nav-h) + var(--space-lg));}
-.contact-map{border:1px solid var(--color-border);overflow:hidden;background:var(--color-card);}
+/* ---------- Contact & Location Hub ---------- */
+.contact-grid{display:grid;grid-template-columns:1.08fr 0.92fr;gap:var(--space-2xl);align-items:start;}
+.contact-side{display:flex;flex-direction:column;gap:16px;position:sticky;top:calc(var(--nav-h) + var(--space-lg));}
+.contact-map{border:1px solid var(--color-border);overflow:hidden;background:var(--color-card);border-radius:var(--radius-sm);}
 .contact-map iframe{display:block;width:100%;height:260px;border:0;}
 .contact-address{
   display:flex;flex-direction:column;gap:4px;padding:var(--space-md);
-  background:var(--color-card);border:1px solid var(--color-border);
+  background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-sm);
 }
 .contact-address-label{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent);}
 .contact-address strong{font-size:16px;color:var(--color-primary);}
 
 .contact-details{
-  display:flex;flex-direction:column;gap:16px;padding:var(--space-md);
-  background:var(--color-card);border:1px solid var(--color-border);
+  display:flex;flex-direction:column;gap:14px;padding:var(--space-md);
+  background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-sm);
 }
 .contact-details-row{display:flex;flex-direction:column;gap:3px;}
 .contact-details-row strong,.contact-details-row a{font-size:16px;color:var(--color-primary);font-weight:700;}
 .contact-details-row a{text-decoration:none;}
 .contact-details-row a:hover{color:var(--color-accent-dark);}
+
+/* Navigation & Map Action Buttons */
+.nav-actions-bar,
+.loc-actions{
+  display:flex;gap:10px;flex-wrap:wrap;
+}
+.nav-actions-bar .btn,
+.loc-actions .btn{
+  flex:1 1 160px;min-height:46px;font-size:14px;font-weight:700;
+}
+.nav-btn-google{
+  background:#fff;border-color:var(--color-border);color:var(--color-primary);
+}
+.nav-btn-google:hover{
+  border-color:var(--color-accent);color:var(--color-accent-dark);background:var(--color-card);
+}
+.nav-btn-waze{
+  background:#fff;border-color:var(--color-border);color:var(--color-primary);
+}
+.nav-btn-waze:hover{
+  border-color:#33CCFF;color:#053852;background:rgba(51,204,255,0.08);
+}
+.nav-btn-waze .icon{color:#33CCFF;}
+
+/* Drive Times & Surrounding Towns Card */
+.drive-times-card{
+  background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-sm);
+  padding:18px 20px;
+}
+.drive-times-header{
+  display:flex;align-items:center;gap:9px;margin-bottom:12px;
+}
+.drive-times-header .icon{width:18px;height:18px;color:var(--color-accent);flex-shrink:0;}
+.drive-times-header h4{
+  font-family:var(--font-body);font-weight:700;font-size:13.5px;
+  text-transform:uppercase;letter-spacing:0.04em;color:var(--color-primary);margin:0;
+}
+.drive-times-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px;
+}
+.drive-pill{
+  background:#fff;border:1px solid var(--color-border);
+  border-left:3px solid var(--color-accent);border-radius:var(--radius-sm);
+  padding:8px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px;
+}
+.drive-pill strong{font-size:12.5px;color:var(--color-primary);font-weight:600;}
+.drive-pill span{
+  font-family:var(--font-display);font-size:14px;letter-spacing:0.03em;
+  color:var(--color-accent);flex-shrink:0;white-space:nowrap;
+}
+
+/* Drop-off Info Card */
+.dropoff-info-card{
+  background:var(--color-card);border:1px solid var(--color-border);border-radius:var(--radius-sm);
+  padding:18px 20px;
+}
+.dropoff-info-card h4{
+  font-family:var(--font-body);font-weight:700;font-size:13.5px;
+  letter-spacing:0.04em;text-transform:uppercase;color:var(--color-primary);
+  margin-bottom:12px;
+}
+.dropoff-list{
+  display:flex;flex-direction:column;gap:10px;
+}
+.dropoff-list li{
+  display:flex;align-items:flex-start;gap:10px;font-size:13px;
+  color:var(--color-text);line-height:1.5;
+}
+.dropoff-list li svg{
+  width:16px;height:16px;color:var(--color-accent);flex-shrink:0;margin-top:2px;
+}
+
+/* Homepage Location & Accessibility Section */
+.location-section{background:var(--color-card);}
+.location-grid{
+  display:grid;grid-template-columns:1.12fr 0.88fr;gap:var(--space-2xl);align-items:start;
+}
+.location-content .eyebrow{margin-bottom:12px;}
+.location-content h2{font-size:clamp(28px,4.2vw,44px);color:var(--color-primary);}
+.location-content p{margin-top:14px;color:var(--color-text-muted);font-size:16px;line-height:1.65;}
+.loc-badges{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;
+}
+.loc-badge-item{
+  background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-sm);
+  padding:14px 12px;display:flex;align-items:flex-start;gap:10px;
+}
+.loc-badge-item .icon{width:20px;height:20px;color:var(--color-accent);flex-shrink:0;margin-top:2px;}
+.loc-badge-item strong{display:block;font-size:13.5px;color:var(--color-primary);line-height:1.2;}
+.loc-badge-item span{display:block;font-size:12px;color:var(--color-text-muted);margin-top:3px;}
+.location-content .drive-times-card{margin-top:20px;background:#fff;}
+.location-content .drive-pill{background:var(--color-card);}
+.location-map-wrap{
+  display:flex;flex-direction:column;gap:10px;position:sticky;top:calc(var(--nav-h) + 24px);
+}
+.location-map{
+  border:1px solid var(--color-border);border-radius:var(--radius-sm);
+  overflow:hidden;background:#fff;box-shadow:var(--shadow-md);
+}
+.location-map iframe{
+  display:block;width:100%;height:330px;border:0;
+}
+.location-map-hint{
+  display:flex;align-items:center;gap:8px;font-size:13px;
+  color:var(--color-text-muted);padding:4px 6px;
+}
+.location-map-hint .icon{width:16px;height:16px;color:var(--color-accent);flex-shrink:0;}
+
 @media (max-width:900px){
-  .contact-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;gap:28px;}
   .contact-side{position:static;}
+  .location-grid{grid-template-columns:1fr;gap:28px;}
+  .location-map-wrap{position:static;}
+  .loc-badges{grid-template-columns:1fr;gap:10px;}
+}
+@media (max-width:640px){
+  .drive-times-grid{grid-template-columns:1fr;}
+  .nav-actions-bar .btn,
+  .loc-actions .btn{flex:1 1 100%;}
+  .location-map iframe{height:250px;}
 }
 
 /* ---------- Contact form ---------- */
