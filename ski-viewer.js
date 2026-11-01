@@ -1,11 +1,8 @@
-// ski-viewer.js — CarvteX Interactive 3D Ski Story (Mountain-to-Workshop Journey)
+// ski-viewer.js — CarvteX Interactive 3D Ski Story
 // Features:
-// - Seamless environment transition: starts on the snowy Alpine mountain peak (step: "mountain")
-//   with 3D snowfall + outdoor sunlight, then glides into the dark service workshop
-//   (binding -> steel_edges -> base,sidewall) as the visitor scrolls.
-// - Works on both index.html (4 steps including mountain) and szolgaltatasok.html (3 or 4 steps).
 // - Progress loading indicator (#skiLoader) + conditional mobile/saveData handling
-// - Interactive step quick-switcher pills (.ski-step-btn)
+// - Scroll-driven 3-step camera & rotation choreography (binding -> steel_edges -> base,sidewall)
+// - Interactive 3-step quick-switcher pills (.ski-step-btn)
 // - Pointer drag-to-inspect micro-orbit (springing back smoothly to the active step pose)
 // - Responsive mobile framing (PAN_FRACTION = 0 on narrow screens so the ski stays centered)
 
@@ -51,93 +48,49 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.18;
+  renderer.toneMappingExposure = 1.15;
 
   canvas.setAttribute('role', 'img');
-  canvas.setAttribute('aria-label', 'CarvteX 3D síléc modell — húzd az egeret a forgatáshoz, vagy görgess a hegyről a szervizműhelybe');
+  canvas.setAttribute('aria-label', 'CarvteX 3D síléc modell — húzd az egeret a forgatáshoz, vagy görgess a részletekért');
 
   var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 25);
+  var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 20);
   var baseCameraDistance = 2.6;
   var targetCameraZ = baseCameraDistance;
   var currentCameraZ = baseCameraDistance;
+  // Soft studio environment so the PBR topsheet/edge materials pick up
+  // glossy highlights instead of rendering as flat matte gray.
   camera.position.set(0, 0.25, baseCameraDistance);
   camera.lookAt(0, 0, 0);
 
-  // Soft studio environment so the PBR topsheet/edge materials pick up
-  // glossy highlights instead of rendering as flat matte gray.
   var pmremGenerator = new THREE.PMREMGenerator(renderer);
   scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
-  // Dynamic lighting that morphs from Alpine outdoor sun ("mountain") to
-  // focused indoor workshop bench lighting ("binding" / "steel_edges" / "base,sidewall").
-  var hemiLight = new THREE.HemisphereLight(0xdff2ff, 0x102236, 1.35);
-  scene.add(hemiLight);
-
-  var key = new THREE.DirectionalLight(0xffffff, 2.8);
-  key.position.set(2.2, 3.2, 3.0);
+  scene.add(new THREE.HemisphereLight(0xcfe8ff, 0x0a1420, 1.05));
+  var key = new THREE.DirectionalLight(0xffffff, 2.5);
+  key.position.set(2.2, 3, 3);
   scene.add(key);
-
   var rim = new THREE.DirectionalLight(0x1e9be0, 1.35);
   rim.position.set(-3, 1, -2.5);
   scene.add(rim);
 
-  // 3D Alpine Snowfall particle system inside the ski viewer:
-  // Visible while on the mountain peak, fades out smoothly as the ski enters the workshop!
-  function createSnowTexture() {
-    var c = document.createElement('canvas');
-    c.width = 64;
-    c.height = 64;
-    var ctx = c.getContext('2d');
-    var grad = ctx.createRadialGradient(32, 32, 2, 32, 32, 30);
-    grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-    grad.addColorStop(0.4, 'rgba(215, 240, 255, 0.85)');
-    grad.addColorStop(0.75, 'rgba(30, 155, 224, 0.25)');
-    grad.addColorStop(1, 'rgba(30, 155, 224, 0)');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 64, 64);
-    return new THREE.CanvasTexture(c);
-  }
-
-  var isMobile = window.matchMedia('(max-width: 768px)').matches;
-  var snowCount = isMobile ? 140 : 260;
-  var snowPositions = new Float32Array(snowCount * 3);
-  var snowVelocities = new Float32Array(snowCount * 3);
-  var snowSpreadX = 5.5;
-  var snowSpreadY = 3.6;
-  var snowSpreadZ = 4.0;
-
-  for (var i = 0; i < snowCount; i++) {
-    var i3 = i * 3;
-    snowPositions[i3] = (Math.random() - 0.5) * snowSpreadX;
-    snowPositions[i3 + 1] = (Math.random() - 0.5) * snowSpreadY;
-    snowPositions[i3 + 2] = (Math.random() - 0.5) * snowSpreadZ;
-    snowVelocities[i3] = -(0.006 + Math.random() * 0.012); // diagonal alpine wind
-    snowVelocities[i3 + 1] = -(0.008 + Math.random() * 0.016);
-    snowVelocities[i3 + 2] = (Math.random() - 0.5) * 0.005;
-  }
-
-  var snowGeo = new THREE.BufferGeometry();
-  snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPositions, 3));
-  var snowMat = new THREE.PointsMaterial({
-    size: isMobile ? 0.075 : 0.065,
-    map: createSnowTexture(),
-    transparent: true,
-    opacity: 0,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending
-  });
-  var snowPoints = new THREE.Points(snowGeo, snowMat);
-  scene.add(snowPoints);
-
   var rig = new THREE.Group();
   scene.add(rig);
 
+  // part base name (the mesh's immediate parent node name in the glb,
+  // e.g. "topsheet", "steel_edges", "binding") -> array of materials
+  // belonging to it.
   var partMaterials = {};
   var modelLoaded = false;
   var model = null;
   var modelRadius = null;
 
+  // This model's length already runs along its own local X axis and its
+  // topsheet logo sits at the +X tip (verified against the UV data), which
+  // lands on screen-right by default — no rotation correction needed here,
+  // unlike the earlier model. A small rightward pan still keeps it clear of
+  // the text column on the left on desktop (>=860px); on mobile (<860px) we
+  // center the ski so it never clips off the right edge.
   function getPanFraction() {
     return window.innerWidth >= 860 ? 0.12 : 0;
   }
@@ -153,13 +106,22 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
     var panFraction = getPanFraction();
     var fill = panFraction === 0 ? 1.45 : 1.65;
     var panOffset = visibleWidth * panFraction;
+    // The pan shifts the model off-center, so the tighter edge (right side,
+    // since we pan right) sets how much horizontal room is actually free —
+    // use that instead of the full visibleWidth, or the panned model clips
+    // past the right edge of the canvas.
     var availableWidth = (visibleWidth / 2 - panOffset) * 2;
+    // Scale off the model's bounding-SPHERE radius rather than its raw X/Y
+    // box extents so apparent size stays rotation-invariant at every step.
     var scale = (Math.min(availableWidth, visibleHeight) * fill) / (modelRadius * 2);
     model.scale.setScalar(scale);
     rig.position.x = panOffset;
   }
 
   var loader = new GLTFLoader();
+  // The .glb is meshopt-compressed (gltf-transform --compress meshopt) to
+  // keep it under a few MB instead of 30+ - the decoder must be wired up
+  // before load() or GLTFLoader throws on the compressed buffer views.
   loader.setMeshoptDecoder(MeshoptDecoder);
   loader.load(
     '/assets/CarvteX_3D.glb',
@@ -176,6 +138,12 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
       modelRadius = size.length() / 2;
       fitModelToView();
 
+      // Named "container" nodes that map to our scroll steps. The ski-group
+      // meshes (base, steel_edges, ...) carry their mesh directly on the
+      // named node itself, while the binding is one flat parent with ~70
+      // small named sub-parts underneath it - so we walk up from each mesh
+      // until we hit one of these known names, which naturally groups all
+      // binding sub-parts together under "binding".
       var KNOWN_PARTS = ['base', 'steel_edges', 'sidewall', 'topsheet', 'tip_guard', 'tail_protector', 'binding'];
       model.traverse(function (node) {
         if (!node.isMesh) return;
@@ -189,6 +157,8 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
           cur = cur.parent;
         }
         if (!partName) return;
+        // Tag the mesh itself so a raycast hit can be traced back to a
+        // part name directly, for click-to-select.
         node.userData.partName = partName;
         if (!partMaterials[partName]) partMaterials[partName] = [];
         var mats = Array.isArray(node.material) ? node.material : [node.material];
@@ -220,16 +190,15 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
   );
 
   function applyHighlight(partSpec) {
-    // When on the mountain ("mountain" or "all"), no single part glows blue —
-    // the ski is shown in its natural outdoor look before entering the workshop.
-    var isNatural = !partSpec || partSpec === 'all' || partSpec === 'mountain';
-    var activeNames = isNatural ? null : partSpec.split(',');
+    // Keep everything fully solid at all times and use only the emissive glow
+    // to call out the active part so contours stay sharp.
+    var activeNames = partSpec === 'all' ? null : partSpec.split(',');
     Object.keys(partMaterials).forEach(function (name) {
-      var isActive = activeNames && activeNames.indexOf(name) !== -1;
+      var isActive = !activeNames || activeNames.indexOf(name) !== -1;
       partMaterials[name].forEach(function (m) {
         m.opacity = 1;
         if (m.emissive) {
-          if (isActive) {
+          if (isActive && activeNames) {
             m.emissive.setHex(0x1e9be0);
             m.emissiveIntensity = 0.42;
           } else {
@@ -258,65 +227,18 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
     renderer.render(scene, camera);
   }
 
-  // Step poses:
-  // - mountain: Dynamic downhill carving angle on the snowy slope
-  // - binding: Elevated 3/4 workshop bench inspection angle
-  // - steel_edges: Pitched 90° so the sharpened steel edge faces the camera
-  // - base,sidewall: Top-down flat view of the base & wax structure
-  var STEP_POSES = {
-    mountain: { y: -0.38, x: 0.32, z: 2.5, env: 'mountain' },
-    binding: { y: -0.75, x: 0.7, z: 2.45, env: 'workshop' },
-    steel_edges: { y: -0.75, x: 0.7 - Math.PI / 2, z: 2.55, env: 'workshop' },
-    'base,sidewall': { y: 0, x: -Math.PI / 2, z: 2.65, env: 'workshop' }
-  };
-
-  // Determine initial step from the first .ski-step in the DOM
-  var firstStepEl = steps[0];
-  var initialPart = (firstStepEl && firstStepEl.getAttribute('data-part')) || 'binding';
-  var initialPose = STEP_POSES[initialPart] || STEP_POSES.binding;
-
-  var activePart = initialPart;
-  var activeHighlight = (firstStepEl && firstStepEl.getAttribute('data-highlight')) || activePart;
-  var activeEnv = initialPose.env;
-
+  // The story opens on the binding view (elevated, tip toward camera).
+  var activePart = 'binding';
+  var activeHighlight = 'binding';
+  // Mirrors activePart onto the section so CSS can target the part-specific
+  // annotation arrows (see .ski-annotation in styles.css) without any JS
+  // driving their visibility directly.
   section.setAttribute('data-active-part', activePart);
-  section.setAttribute('data-env', activeEnv);
 
-  var targetRotY = initialPose.y;
-  var currentRotY = initialPose.y;
-  var targetRotX = initialPose.x;
-  var currentRotX = initialPose.x;
-  targetCameraZ = initialPose.z;
-  currentCameraZ = initialPose.z;
-
-  var targetSnowOpacity = activeEnv === 'mountain' ? 0.82 : 0.0;
-  var currentSnowOpacity = targetSnowOpacity;
-  snowMat.opacity = currentSnowOpacity;
-
-  // Continuous scroll progress for smooth mountain -> workshop crossfade
-  var targetWorkshopMix = activeEnv === 'mountain' ? 0 : 1;
-  var currentWorkshopMix = targetWorkshopMix;
-
-  function updateScrollProgress() {
-    if (!steps.length) return;
-    var hasMountainStep = steps[0].getAttribute('data-part') === 'mountain';
-    if (!hasMountainStep) {
-      targetWorkshopMix = 1;
-      section.style.setProperty('--workshop-mix', '1');
-      return;
-    }
-    var rect = section.getBoundingClientRect();
-    var stepH = steps[0].offsetHeight || window.innerHeight * 0.65;
-    // As the user scrolls through the first step (mountain -> binding),
-    // mix goes smoothly from 0.0 (100% Alpine mountain) to 1.0 (100% Service workshop).
-    var scrolled = -rect.top;
-    var mix = Math.max(0, Math.min(1, scrolled / (stepH * 0.85)));
-    targetWorkshopMix = mix;
-    section.style.setProperty('--workshop-mix', mix.toFixed(3));
-  }
-
-  window.addEventListener('scroll', updateScrollProgress, { passive: true });
-  updateScrollProgress();
+  var targetRotY = -0.75;
+  var currentRotY = -0.75;
+  var targetRotX = 0.7;
+  var currentRotX = 0.7;
 
   // Interactive user drag offset (springs smoothly back when released)
   var isDragging = false;
@@ -342,49 +264,22 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
     currentRotY += (goalY - currentRotY) * 0.08;
     currentRotX += (goalX - currentRotX) * 0.08;
     currentCameraZ += (targetCameraZ - currentCameraZ) * 0.08;
-    currentWorkshopMix += (targetWorkshopMix - currentWorkshopMix) * 0.1;
 
     rig.rotation.y = currentRotY;
     rig.rotation.x = currentRotX;
     camera.position.z = currentCameraZ;
-
-    // Morph lighting between crisp Alpine daylight (mix=0) and dramatic workshop spot (mix=1)
-    hemiLight.intensity = 1.45 - currentWorkshopMix * 0.45;
-    key.intensity = 2.9 - currentWorkshopMix * 0.4;
-    rim.intensity = 0.85 + currentWorkshopMix * 0.65;
-
-    // Update 3D snowfall while visible
-    var desiredSnow = (1 - currentWorkshopMix) * 0.85;
-    currentSnowOpacity += (desiredSnow - currentSnowOpacity) * 0.1;
-    snowMat.opacity = currentSnowOpacity;
-    snowPoints.visible = currentSnowOpacity > 0.01;
-
-    if (snowPoints.visible) {
-      var posAttr = snowGeo.attributes.position;
-      var arr = posAttr.array;
-      for (var i = 0; i < snowCount; i++) {
-        var i3 = i * 3;
-        arr[i3] += snowVelocities[i3];
-        arr[i3 + 1] += snowVelocities[i3 + 1];
-        arr[i3 + 2] += snowVelocities[i3 + 2];
-        if (arr[i3 + 1] < -snowSpreadY / 2) {
-          arr[i3 + 1] = snowSpreadY / 2;
-          arr[i3] = (Math.random() - 0.5) * snowSpreadX;
-        }
-        if (arr[i3] < -snowSpreadX / 2) arr[i3] = snowSpreadX / 2;
-      }
-      posAttr.needsUpdate = true;
-    }
 
     renderFrame();
   }
 
   window.addEventListener('resize', function () {
     fitModelToView();
-    updateScrollProgress();
     renderFrame();
   });
 
+  // Click-to-select: tapping a part of the ski in the 3D view jumps the
+  // page to that part's story step, instead of only being reachable by
+  // scrolling.
   var partToStep = {};
   steps.forEach(function (stepEl) {
     (stepEl.getAttribute('data-part') || '').split(',').forEach(function (p) {
@@ -480,6 +375,19 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
     }
   });
 
+  // Two separate axes are in play:
+  // - rotation.y (yaw) spins the ski like a turntable around the vertical axis.
+  // - rotation.x is a PITCH/tilt axis (verified live):
+  //     x = 0           -> side/edge-profile silhouette
+  //     x = +Math.PI/2  -> clean top-down view of the TOPSHEET
+  //     x = -Math.PI/2  -> clean top-down view of the BASE ("talp felfelé")
+  // Story order: binding -> steel_edges -> base,sidewall
+  var STEP_POSES = {
+    binding: { y: -0.75, x: 0.7, z: 2.45 },
+    steel_edges: { y: -0.75, x: 0.7 - Math.PI / 2, z: 2.55 },
+    'base,sidewall': { y: 0, x: -Math.PI / 2, z: 2.65 }
+  };
+
   function activateStep(stepEl) {
     steps.forEach(function (s) {
       s.classList.remove('active');
@@ -491,13 +399,14 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
     var pose = Object.prototype.hasOwnProperty.call(STEP_POSES, activePart)
       ? STEP_POSES[activePart]
-      : { y: 0, x: -0.18, z: 2.6, env: 'workshop' };
+      : { y: 0, x: -0.18, z: 2.6 };
     targetRotY = pose.y;
     targetRotX = pose.x;
     targetCameraZ = pose.z;
-    activeEnv = pose.env || 'workshop';
-    section.setAttribute('data-env', activeEnv);
 
+    // data-highlight lets a step glow a narrower part than the one driving its
+    // pose/click-target (data-part) - the base step uses this so the sidewall
+    // glows without tinting the entire base surface blue.
     activeHighlight = stepEl.getAttribute('data-highlight') || activePart;
     if (modelLoaded) applyHighlight(activeHighlight);
     if (prefersReduced) {
@@ -511,17 +420,19 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
   var io = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting && entry.intersectionRatio > 0.42) {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.45) {
           activateStep(entry.target);
         }
       });
     },
-    { threshold: [0.42] }
+    { threshold: [0.45] }
   );
   steps.forEach(function (s) {
     io.observe(s);
   });
 
+  // Only run the continuous rotation loop while the story section is on screen,
+  // and never under reduced motion.
   var sectionIO = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
