@@ -343,70 +343,15 @@ header.site-header{
 }
 
 /* ---------- 3D SKI STORY — sticky canvas, scroll-driven steps ---------- */
-.ski-story{position:relative;background:transparent;border-top:none;--ski-vh:min(72vh,660px);--workshop-mix:0;}
-.ski-story{--ski-vh:min(72dvh,660px);} /* dvh fallback-pattern, see .hero above */
+.ski-story{position:relative;background:transparent;border-top:none;--ski-vh:min(68vh,640px);}
+.ski-story{--ski-vh:min(68dvh,640px);} /* dvh fallback-pattern, see .hero above */
 
 .ski-story-sticky{
   position:sticky;top:var(--nav-h);height:var(--ski-vh);
   overflow:hidden;z-index:1;pointer-events:none;
 }
-
-/* Mountain-to-Workshop dual environment backdrop layers (index.html) */
-.ski-env-layers{
-  position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-}
-.ski-env-layer{
-  position:absolute;inset:0;background-size:cover;background-position:center;
-  transition:transform 650ms cubic-bezier(0.22,1,0.36,1);
-}
-.ski-env-mountain{
-  background-image:
-    linear-gradient(100deg, rgba(11,28,44,0.92) 0%, rgba(11,28,44,0.72) 42%, rgba(11,28,44,0.38) 100%),
-    url('/assets/hero-banner.jpg');
-  background-position:center 68%;
-  opacity:calc(1 - var(--workshop-mix, 0));
-  transform:scale(calc(1 + var(--workshop-mix, 0) * 0.08));
-}
-.ski-env-workshop{
-  background-image:url('/assets/services-hero-bg.webp');
-  background-position:center 42%;
-  filter:grayscale(1) brightness(0.56) contrast(1.08);
-  opacity:var(--workshop-mix, 0);
-  transform:scale(calc(1.06 - var(--workshop-mix, 0) * 0.06));
-}
-.ski-env-vignette{
-  position:absolute;inset:0;
-  background:
-    linear-gradient(95deg, rgba(11,28,44,0.92) 0%, rgba(11,28,44,0.76) 38%, rgba(15,24,36,0.45) 100%),
-    linear-gradient(180deg, rgba(11,28,44,0.85) 0%, transparent 18%, transparent 82%, rgba(11,28,44,0.95) 100%);
-}
-
-/* Environment Status Pill (top-right HUD) */
-.ski-env-badge{
-  position:absolute;right:5%;top:22px;z-index:4;
-  display:inline-flex;align-items:center;gap:10px;
-  background:rgba(11,28,44,0.84);border:1px solid rgba(255,255,255,0.18);
-  padding:7px 14px;border-radius:999px;backdrop-filter:blur(8px);
-  font-size:11.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#fff;
-}
-.ski-env-dot{
-  width:8px;height:8px;border-radius:50%;background:#38BDF8;
-  box-shadow:0 0 0 3px rgba(56,189,248,0.28);
-  transition:background-color 300ms ease, box-shadow 300ms ease;
-}
-.ski-story[data-env="workshop"] .ski-env-dot{
-  background:var(--color-accent);
-  box-shadow:0 0 0 3px rgba(30,155,224,0.35);
-}
-.ski-env-label-workshop{display:none;}
-.ski-story[data-env="workshop"] .ski-env-label-mountain{display:none;}
-.ski-story[data-env="workshop"] .ski-env-label-workshop{display:inline;}
-@media (max-width:640px){
-  .ski-env-badge{right:50%;transform:translateX(50%);top:12px;white-space:nowrap;}
-}
-
 #skiCanvas{
-  position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:auto;z-index:1;
+  position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:auto;
   -webkit-mask-image:linear-gradient(to right, transparent 0%, transparent 24%, black 44%, black 100%);
   mask-image:linear-gradient(to right, transparent 0%, transparent 24%, black 44%, black 100%);
 }

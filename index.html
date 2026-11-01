@@ -105,98 +105,6 @@
     </div>
   </section>
 
-<!-- 3D MOUNTAIN-TO-WORKSHOP SKI JOURNEY -->
-  <section class="ski-story" id="skiStory" aria-label="Utazás a hegycsúcsról a CarvteX szervizszobába">
-    <div class="ski-story-sticky">
-      <!-- Dual environment background layers: snowy mountain morphs into the dark service workbench -->
-      <div class="ski-env-layers" aria-hidden="true">
-        <div class="ski-env-layer ski-env-mountain"></div>
-        <div class="ski-env-layer ski-env-workshop"></div>
-        <div class="ski-env-vignette"></div>
-      </div>
-
-      <!-- Environment Status HUD Pill -->
-      <div class="ski-env-badge" aria-hidden="true">
-        <span class="ski-env-dot"></span>
-        <span class="ski-env-label-mountain" data-i18n="envMountainBadge">Alpesi Hegycsúcs · 2400 m</span>
-        <span class="ski-env-label-workshop" data-i18n="envWorkshopBadge">CarvteX Szervizszoba · Munkapad</span>
-      </div>
-
-      <canvas id="skiCanvas" aria-hidden="true"></canvas>
-
-      <!-- 3D Model Loading Progress HUD -->
-      <div class="ski-loader" id="skiLoader" role="status" aria-live="polite">
-        <span class="ski-loader-spinner" aria-hidden="true"></span>
-        <span class="ski-loader-text" data-i18n="skiLoading">3D síléc modell betöltése…</span>
-        <span class="ski-loader-pct" id="skiLoaderPct">0%</span>
-      </div>
-
-      <div class="ski-story-fallback">
-        <strong>CARVTEX</strong>
-        <span data-i18n="viewerFallback">A 3D nézethez modern böngésző szükséges — lent minden más ugyanúgy működik.</span>
-      </div>
-
-      <div class="ski-story-hint" aria-hidden="true">
-        <span data-i18n="scrollHint">Görgess le a műhelybe</span>
-        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-      </div>
-
-      <!-- Interactive 4-step quick-switcher pills + drag hint -->
-      <div class="ski-hud-bottom">
-        <span class="ski-drag-hint" data-i18n="skiDragHint">Húzd a forgatáshoz · Görgess a részletekért</span>
-        <div class="ski-step-nav" role="group" aria-label="Hegycsúcs és szervizszoba állomások">
-          <button type="button" class="ski-step-btn active" data-target-part="mountain" aria-pressed="true" data-i18n="stepBtn0">00 Hegycsúcs</button>
-          <button type="button" class="ski-step-btn" data-target-part="binding" aria-pressed="false" data-i18n="stepBtn1">01 Kötés</button>
-          <button type="button" class="ski-step-btn" data-target-part="steel_edges" aria-pressed="false" data-i18n="stepBtn2">02 Acélél</button>
-          <button type="button" class="ski-step-btn" data-target-part="base,sidewall" aria-pressed="false" data-i18n="stepBtn3">03 Talp &amp; Wax</button>
-        </div>
-      </div>
-
-      <!-- Part-callout arrows (only visible once inside the workshop on steps 01..03) -->
-      <div class="ski-annotations" aria-hidden="true">
-        <div class="ski-annotation" data-for="binding" style="--ax:58%;--ay:42%;">
-          <span class="ski-annotation-dot"></span>
-          <span class="ski-annotation-label" data-i18n="annotBinding">Kötés</span>
-        </div>
-        <div class="ski-annotation" data-for="steel_edges" style="--ax:63%;--ay:50%;">
-          <span class="ski-annotation-dot"></span>
-          <span class="ski-annotation-label" data-i18n="annotEdge">Acélél</span>
-        </div>
-        <div class="ski-annotation" data-for="base,sidewall" style="--ax:50%;--ay:54%;">
-          <span class="ski-annotation-dot"></span>
-          <span class="ski-annotation-label" data-i18n="annotBase">Talp</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="ski-story-steps" id="skiSteps">
-      <div class="ski-step active" data-part="mountain">
-        <span class="eyebrow" data-i18n="stepMountainEyebrow">A hegycsúcsról a szervizszobába</span>
-        <h2 data-i18n="stepMountainH2">Minden kanyar a műhelyben dől el</h2>
-        <p data-i18n="stepMountainP">Fent a jeges lejtőn a síléced csak annyira magabiztos, amennyire felkészítették. Görgess lefelé, és kövesd a léc útját a havas hegyről egyenesen a CarvteX szervizpadjára!</p>
-      </div>
-      <div class="ski-step" data-part="binding">
-        <span class="eyebrow" data-i18n="stepBindingEyebrow">Minden szerviz alapja</span>
-        <h2 data-i18n="stepBindingH2">Kötésbeállítás — a biztonság alapja</h2>
-        <p data-i18n="stepBindingP">A rosszul beállított kötés az egyik leggyakoribb balesetforrás síelés közben: ha túl laza, idő előtt kiold egy éles kanyarban; ha túl szoros, akkor meg nem old ki, amikor kellene, és sérülést okozhat. A DIN-érték pontos, a súlyodhoz, magasságodhoz és síelési szintedhez igazított beállítása ezért nem kényelmi kérdés — ez a biztonságod.</p>
-      </div>
-      <div class="ski-step" data-part="steel_edges">
-        <span class="eyebrow" data-i18n="stepEdgeEyebrow">Ugyanilyen fontos</span>
-        <h2 data-i18n="stepEdgeH2">Élezés — a fogás és az irányíthatóság kulcsa</h2>
-        <p data-i18n="stepEdgeP">A pontos élszög adja a fogást jeges, kemény havon — egy életlen vagy rosszul szögezett él megcsúszik, bizonytalanná teszi a kanyarodást, és balesetveszélyes lehet. Rendszeres, precíz élezéssel a léc pontosan oda fordul, ahova irányítod.</p>
-      </div>
-      <div class="ski-step" data-part="base,sidewall" data-highlight="sidewall">
-        <span class="eyebrow" data-i18n="stepBaseEyebrow">Fontos karbantartás</span>
-        <h2 data-i18n="stepBaseH2">Talpfeltöltés &amp; waxolás — a sima siklás titka</h2>
-        <p data-i18n="stepBaseP">A sérült, karcos talp lassítja a siklást és egyenetlenné teszi a vezetést. A talpfeltöltés helyreállítja a sík felületet, a hóhőmérséklethez igazított wax pedig visszaadja a léc valódi sebességét és simaságát — ezt érzi meg minden síelő már az első kanyarban.</p>
-        <div class="hero-ctas">
-          <a href="/kapcsolat?service=Pr%C3%A9mium%20szerviz" class="btn btn-primary" data-i18n="heroCta1">Időpontfoglalás</a>
-          <a href="/szolgaltatasok#services" class="btn btn-outline" data-i18n="heroCta2">Szolgáltatások</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
 <!-- STATS BAR -->
   <section class="stats-section" aria-label="CarvteX számokban">
     <div class="container stats-grid">
@@ -437,12 +345,10 @@
 <script type="importmap">
 {
   "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js"
   }
 }
 </script>
 <script type="module" src="/hero-3d.js"></script>
-<script type="module" src="/ski-viewer.js"></script>
 </body>
 </html>
