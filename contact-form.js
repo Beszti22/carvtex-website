@@ -2,6 +2,32 @@
   var form = document.getElementById('contactForm');
   if(!form) return;
 
+  // Pre-select service option if navigated with ?service=...
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var requestedService = params.get('service');
+    var serviceSelect = document.getElementById('cService');
+    if (requestedService && serviceSelect) {
+      var map = {
+        alap: 'Alapszerviz',
+        alapszerviz: 'Alapszerviz',
+        premium: 'Prémium szerviz',
+        'prémium szerviz': 'Prémium szerviz',
+        kotes: 'Kötésbeállítás',
+        'kötésbeállítás': 'Kötésbeállítás'
+      };
+      var normalized = requestedService.trim().toLowerCase();
+      var targetVal = map[normalized] || requestedService;
+      Array.prototype.slice.call(serviceSelect.options).forEach(function (opt) {
+        if (opt.value === targetVal || opt.value.toLowerCase() === normalized) {
+          serviceSelect.value = opt.value;
+        }
+      });
+    }
+  } catch (e) {
+    /* ignore URLSearchParams errors in legacy browsers */
+  }
+
   var submitBtn = document.getElementById('contactSubmitBtn');
   var status = document.getElementById('contactStatus');
   var sendingText = document.getElementById('i18nContactSending');

@@ -1,3 +1,11 @@
+// ski-viewer.js — CarvteX Interactive 3D Ski Story
+// Features:
+// - Progress loading indicator (#skiLoader) + conditional mobile/saveData handling
+// - Scroll-driven 3-step camera & rotation choreography (binding -> steel_edges -> base,sidewall)
+// - Interactive 3-step quick-switcher pills (.ski-step-btn)
+// - Pointer drag-to-inspect micro-orbit (springing back smoothly to the active step pose)
+// - Responsive mobile framing (PAN_FRACTION = 0 on narrow screens so the ski stays centered)
+
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
@@ -6,9 +14,12 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 (function () {
   var section = document.getElementById('skiStory');
   var canvas = document.getElementById('skiCanvas');
+  var loaderEl = document.getElementById('skiLoader');
+  var loaderPctEl = document.getElementById('skiLoaderPct');
   if (!section || !canvas) return;
 
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var saveData = navigator.connection && navigator.connection.saveData;
 
   function hasWebGL() {
     try {
@@ -19,12 +30,13 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
     }
   }
 
-  if (!hasWebGL()) {
+  if (!hasWebGL() || saveData) {
     section.classList.add('no-webgl');
     return;
   }
 
   var steps = Array.prototype.slice.call(section.querySelectorAll('.ski-step'));
+  var stepButtons = Array.prototype.slice.call(section.querySelectorAll('.ski-step-btn'));
 
   var renderer;
   try {
@@ -36,24 +48,29 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.1;
+  renderer.toneMappingExposure = 1.15;
+
+  canvas.setAttribute('role', 'img');
+  canvas.setAttribute('aria-label', 'CarvteX 3D síléc modell — húzd az egeret a forgatáshoz, vagy görgess a részletekért');
 
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 20);
-  var cameraDistance = 2.6;
-  camera.position.set(0, 0.25, cameraDistance);
-  camera.lookAt(0, 0, 0);
-
+  var baseCameraDistance = 2.6;
+  var targetCameraZ = baseCameraDistance;
+  var currentCameraZ = baseCameraDistance;
   // Soft studio environment so the PBR topsheet/edge materials pick up
   // glossy highlights instead of rendering as flat matte gray.
+  camera.position.set(0, 0.25, baseCameraDistance);
+  camera.lookAt(0, 0, 0);
+
   var pmremGenerator = new THREE.PMREMGenerator(renderer);
   scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
-  scene.add(new THREE.HemisphereLight(0xcfe8ff, 0x0a1420, 1.0));
-  var key = new THREE.DirectionalLight(0xffffff, 2.4);
+  scene.add(new THREE.HemisphereLight(0xcfe8ff, 0x0a1420, 1.05));
+  var key = new THREE.DirectionalLight(0xffffff, 2.5);
   key.position.set(2.2, 3, 3);
   scene.add(key);
-  var rim = new THREE.DirectionalLight(0x1e9be0, 1.1);
+  var rim = new THREE.DirectionalLight(0x1e9be0, 1.35);
   rim.position.set(-3, 1, -2.5);
   scene.add(rim);
 
@@ -72,8 +89,11 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
   // topsheet logo sits at the +X tip (verified against the UV data), which
   // lands on screen-right by default — no rotation correction needed here,
   // unlike the earlier model. A small rightward pan still keeps it clear of
-  // the text column on the left.
-  var PAN_FRACTION = 0.12;
+  // the text column on the left on desktop (>=860px); on mobile (<860px) we
+  // center the ski so it never clips off the right edge.
+  function getPanFraction() {
+    return window.innerWidth >= 860 ? 0.12 : 0;
+  }
 
   function fitModelToView() {
     if (!model || modelRadius === null) return;
@@ -81,25 +101,18 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
     var h = canvas.clientHeight || 1;
     var aspect = w / h;
     var vFov = (camera.fov * Math.PI) / 180;
-    var visibleHeight = 2 * cameraDistance * Math.tan(vFov / 2);
+    var visibleHeight = 2 * baseCameraDistance * Math.tan(vFov / 2);
     var visibleWidth = visibleHeight * aspect;
-    var fill = 1.65;
-    var panOffset = visibleWidth * PAN_FRACTION;
+    var panFraction = getPanFraction();
+    var fill = panFraction === 0 ? 1.45 : 1.65;
+    var panOffset = visibleWidth * panFraction;
     // The pan shifts the model off-center, so the tighter edge (right side,
     // since we pan right) sets how much horizontal room is actually free —
     // use that instead of the full visibleWidth, or the panned model clips
     // past the right edge of the canvas.
     var availableWidth = (visibleWidth / 2 - panOffset) * 2;
     // Scale off the model's bounding-SPHERE radius rather than its raw X/Y
-    // box extents. The box extents only describe a good fit at the model's
-    // rest orientation (length along local X, filling the screen
-    // horizontally) - but each story step now rotates the rig onto a
-    // different face (yaw for the nose-on binding view, roll for the
-    // edge/base views). After a 90° yaw the long length axis points into
-    // depth instead of across the screen, and a box-based scale (tuned to
-    // make that long axis fill the frame) rendered the model as a tiny
-    // sliver in the corner. A sphere's apparent size is rotation-invariant,
-    // so this keeps the model consistently framed at every step.
+    // box extents so apparent size stays rotation-invariant at every step.
     var scale = (Math.min(availableWidth, visibleHeight) * fill) / (modelRadius * 2);
     model.scale.setScalar(scale);
     rig.position.x = panOffset;
@@ -158,24 +171,27 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
       });
 
       modelLoaded = true;
-      applyHighlight(activePart);
+      section.setAttribute('data-model-ready', 'true');
+      if (loaderEl) loaderEl.setAttribute('aria-hidden', 'true');
+      applyHighlight(activeHighlight);
       renderFrame();
     },
-    undefined,
+    function (xhr) {
+      if (loaderPctEl && xhr && xhr.total > 0) {
+        var pct = Math.min(99, Math.round((xhr.loaded / xhr.total) * 100));
+        loaderPctEl.textContent = pct + '%';
+      }
+    },
     function (err) {
       console.error('CarvteX 3D model failed to load:', err);
       section.classList.add('no-webgl');
+      if (loaderEl) loaderEl.setAttribute('aria-hidden', 'true');
     }
   );
 
   function applyHighlight(partSpec) {
-    // Previously this dimmed every non-active part to 20% opacity, which
-    // read as the whole ski going washed-out/see-through whenever a single
-    // part (e.g. the binding) was highlighted - most of the visible surface
-    // belongs to parts other than the one being called out, so the ski as
-    // a whole looked faded and its contours disappeared. Keep everything
-    // fully solid at all times and use only the emissive glow to call out
-    // the active part.
+    // Keep everything fully solid at all times and use only the emissive glow
+    // to call out the active part so contours stay sharp.
     var activeNames = partSpec === 'all' ? null : partSpec.split(',');
     Object.keys(partMaterials).forEach(function (name) {
       var isActive = !activeNames || activeNames.indexOf(name) !== -1;
@@ -184,7 +200,7 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
         if (m.emissive) {
           if (isActive && activeNames) {
             m.emissive.setHex(0x1e9be0);
-            m.emissiveIntensity = 0.35;
+            m.emissiveIntensity = 0.42;
           } else {
             m.emissiveIntensity = 0;
           }
@@ -196,7 +212,10 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
   function resize() {
     var w = canvas.clientWidth || 1;
     var h = canvas.clientHeight || 1;
-    if (canvas.width !== Math.round(w * renderer.getPixelRatio()) || canvas.height !== Math.round(h * renderer.getPixelRatio())) {
+    if (
+      canvas.width !== Math.round(w * renderer.getPixelRatio()) ||
+      canvas.height !== Math.round(h * renderer.getPixelRatio())
+    ) {
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
@@ -208,35 +227,49 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
     renderer.render(scene, camera);
   }
 
-  // The story now opens on the binding view (elevated, tip toward camera)
-  // instead of a generic intro angle, so the resting pose before any step's
-  // intersection threshold fires should already match it - otherwise the
-  // ski visibly snaps into place the instant scrolling starts.
+  // The story opens on the binding view (elevated, tip toward camera).
   var activePart = 'binding';
+  var activeHighlight = 'binding';
   // Mirrors activePart onto the section so CSS can target the part-specific
   // annotation arrows (see .ski-annotation in styles.css) without any JS
   // driving their visibility directly.
   section.setAttribute('data-active-part', activePart);
+
   var targetRotY = -0.75;
   var currentRotY = -0.75;
   var targetRotX = 0.7;
   var currentRotX = 0.7;
+
+  // Interactive user drag offset (springs smoothly back when released)
+  var isDragging = false;
+  var dragStartX = 0;
+  var dragStartY = 0;
+  var dragMoved = false;
+  var userOffsetY = 0;
+  var userOffsetX = 0;
   var running = false;
 
   function animate() {
     if (!running) return;
     requestAnimationFrame(animate);
-    currentRotY += (targetRotY - currentRotY) * 0.07;
-    currentRotX += (targetRotX - currentRotX) * 0.07;
+
+    if (!isDragging) {
+      userOffsetY *= 0.92;
+      userOffsetX *= 0.92;
+    }
+
+    var goalY = targetRotY + userOffsetY;
+    var goalX = targetRotX + userOffsetX;
+
+    currentRotY += (goalY - currentRotY) * 0.08;
+    currentRotX += (goalX - currentRotX) * 0.08;
+    currentCameraZ += (targetCameraZ - currentCameraZ) * 0.08;
+
     rig.rotation.y = currentRotY;
     rig.rotation.x = currentRotX;
-    renderFrame();
-  }
+    camera.position.z = currentCameraZ;
 
-  function startLoop() {
-    if (running) return;
-    running = true;
-    requestAnimationFrame(animate);
+    renderFrame();
   }
 
   window.addEventListener('resize', function () {
@@ -246,9 +279,7 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
   // Click-to-select: tapping a part of the ski in the 3D view jumps the
   // page to that part's story step, instead of only being reachable by
-  // scrolling. Each step's own IntersectionObserver (further down) still
-  // owns rotation/highlight/text, so this only needs to scroll the right
-  // step into view and the rest follows automatically.
+  // scrolling.
   var partToStep = {};
   steps.forEach(function (stepEl) {
     (stepEl.getAttribute('data-part') || '').split(',').forEach(function (p) {
@@ -257,6 +288,28 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
     });
   });
 
+  // Step quick-navigation buttons
+  function syncStepButtons(part) {
+    stepButtons.forEach(function (btn) {
+      var isMatch = btn.getAttribute('data-target-part') === part;
+      btn.classList.toggle('active', isMatch);
+      btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+    });
+  }
+
+  stepButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var targetPart = btn.getAttribute('data-target-part');
+      var stepEl = steps.find(function (s) {
+        return s.getAttribute('data-part') === targetPart;
+      });
+      if (stepEl) {
+        stepEl.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'center' });
+      }
+    });
+  });
+
+  // Pointer drag-to-inspect + click-to-select raycaster
   var raycaster = new THREE.Raycaster();
   var pointerNDC = new THREE.Vector2();
 
@@ -283,82 +336,103 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
     }
   }
 
-  canvas.style.cursor = 'pointer';
-  canvas.addEventListener('click', function (e) {
-    selectAtPoint(e.clientX, e.clientY);
+  canvas.style.cursor = 'grab';
+
+  canvas.addEventListener('pointerdown', function (e) {
+    isDragging = true;
+    dragMoved = false;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    canvas.style.cursor = 'grabbing';
+  });
+
+  window.addEventListener(
+    'pointermove',
+    function (e) {
+      if (!isDragging) return;
+      var dx = e.clientX - dragStartX;
+      var dy = e.clientY - dragStartY;
+      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
+        dragMoved = true;
+      }
+      userOffsetY = Math.max(-0.85, Math.min(0.85, dx * 0.005));
+      userOffsetX = Math.max(-0.55, Math.min(0.55, dy * 0.004));
+      if (prefersReduced) {
+        rig.rotation.y = targetRotY + userOffsetY;
+        rig.rotation.x = targetRotX + userOffsetX;
+        renderFrame();
+      }
+    },
+    { passive: true }
+  );
+
+  window.addEventListener('pointerup', function (e) {
+    if (!isDragging) return;
+    isDragging = false;
+    canvas.style.cursor = 'grab';
+    if (!dragMoved) {
+      selectAtPoint(e.clientX, e.clientY);
+    }
   });
 
   // Two separate axes are in play:
-  // - rotation.y (yaw) spins the ski like a turntable around the vertical
-  //   axis. At yaw 0 the model's length runs along local X, screen-horizontal.
+  // - rotation.y (yaw) spins the ski like a turntable around the vertical axis.
   // - rotation.x is a PITCH/tilt axis (verified live):
-  //     x = 0           -> side/edge-profile silhouette (the steel edge
-  //                         faces the camera, length stays horizontal) -
-  //                         the "élén áll" (standing on its edge) look.
-  //     x = +Math.PI/2  -> clean top-down view of the TOPSHEET, full flat
-  //                         view with the logo and binding both readable.
-  //     x = -Math.PI/2  -> clean top-down view of the BASE (the correct
-  //                         "talp felfelé" view - distinct dark surface,
-  //                         binding plate visible from underneath)
-  //     x = Math.PI     -> looks almost identical to x = 0 (NOT a base
-  //                         view - a flipped flat object seen edge-on
-  //                         looks the same either way)
-  // Each step below sets both explicitly, using the verified angles above.
-  // Story order: binding (opening/"foundation" view) -> edge (sharpening)
-  // -> base (waxing/maintenance) - matching the order the steps appear in
-  // the markup.
-  var STEP_ROTATIONS = {
-    // Elevated 3/4 angle with a partial yaw and pitch - like a product shot
-    // of the ski leaning toward the camera, tip prominent and nearest the
-    // viewer, topsheet and binding both readable. This is the opening pose
-    // (see activePart/targetRotY/targetRotX above).
-    binding: { y: -0.75, x: 0.7 },
-    // Same yaw as the binding step (tip prominent and nearest the viewer,
-    // tail receding into the distance), but pitched 90 degrees further so
-    // the base/edge faces the camera instead of the topsheet - reinforced
-    // by the emissive highlight on the active part.
-    steel_edges: { y: -0.75, x: 0.7 - Math.PI / 2 },
-    // Pitch -90° - clean top-down view of the base surface, facing up
-    // toward the camera rather than viewed from underneath.
-    'base,sidewall': { y: 0, x: -Math.PI / 2 }
+  //     x = 0           -> side/edge-profile silhouette
+  //     x = +Math.PI/2  -> clean top-down view of the TOPSHEET
+  //     x = -Math.PI/2  -> clean top-down view of the BASE ("talp felfelé")
+  // Story order: binding -> steel_edges -> base,sidewall
+  var STEP_POSES = {
+    binding: { y: -0.75, x: 0.7, z: 2.45 },
+    steel_edges: { y: -0.75, x: 0.7 - Math.PI / 2, z: 2.55 },
+    'base,sidewall': { y: 0, x: -Math.PI / 2, z: 2.65 }
   };
+
+  function activateStep(stepEl) {
+    steps.forEach(function (s) {
+      s.classList.remove('active');
+    });
+    stepEl.classList.add('active');
+    activePart = stepEl.getAttribute('data-part') || 'all';
+    section.setAttribute('data-active-part', activePart);
+    syncStepButtons(activePart);
+
+    var pose = Object.prototype.hasOwnProperty.call(STEP_POSES, activePart)
+      ? STEP_POSES[activePart]
+      : { y: 0, x: -0.18, z: 2.6 };
+    targetRotY = pose.y;
+    targetRotX = pose.x;
+    targetCameraZ = pose.z;
+
+    // data-highlight lets a step glow a narrower part than the one driving its
+    // pose/click-target (data-part) - the base step uses this so the sidewall
+    // glows without tinting the entire base surface blue.
+    activeHighlight = stepEl.getAttribute('data-highlight') || activePart;
+    if (modelLoaded) applyHighlight(activeHighlight);
+    if (prefersReduced) {
+      rig.rotation.y = targetRotY;
+      rig.rotation.x = targetRotX;
+      camera.position.z = targetCameraZ;
+      renderFrame();
+    }
+  }
 
   var io = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-          steps.forEach(function (s) {
-            s.classList.remove('active');
-          });
-          entry.target.classList.add('active');
-          activePart = entry.target.getAttribute('data-part') || 'all';
-          section.setAttribute('data-active-part', activePart);
-          var rot = Object.prototype.hasOwnProperty.call(STEP_ROTATIONS, activePart)
-            ? STEP_ROTATIONS[activePart]
-            : { y: 0, x: -0.18 };
-          targetRotY = rot.y;
-          targetRotX = rot.x;
-          // data-highlight lets a step glow a narrower part than the one
-          // driving its pose/click-target (data-part) - the base step uses
-          // this because its camera angle already shows the base filling
-          // almost the whole frame, so tinting the base material itself
-          // with the active-part glow reads as the whole ski turning blue
-          // instead of calling out a feature.
-          var highlightSpec = entry.target.getAttribute('data-highlight') || activePart;
-          if (modelLoaded) applyHighlight(highlightSpec);
-          if (prefersReduced) renderFrame();
+        if (entry.isIntersecting && entry.intersectionRatio > 0.45) {
+          activateStep(entry.target);
         }
       });
     },
-    { threshold: [0.5] }
+    { threshold: [0.45] }
   );
   steps.forEach(function (s) {
     io.observe(s);
   });
 
   // Only run the continuous rotation loop while the story section is on screen,
-  // and never under reduced motion (we still update highlight + a single static
-  // render per step change above).
+  // and never under reduced motion.
   var sectionIO = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
