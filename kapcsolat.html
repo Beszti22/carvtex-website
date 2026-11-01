@@ -86,6 +86,22 @@
               </select>
             </div>
             <div class="form-field">
+              <label id="lblPairs" data-i18n="formPairsLabel">Sílécek száma</label>
+              <div class="form-pills" role="group" aria-labelledby="lblPairs">
+                <button type="button" class="form-pill" data-pill-group="pairs" data-pill-val="1" aria-pressed="true" data-i18n="formPairs1">1 pár</button>
+                <button type="button" class="form-pill" data-pill-group="pairs" data-pill-val="2" aria-pressed="false" data-i18n="formPairs2">2 pár</button>
+                <button type="button" class="form-pill" data-pill-group="pairs" data-pill-val="3+" aria-pressed="false" data-i18n="formPairs3">3+ pár (családi)</button>
+              </div>
+            </div>
+            <div class="form-field">
+              <label id="lblUrgency" data-i18n="formUrgencyLabel">Mikorra van rá szükséged?</label>
+              <div class="form-pills" role="group" aria-labelledby="lblUrgency">
+                <button type="button" class="form-pill" data-pill-group="urgency" data-pill-val="normal" aria-pressed="true" data-i18n="formUrg1">Normál (24–48 órán belül)</button>
+                <button type="button" class="form-pill" data-pill-group="urgency" data-pill-val="urgent" aria-pressed="false" data-i18n="formUrg2">Hétvégén indulok (Sürgős)</button>
+                <button type="button" class="form-pill" data-pill-group="urgency" data-pill-val="preseason" aria-pressed="false" data-i18n="formUrg3">Szezon eleji felkészítés</button>
+              </div>
+            </div>
+            <div class="form-field">
               <label for="cMessage" data-i18n="formMessage">Üzenet</label>
               <textarea id="cMessage" name="message" rows="4"></textarea>
             </div>

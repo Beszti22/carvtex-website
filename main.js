@@ -132,6 +132,117 @@
     });
   }
 
+  /* ----- Interactive Before / After Ski Restoration Slider ----- */
+  var baStage = document.getElementById('baStage');
+  var baRange = document.getElementById('baRange');
+  var baPresetBtns = Array.prototype.slice.call(document.querySelectorAll('.ba-preset-btn'));
+  if(baStage && baRange){
+    function setBaPos(val){
+      var clamped = Math.max(4, Math.min(96, parseFloat(val) || 50));
+      baStage.style.setProperty('--ba-pos', clamped + '%');
+      baRange.value = String(clamped);
+      baPresetBtns.forEach(function(btn){
+        var target = parseFloat(btn.getAttribute('data-ba-pos'));
+        var isMatch = Math.abs(clamped - target) <= 8;
+        btn.classList.toggle('active', isMatch);
+        btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+      });
+    }
+    baRange.addEventListener('input', function(){
+      setBaPos(baRange.value);
+    });
+    baPresetBtns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        setBaPos(btn.getAttribute('data-ba-pos'));
+      });
+    });
+    setBaPos(50);
+  }
+
+  /* ----- 3-Click Service Diagnostic Finder ----- */
+  var finderRoot = document.getElementById('serviceFinder');
+  if(finderRoot){
+    var state = {
+      condition: 'scratched',
+      boot: 'no',
+      pairs: '1'
+    };
+    var recTitle = document.getElementById('finderRecTitle');
+    var recReason = document.getElementById('finderRecReason');
+    var recFeats = [
+      document.getElementById('finderRecFeat1'),
+      document.getElementById('finderRecFeat2'),
+      document.getElementById('finderRecFeat3')
+    ];
+    var recCta = document.getElementById('finderRecCta');
+
+    function updateFinderRecommendation(){
+      var pkgKey = 'premium';
+      var serviceParam = 'Prémium szerviz';
+      if(state.condition === 'scratched' || (state.condition === 'refresh' && state.boot === 'yes')){
+        pkgKey = 'premium';
+        serviceParam = 'Prémium szerviz';
+      } else if(state.condition === 'binding_only'){
+        pkgKey = 'binding';
+        serviceParam = 'Kötésbeállítás';
+      } else {
+        pkgKey = 'base';
+        serviceParam = 'Alapszerviz';
+      }
+
+      if(recTitle && recReason){
+        if(pkgKey === 'premium'){
+          recTitle.setAttribute('data-i18n', 'svc2Title');
+          recReason.setAttribute('data-i18n', 'finderRecReasonPrem');
+          if(recFeats[0]) recFeats[0].setAttribute('data-i18n', 'svc2Feat1');
+          if(recFeats[1]) recFeats[1].setAttribute('data-i18n', 'svc2Feat3');
+          if(recFeats[2]) recFeats[2].setAttribute('data-i18n', 'svc2Feat4');
+        } else if(pkgKey === 'binding'){
+          recTitle.setAttribute('data-i18n', 'svc3Title');
+          recReason.setAttribute('data-i18n', 'finderRecReasonBind');
+          if(recFeats[0]) recFeats[0].setAttribute('data-i18n', 'svc3Feat1');
+          if(recFeats[1]) recFeats[1].setAttribute('data-i18n', 'svc3Feat2');
+          if(recFeats[2]) recFeats[2].setAttribute('data-i18n', 'svc3Feat3');
+        } else {
+          recTitle.setAttribute('data-i18n', 'svc1Title');
+          recReason.setAttribute('data-i18n', 'finderRecReasonBase');
+          if(recFeats[0]) recFeats[0].setAttribute('data-i18n', 'svc1Feat1');
+          if(recFeats[1]) recFeats[1].setAttribute('data-i18n', 'svc1Feat2');
+          if(recFeats[2]) recFeats[2].setAttribute('data-i18n', 'svc1Feat3');
+        }
+      }
+
+      if(window.applyLang){
+        window.applyLang(document.documentElement.lang || 'hu');
+      }
+
+      if(recCta){
+        var url = '/kapcsolat?service=' + encodeURIComponent(serviceParam) +
+                  '&pairs=' + encodeURIComponent(state.pairs) +
+                  '&boot=' + encodeURIComponent(state.boot);
+        recCta.setAttribute('href', url);
+      }
+    }
+
+    var optBtns = Array.prototype.slice.call(finderRoot.querySelectorAll('.finder-opt'));
+    optBtns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var q = btn.getAttribute('data-q');
+        var val = btn.getAttribute('data-val');
+        if(!q || !val) return;
+        state[q] = val;
+        optBtns.forEach(function(other){
+          if(other.getAttribute('data-q') === q){
+            other.setAttribute('aria-pressed', other === btn ? 'true' : 'false');
+          }
+        });
+        updateFinderRecommendation();
+      });
+    });
+
+    updateFinderRecommendation();
+  }
+
   /* ----- Floating contact button (call / WhatsApp speed-dial) ----- */
   var contactFab = document.getElementById('contactFab');
   var contactFabToggle = document.getElementById('contactFabToggle');
