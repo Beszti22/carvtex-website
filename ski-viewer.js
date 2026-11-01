@@ -103,19 +103,17 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
     var vFov = (camera.fov * Math.PI) / 180;
     var visibleHeight = 2 * baseCameraDistance * Math.tan(vFov / 2);
     var visibleWidth = visibleHeight * aspect;
-    var panFraction = getPanFraction();
-    var fill = panFraction === 0 ? 1.45 : 1.65;
+    var isMobile = window.innerWidth < 860;
+    var panFraction = isMobile ? 0 : 0.12;
+    // On mobile (<860px), lift the model upward into the top half of the screen
+    // so the lower text card doesn't cover it. On desktop, keep centered vertically and pan right.
+    var fill = isMobile ? 1.30 : 1.65;
     var panOffset = visibleWidth * panFraction;
-    // The pan shifts the model off-center, so the tighter edge (right side,
-    // since we pan right) sets how much horizontal room is actually free —
-    // use that instead of the full visibleWidth, or the panned model clips
-    // past the right edge of the canvas.
     var availableWidth = (visibleWidth / 2 - panOffset) * 2;
-    // Scale off the model's bounding-SPHERE radius rather than its raw X/Y
-    // box extents so apparent size stays rotation-invariant at every step.
     var scale = (Math.min(availableWidth, visibleHeight) * fill) / (modelRadius * 2);
     model.scale.setScalar(scale);
     rig.position.x = panOffset;
+    rig.position.y = isMobile ? visibleHeight * 0.17 : 0;
   }
 
   var loader = new GLTFLoader();
