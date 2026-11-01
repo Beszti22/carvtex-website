@@ -63,6 +63,20 @@
 <!-- 3D SKI STORY — sticky canvas, scroll-driven steps -->
   <section class="ski-story" id="skiStory" aria-label="CarvteX síléc — interaktív bemutató">
     <div class="ski-story-sticky">
+      <!-- Dual environment background layers: snowy mountain morphs into the dark service workbench -->
+      <div class="ski-env-layers" aria-hidden="true">
+        <div class="ski-env-layer ski-env-mountain"></div>
+        <div class="ski-env-layer ski-env-workshop"></div>
+        <div class="ski-env-vignette"></div>
+      </div>
+
+      <!-- Environment Status HUD Pill -->
+      <div class="ski-env-badge" aria-hidden="true">
+        <span class="ski-env-dot"></span>
+        <span class="ski-env-label-mountain" data-i18n="envMountainBadge">Alpesi Hegycsúcs · 2400 m</span>
+        <span class="ski-env-label-workshop" data-i18n="envWorkshopBadge">CarvteX Szervizszoba · Munkapad</span>
+      </div>
+
       <canvas id="skiCanvas" aria-hidden="true"></canvas>
 
       <!-- 3D Model Loading Progress HUD -->
@@ -78,15 +92,16 @@
       </div>
 
       <div class="ski-story-hint" aria-hidden="true">
-        <span data-i18n="scrollHint">Görgess tovább</span>
+        <span data-i18n="scrollHint">Görgess le a műhelybe</span>
         <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
       </div>
 
-      <!-- Interactive 3-step quick-switcher pills + drag hint -->
+      <!-- Interactive 4-step quick-switcher pills + drag hint -->
       <div class="ski-hud-bottom">
         <span class="ski-drag-hint" data-i18n="skiDragHint">Húzd a forgatáshoz · Görgess a részletekért</span>
         <div class="ski-step-nav" role="group" aria-label="Síléc részek gyorsválasztó">
-          <button type="button" class="ski-step-btn active" data-target-part="binding" aria-pressed="true" data-i18n="stepBtn1">01 Kötés</button>
+          <button type="button" class="ski-step-btn active" data-target-part="mountain" aria-pressed="true" data-i18n="stepBtn0">00 Hegycsúcs</button>
+          <button type="button" class="ski-step-btn" data-target-part="binding" aria-pressed="false" data-i18n="stepBtn1">01 Kötés</button>
           <button type="button" class="ski-step-btn" data-target-part="steel_edges" aria-pressed="false" data-i18n="stepBtn2">02 Acélél</button>
           <button type="button" class="ski-step-btn" data-target-part="base,sidewall" aria-pressed="false" data-i18n="stepBtn3">03 Talp &amp; Wax</button>
         </div>
@@ -110,7 +125,12 @@
       </div>
     </div>
     <div class="ski-story-steps" id="skiSteps">
-      <div class="ski-step active" data-part="binding">
+      <div class="ski-step active" data-part="mountain">
+        <span class="eyebrow" data-i18n="stepMountainEyebrow">A hegycsúcsról a szervizszobába</span>
+        <h2 data-i18n="stepMountainH2">Minden kanyar a műhelyben dől el</h2>
+        <p data-i18n="stepMountainP">Fent a jeges lejtőn a síléced csak annyira magabiztos, amennyire felkészítették. Görgess lefelé, és kövesd a léc útját a havas hegyről egyenesen a CarvteX szervizpadjára!</p>
+      </div>
+      <div class="ski-step" data-part="binding">
         <span class="eyebrow" data-i18n="stepBindingEyebrow">Minden szerviz alapja</span>
         <h2 data-i18n="stepBindingH2">Kötésbeállítás — a biztonság alapja</h2>
         <p data-i18n="stepBindingP">A rosszul beállított kötés az egyik leggyakoribb balesetforrás síelés közben: ha túl laza, idő előtt kiold egy éles kanyarban; ha túl szoros, akkor meg nem old ki, amikor kellene, és sérülést okozhat. A DIN-érték pontos, a súlyodhoz, magasságodhoz és síelési szintedhez igazított beállítása ezért nem kényelmi kérdés — ez a biztonságod.</p>
