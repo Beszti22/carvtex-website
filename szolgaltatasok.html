@@ -64,14 +64,34 @@
   <section class="ski-story" id="skiStory" aria-label="CarvteX síléc — interaktív bemutató">
     <div class="ski-story-sticky">
       <canvas id="skiCanvas" aria-hidden="true"></canvas>
+
+      <!-- 3D Model Loading Progress HUD -->
+      <div class="ski-loader" id="skiLoader" role="status" aria-live="polite">
+        <span class="ski-loader-spinner" aria-hidden="true"></span>
+        <span class="ski-loader-text" data-i18n="skiLoading">3D síléc modell betöltése…</span>
+        <span class="ski-loader-pct" id="skiLoaderPct">0%</span>
+      </div>
+
       <div class="ski-story-fallback">
         <strong>CARVTEX</strong>
         <span data-i18n="viewerFallback">A 3D nézethez modern böngésző szükséges — lent minden más ugyanúgy működik.</span>
       </div>
+
       <div class="ski-story-hint" aria-hidden="true">
         <span data-i18n="scrollHint">Görgess tovább</span>
         <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
       </div>
+
+      <!-- Interactive 3-step quick-switcher pills + drag hint -->
+      <div class="ski-hud-bottom">
+        <span class="ski-drag-hint" data-i18n="skiDragHint">Húzd a forgatáshoz · Görgess a részletekért</span>
+        <div class="ski-step-nav" role="group" aria-label="Síléc részek gyorsválasztó">
+          <button type="button" class="ski-step-btn active" data-target-part="binding" aria-pressed="true" data-i18n="stepBtn1">01 Kötés</button>
+          <button type="button" class="ski-step-btn" data-target-part="steel_edges" aria-pressed="false" data-i18n="stepBtn2">02 Acélél</button>
+          <button type="button" class="ski-step-btn" data-target-part="base,sidewall" aria-pressed="false" data-i18n="stepBtn3">03 Talp &amp; Wax</button>
+        </div>
+      </div>
+
       <!-- Part-callout arrows: only the one matching the section's
            data-active-part (set by ski-viewer.js) is shown, via CSS. -->
       <div class="ski-annotations" aria-hidden="true">
@@ -105,7 +125,7 @@
         <h2 data-i18n="stepBaseH2">Talpfeltöltés &amp; waxolás — a sima siklás titka</h2>
         <p data-i18n="stepBaseP">A sérült, karcos talp lassítja a siklást és egyenetlenné teszi a vezetést. A talpfeltöltés helyreállítja a sík felületet, a hóhőmérséklethez igazított wax pedig visszaadja a léc valódi sebességét és simaságát — ezt érzi meg minden síelő már az első kanyarban.</p>
         <div class="hero-ctas">
-          <a href="/kapcsolat" class="btn btn-primary" data-i18n="heroCta1">Időpontfoglalás</a>
+          <a href="/kapcsolat?service=Pr%C3%A9mium%20szerviz" class="btn btn-primary" data-i18n="heroCta1">Időpontfoglalás</a>
         </div>
       </div>
     </div>
@@ -120,29 +140,82 @@
         <h2 data-i18n="tiersH2">Szerviz csomagok</h2>
       </div>
       <div class="service-grid">
-        <div class="service-card reveal">
-          <span class="service-index">01</span>
+        <div class="service-card reveal" data-tilt>
+          <div class="service-card-top">
+            <span class="service-index">01</span>
+          </div>
           <h3 data-i18n="svc1Title">Alapszerviz</h3>
           <p data-i18n="svc1Desc">Élezés, waxolás — az alapok, ahogy kell.</p>
-          <a href="/kapcsolat" class="card-link">
+          <ul class="service-features">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span data-i18n="svc1Feat1">Talptisztítás és állapotfelmérés</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span data-i18n="svc1Feat2">Precíz élezés a kívánt szögben</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span data-i18n="svc1Feat3">Melegwaxolás és kefélés</span>
+            </li>
+          </ul>
+          <a href="/kapcsolat?service=Alapszerviz" class="card-link">
             <span data-i18n="svcCta">Érdeklődöm</span>
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
         </div>
-        <div class="service-card reveal">
-          <span class="service-index">02</span>
+        <div class="service-card service-card--featured reveal" data-tilt>
+          <div class="service-card-top">
+            <span class="service-index">02</span>
+            <span class="service-badge" data-i18n="svc2Badge">Legnépszerűbb</span>
+          </div>
           <h3 data-i18n="svc2Title">Prémium szerviz</h3>
           <p data-i18n="svc2Desc">Élezés, waxolás, talpfeltöltés, oldalélcsiszolás és kötésbeállítás — teljes felkészítés komoly síeléshez.</p>
-          <a href="/kapcsolat" class="card-link">
+          <ul class="service-features">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span data-i18n="svc2Feat1">P-Tex talpfeltöltés és síkba csiszolás</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span data-i18n="svc2Feat2">Oldalélcsiszolás és verseny-tuning</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span data-i18n="svc2Feat3">Hóhőmérséklethez választott melegwax</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span data-i18n="svc2Feat4">Teljes kötés- és DIN-kalibrálás</span>
+            </li>
+          </ul>
+          <a href="/kapcsolat?service=Pr%C3%A9mium%20szerviz" class="card-link">
             <span data-i18n="svcCta">Érdeklődöm</span>
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
         </div>
-        <div class="service-card reveal">
-          <span class="service-index">03</span>
+        <div class="service-card reveal" data-tilt>
+          <div class="service-card-top">
+            <span class="service-index">03</span>
+          </div>
           <h3 data-i18n="svc3Title">Kötésbeállítás</h3>
           <p data-i18n="svc3Desc">Pontos kötésbeállítás a bakancsodhoz és a DIN-értékedhez igazítva.</p>
-          <a href="/kapcsolat" class="card-link">
+          <ul class="service-features">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span data-i18n="svc3Feat1">Bakancs-talphossz pontos beállítása</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span data-i18n="svc3Feat2">Súlyhoz és tudáshoz számolt DIN-érték</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span data-i18n="svc3Feat3">Biztonsági és kopás-ellenőrzés</span>
+            </li>
+          </ul>
+          <a href="/kapcsolat?service=K%C3%B6t%C3%A9sbe%C3%A1ll%C3%ADt%C3%A1s" class="card-link">
             <span data-i18n="svcCta">Érdeklődöm</span>
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
@@ -174,7 +247,7 @@
         <img src="/assets/logo-icon.png" alt="CarvteX" class="footer-icon-img">
         CarvteX
       </a>
-      <p data-i18n="footerBrandDesc">Síléc élezés, waxolás és kötésbeállítás egy korábbi alpesi síedzőtől — Budapest.</p>
+      <p data-i18n="footerBrandDesc">Síléc élezés, waxolás és kötésbeállítás egy korábbi alpesi síedzőtől — Délegyháza (Budapest környéke).</p>
     </div>
     <div class="footer-col">
       <h4 data-i18n="footerQuickLinks">Gyorslinkek</h4>
@@ -187,9 +260,9 @@
     <div class="footer-col">
       <h4 data-i18n="footerServices">Szolgáltatások</h4>
       <ul>
-        <li><a href="/szolgaltatasok" data-i18n="svc1Title">Alapszerviz</a></li>
-        <li><a href="/szolgaltatasok" data-i18n="svc2Title">Prémium szerviz</a></li>
-        <li><a href="/szolgaltatasok" data-i18n="svc3Title">Kötésbeállítás</a></li>
+        <li><a href="/szolgaltatasok#services" data-i18n="svc1Title">Alapszerviz</a></li>
+        <li><a href="/szolgaltatasok#services" data-i18n="svc2Title">Prémium szerviz</a></li>
+        <li><a href="/szolgaltatasok#services" data-i18n="svc3Title">Kötésbeállítás</a></li>
       </ul>
     </div>
     <div class="footer-col">

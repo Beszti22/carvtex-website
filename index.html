@@ -12,6 +12,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SportsActivityLocation",
+  "name": "CarvteX Síszerviz",
+  "description": "Síléc élezés, waxolás, talpfeltöltés és kötésbeállítás Szappanos Bence korábbi alpesi síedzőtől.",
+  "telephone": "+36707717945",
+  "email": "carvtexszerviz@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Délegyháza",
+    "addressCountry": "HU"
+  },
+  "founder": {
+    "@type": "Person",
+    "name": "Szappanos Bence"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -49,11 +68,12 @@
 
 <main id="main">
 
-<!-- HERO (static banner photo) -->
+<!-- HERO (static banner photo + 3D WebGL snowfall field) -->
   <section class="hero" id="hero" aria-label="CarvteX Síszerviz">
     <div class="hero-media">
       <img src="/assets/hero-banner.jpg" alt="CarvteX Síszerviz — havas hegyi panoráma, előtérben két síléc" width="1251" height="1251">
     </div>
+    <canvas id="heroSnowCanvas" aria-hidden="true"></canvas>
     <div class="hero-content">
       <div class="hero-brand" aria-hidden="true">
         <span class="hero-skyline">
@@ -85,12 +105,30 @@
     </div>
   </section>
 
+<!-- STATS BAR -->
+  <section class="stats-section" aria-label="CarvteX számokban">
+    <div class="container stats-grid">
+      <div class="stat-item reveal">
+        <span class="stat-number" data-count="2011">2011</span>
+        <span class="stat-label" data-i18n="stat1Label">óta alpesi síedzői tapasztalat</span>
+      </div>
+      <div class="stat-item reveal">
+        <span class="stat-number" data-count="100" data-suffix="%">100%</span>
+        <span class="stat-label" data-i18n="stat2Label">kézi precizitás &amp; DIN kontroll</span>
+      </div>
+      <div class="stat-item reveal">
+        <span class="stat-number" data-count="3">3</span>
+        <span class="stat-label" data-i18n="stat3Label">fázisú verseny-felkészítés</span>
+      </div>
+    </div>
+  </section>
+
 <!-- ABOUT -->
   <section id="about">
     <div class="container">
       <div class="section-head reveal">
         <span class="eyebrow" data-i18n="aboutEyebrow">A CarvteX mögött</span>
-        <h2 data-i18n="aboutH2">Szia, Bence vagyok</h2>
+        <h2 data-i18n="aboutH2">Szappanos Bence vagyok</h2>
       </div>
       <div class="about-grid">
         <div class="about-portrait-wrap reveal">
@@ -113,6 +151,34 @@
     </div>
   </section>
 
+<!-- HOW IT WORKS (3-STEP PROCESS) -->
+  <section id="process">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-i18n="processEyebrow">Hogyan működik</span>
+        <h2 data-i18n="processH2">3 egyszerű lépés a tökéletes lécig</h2>
+        <p data-i18n="processLead">Nincs bonyolult ügyintézés — gyors, személyes szerviz a síelési stílusodra szabva.</p>
+      </div>
+      <div class="process-grid">
+        <div class="process-card reveal" data-tilt>
+          <span class="process-step-num">01</span>
+          <h3 data-i18n="proc1Title">Időpontfoglalás &amp; leadás</h3>
+          <p data-i18n="proc1Desc">Írj nekünk online vagy WhatsAppon, majd hozd el a lécedet (és egy darab síbakancsodat) délegyházi műhelyünkbe.</p>
+        </div>
+        <div class="process-card reveal" data-tilt>
+          <span class="process-step-num">02</span>
+          <h3 data-i18n="proc2Title">Edzői átvizsgálás &amp; szerviz</h3>
+          <p data-i18n="proc2Desc">Átvizsgáljuk a talpat, az éleket és a kötést, majd a hóviszonyokhoz és a tudásszintedhez igazítva élezünk, töltünk és waxolunk.</p>
+        </div>
+        <div class="process-card reveal" data-tilt>
+          <span class="process-step-num">03</span>
+          <h3 data-i18n="proc3Title">Átvétel &amp; irány a pálya</h3>
+          <p data-i18n="proc3Desc">A lécedet menetkészen, pontosan beállított DIN-értékkel és friss siklással kapod vissza — már az első kanyarban érezni fogod.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 <!-- TESTIMONIALS -->
   <section id="testimonials">
     <div class="container">
@@ -121,14 +187,81 @@
         <h2 data-i18n="testimonialsH2">Megbíznak bennünk</h2>
       </div>
       <div class="testimonial-grid">
-        <figure class="testimonial-card reveal">
-          <blockquote>Csak ajánlani tudom! 👏</blockquote>
+        <figure class="testimonial-card reveal" data-tilt>
+          <div class="testimonial-stars" aria-label="5 / 5 csillag">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <blockquote data-i18n="test1Quote">Csak ajánlani tudom!</blockquote>
           <figcaption>— György</figcaption>
         </figure>
-        <figure class="testimonial-card reveal">
-          <blockquote>Gratulálok, remek kezdeményezés! 🎉</blockquote>
+        <figure class="testimonial-card reveal" data-tilt>
+          <div class="testimonial-stars" aria-label="5 / 5 csillag">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <blockquote data-i18n="test2Quote">Gratulálok, remek kezdeményezés!</blockquote>
           <figcaption>— Levente</figcaption>
         </figure>
+      </div>
+    </div>
+  </section>
+
+<!-- FAQ ACCORDION -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-i18n="faqEyebrow">Jó tudni</span>
+        <h2 data-i18n="faqH2">Gyakori kérdések</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item reveal" open>
+          <summary>
+            <span data-i18n="faq1Q">Mennyi idő alatt készül el a síszerviz?</span>
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-answer">
+            <p data-i18n="faq1A">Előzetes időpontfoglalással a legtöbb szervizt 24–48 órán belül elkészítjük. Ha sürgős indulás előtt állsz, jelezd foglaláskor, és soron kívül megoldjuk.</p>
+          </div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>
+            <span data-i18n="faq2Q">A síbakancsomat is el kell hoznom?</span>
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-answer">
+            <p data-i18n="faq2A">Ha Kötésbeállítást vagy Prémium szervizt kérsz, kérjük, hozd magaddal az egyik síbakancsodat is! A pontos DIN-érték és előfeszítés beállításához szükség van a bakancs talphosszára.</p>
+          </div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>
+            <span data-i18n="faq3Q">Milyen gyakran érdemes szervizelni a sílécet?</span>
+            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="faq-answer">
+            <p data-i18n="faq3A">Átlagos használat mellett 5–7 sínaponként (vagy minden síút előtt) érdemes élezni és melegwaxolni a lécet, a szezon elején pedig teljes talp- és kötésellenőrzést végezni.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+<!-- CTA BANNER -->
+  <section style="padding:0;border-top:none;">
+    <div class="cta-banner reveal">
+      <div class="container cta-banner-inner">
+        <h2 data-i18n="ctaH2">Készen állsz a szezonra?</h2>
+        <p data-i18n="ctaLead">Hozd be a léceidet szervizre — élezés, waxolás vagy teljes versenyfelkészítés, edzői szemmel elvégezve.</p>
+        <div class="cta-actions">
+          <a href="/kapcsolat" class="btn btn-primary" data-i18n="ctaBtn1">Időpontfoglalás</a>
+          <a href="/szolgaltatasok" class="btn btn-outline" data-i18n="heroCta2">Szolgáltatások</a>
+        </div>
       </div>
     </div>
   </section>
@@ -142,7 +275,7 @@
         <img src="/assets/logo-icon.png" alt="CarvteX" class="footer-icon-img">
         CarvteX
       </a>
-      <p data-i18n="footerBrandDesc">Síléc élezés, waxolás és kötésbeállítás egy korábbi alpesi síedzőtől — Budapest.</p>
+      <p data-i18n="footerBrandDesc">Síléc élezés, waxolás és kötésbeállítás egy korábbi alpesi síedzőtől — Délegyháza (Budapest környéke).</p>
     </div>
     <div class="footer-col">
       <h4 data-i18n="footerQuickLinks">Gyorslinkek</h4>
@@ -155,9 +288,9 @@
     <div class="footer-col">
       <h4 data-i18n="footerServices">Szolgáltatások</h4>
       <ul>
-        <li><a href="/szolgaltatasok" data-i18n="svc1Title">Alapszerviz</a></li>
-        <li><a href="/szolgaltatasok" data-i18n="svc2Title">Prémium szerviz</a></li>
-        <li><a href="/szolgaltatasok" data-i18n="svc3Title">Kötésbeállítás</a></li>
+        <li><a href="/szolgaltatasok#services" data-i18n="svc1Title">Alapszerviz</a></li>
+        <li><a href="/szolgaltatasok#services" data-i18n="svc2Title">Prémium szerviz</a></li>
+        <li><a href="/szolgaltatasok#services" data-i18n="svc3Title">Kötésbeállítás</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -209,5 +342,13 @@
 
 <script src="/i18n.js"></script>
 <script src="/main.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js"
+  }
+}
+</script>
+<script type="module" src="/hero-3d.js"></script>
 </body>
 </html>

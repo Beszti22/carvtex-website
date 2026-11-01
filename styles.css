@@ -84,7 +84,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-display);letter-spacing:0.01em;line-
 p{margin:0;}
 button{font-family:inherit;cursor:pointer;}
 
-a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, summary:focus-visible{
   outline:2px solid var(--color-accent);
   outline-offset:2px;
 }
@@ -214,12 +214,13 @@ header.site-header{
 
 .lang-switch{display:flex;align-items:center;gap:4px;border:1px solid rgba(255,255,255,0.25);padding:3px;border-radius:var(--radius-sm);}
 .lang-switch button{
-  border:none;background:transparent;padding:6px 11px;border-radius:2px;font-weight:700;font-size:12px;
-  letter-spacing:0.03em;color:rgba(255,255,255,0.6);transition:background-color 180ms ease, color 180ms ease;min-height:32px;
+  border:none;background:transparent;padding:8px 13px;border-radius:2px;font-weight:700;font-size:12px;
+  letter-spacing:0.03em;color:rgba(255,255,255,0.65);transition:background-color 180ms ease, color 180ms ease;
+  min-width:44px;min-height:38px;
 }
 .lang-switch button[aria-pressed="true"]{background:var(--color-accent);color:#fff;}
 
-/* ---------- Hero (static banner photo) ---------- */
+/* ---------- Hero (static banner photo + 3D WebGL snowfall field) ---------- */
 .hero{position:relative;padding:0;border-top:none;min-height:min(78vh,760px);display:flex;align-items:center;overflow:hidden;background:var(--color-primary);}
 /* dvh re-declared after the vh fallback: browsers that don't know the unit
    discard this line as invalid and keep the vh value above: no regression
@@ -227,8 +228,8 @@ header.site-header{
    height jumping when the address bar shows/hides (100vh locks to the
    tallest state, dvh tracks the actual visible viewport). */
 .hero{min-height:min(78dvh,760px);}
-.hero-media{position:absolute;inset:0;}
-.hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 72%;display:block;}
+.hero-media{position:absolute;inset:0;z-index:0;overflow:hidden;}
+.hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 72%;display:block;will-change:transform;}
 .hero-media::after{
   content:"";position:absolute;inset:0;
   background:
@@ -240,18 +241,17 @@ header.site-header{
        into the 3D ski section below. */
     linear-gradient(0deg, rgba(11,28,44,1) 0%, rgba(11,28,44,0.55) 14%, rgba(11,28,44,0) 55%);
 }
+#heroSnowCanvas{
+  position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;display:block;
+}
 
-.hero-content{position:relative;z-index:1;max-width:620px;padding:64px 24px;}
+.hero-content{position:relative;z-index:2;max-width:620px;padding:64px 24px;}
 @media (min-width:860px){ .hero-content{padding-left:8%;} }
 
 /* Wordmark (mountain skyline + lettered "CarvteX" + sub-label) sits
    directly above the headline as one unified block, centered as a
    group so the skyline, the word and the sub-label read as one
-   stacked mark rather than three independently-aligned pieces. The
-   skyline itself still spans the full width of the content column,
-   like a horizon strip, rather than sitting in a small boxed-in icon;
-   its peaks cluster near the middle, so a centered word/sub-label
-   underneath lines up with it visually. */
+   stacked mark rather than three independently-aligned pieces. */
 .hero-brand{
   --bw-size:clamp(54px,8.5vw,104px);
   margin-bottom:var(--space-lg);text-align:center;
@@ -259,27 +259,15 @@ header.site-header{
 .hero-skyline{display:block;position:relative;overflow:hidden;width:100%;height:clamp(60px,8.5vw,118px);margin-bottom:10px;}
 .hero-brand-icon{display:block;width:100%;height:100%;color:#fff;}
 .hero-brand-word{
-  /* Bebas Neue carries a lot of extra line-box space below its visible
-     cap-height even at line-height:1 - a tighter unitless line-height
-     shrinks that phantom space directly (it scales with font-size on
-     its own, letters included, since it's inherited as a multiplier). */
   position:relative;display:inline-block;font-family:var(--font-display);font-size:var(--bw-size);
   letter-spacing:0.03em;text-transform:uppercase;color:#fff;line-height:0.78;overflow:hidden;
 }
 .hero-brand-word .accent{color:var(--color-accent);}
 .hero-brand-sub{
-  /* Small extra nudge on top of the line-height fix above, scaled to
-     the wordmark's own size (--bw-size, set on the shared .hero-brand
-     ancestor) so it stays right at mobile sizes too. */
   display:block;margin-top:calc(var(--bw-size) * -0.04);
   font-family:var(--font-body);font-weight:700;font-size:clamp(13px,1.6vw,17px);
   letter-spacing:0.34em;text-transform:uppercase;color:var(--color-accent);
 }
-/* Reveal mask: the inner span/svg holds the real content, the outer
-   clips it and slides the reveal edge across — reads as a deliberate
-   "unveiling" rather than a simple fade. Block-level by default (the
-   icon and the sub-label); each letter of the wordmark gets its own
-   inline mask so they unveil one by one instead of as a single block. */
 .mask-reveal{display:block;overflow:hidden;}
 .hero-brand-word .mask-reveal{display:inline-block;overflow:hidden;}
 
@@ -302,13 +290,6 @@ header.site-header{
   .hero-content{padding-top:120px;padding-bottom:48px;}
 }
 
-/* Entrance on load (hero is above the fold, so this runs immediately
-   rather than on scroll like .reveal does elsewhere): the mountain
-   skyline sweeps in left-to-right across the full width of the band
-   (not a single block popping up), then "CarvteX" unveils one letter
-   at a time with a deliberate, unhurried pace, then a light sweep
-   crosses the finished wordmark like a brand stamp, then the
-   sub-label, then the headline copy below follows in sequence. */
 @media (prefers-reduced-motion: no-preference){
   .hero-skyline{clip-path:inset(0 100% 0 0);animation:heroSkylineWipe 1250ms cubic-bezier(0.19,1,0.22,1) 80ms forwards;}
 
@@ -318,12 +299,8 @@ header.site-header{
   .hero-brand-word .mask-reveal > *{animation-delay:calc(420ms + var(--i) * 95ms);}
   .hero-brand > .mask-reveal:last-child > *{animation-delay:1060ms;}
 
-  /* Expanding letter-spacing on the wordmark itself, underneath the
-     per-letter reveal, reads as the brand "settling into place". */
   .hero-brand-word{animation:heroLetterSpacing 1300ms cubic-bezier(0.19,1,0.22,1) 420ms forwards;}
 
-  /* A soft diagonal light sweep once the last letter has landed —
-     a single, restrained flourish rather than a gimmick. */
   .hero-brand-word::after{
     content:"";position:absolute;inset:0;pointer-events:none;
     background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%);
@@ -343,14 +320,31 @@ header.site-header{
 @keyframes heroLetterSpacing{from{letter-spacing:-0.015em;}to{letter-spacing:0.03em;}}
 @keyframes heroShimmer{to{transform:translateX(130%);}}
 
+/* ---------- Stats Bar (below Hero) ---------- */
+.stats-section{
+  background:var(--color-secondary);color:#fff;padding:var(--space-xl) 0;border-top:1px solid rgba(255,255,255,0.08);
+}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-lg);
+}
+.stat-item{
+  display:flex;flex-direction:column;gap:4px;padding-left:var(--space-md);
+  border-left:2px solid var(--color-accent);
+}
+.stat-number{
+  font-family:var(--font-display);font-size:clamp(36px,4.5vw,52px);line-height:1;
+  letter-spacing:0.02em;color:#fff;
+}
+.stat-label{
+  font-size:14px;font-weight:600;color:rgba(255,255,255,0.75);letter-spacing:0.02em;
+}
+@media (max-width:768px){
+  .stats-grid{grid-template-columns:1fr;gap:var(--space-md);}
+}
+
 /* ---------- 3D SKI STORY — sticky canvas, scroll-driven steps ---------- */
-/* A full 100vh canvas left a lot of dark empty space above/below the
-   ski — it's a thin, wide object, not a tall one. Use a shorter,
-   capped viewer height instead (one variable drives the sticky
-   canvas, the steps' negative overlap and each step's scroll length,
-   so they stay in sync). */
-.ski-story{position:relative;background:transparent;border-top:none;--ski-vh:min(66vh,620px);}
-.ski-story{--ski-vh:min(66dvh,620px);} /* dvh fallback-pattern, see .hero above */
+.ski-story{position:relative;background:transparent;border-top:none;--ski-vh:min(68vh,640px);}
+.ski-story{--ski-vh:min(68dvh,640px);} /* dvh fallback-pattern, see .hero above */
 
 .ski-story-sticky{
   position:sticky;top:var(--nav-h);height:var(--ski-vh);
@@ -358,16 +352,40 @@ header.site-header{
 }
 #skiCanvas{
   position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:auto;
-  /* At its largest pose (the top-down base/waxing view) the model is wide
-     enough to reach under the text column on the left. Rather than chase
-     a perfect per-pose pan offset, dissolve the render itself into the
-     background before it gets there - same gradient-fade language the
-     static .hero-media photo already uses, so an oversized or
-     differently-posed model always recedes gracefully instead of
-     clipping across body copy. */
-  -webkit-mask-image:linear-gradient(to right, transparent 0%, transparent 26%, black 46%, black 100%);
-  mask-image:linear-gradient(to right, transparent 0%, transparent 26%, black 46%, black 100%);
+  -webkit-mask-image:linear-gradient(to right, transparent 0%, transparent 24%, black 44%, black 100%);
+  mask-image:linear-gradient(to right, transparent 0%, transparent 24%, black 44%, black 100%);
 }
+@media (max-width:859px){
+  #skiCanvas{
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+    mask-image:linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+  }
+}
+
+/* 3D Model Loading Progress HUD */
+.ski-loader{
+  position:absolute;right:18%;top:46%;transform:translate(50%,-50%);z-index:4;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  background:rgba(11,28,44,0.86);border:1px solid rgba(30,155,224,0.35);
+  padding:18px 26px;border-radius:var(--radius-md);backdrop-filter:blur(8px);
+  color:#fff;pointer-events:none;transition:opacity 360ms ease, transform 360ms ease;
+}
+@media (max-width:859px){
+  .ski-loader{right:50%;}
+}
+.ski-loader-spinner{
+  width:28px;height:28px;border-radius:50%;
+  border:2.5px solid rgba(255,255,255,0.2);border-top-color:var(--color-accent);
+  animation:skiSpin 0.85s linear infinite;
+}
+@keyframes skiSpin{to{transform:rotate(360deg);}}
+.ski-loader-text{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.85);}
+.ski-loader-pct{font-family:var(--font-display);font-size:20px;letter-spacing:0.04em;color:var(--color-accent);}
+.ski-story[data-model-ready="true"] .ski-loader,
+.ski-story.no-webgl .ski-loader{
+  opacity:0;transform:translate(50%,-50%) scale(0.92);pointer-events:none;
+}
+
 .ski-story-fallback{display:none;}
 .ski-story.no-webgl .ski-story-sticky{display:flex;align-items:center;justify-content:center;}
 .ski-story.no-webgl #skiCanvas{display:none;}
@@ -375,21 +393,51 @@ header.site-header{
   display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center;color:rgba(255,255,255,0.45);
 }
 .ski-story.no-webgl .ski-story-fallback strong{font-family:var(--font-display);font-size:28px;letter-spacing:0.05em;color:rgba(255,255,255,0.7);}
+
+/* Interactive 3-step quick-switcher HUD & drag hint */
+.ski-hud-bottom{
+  position:absolute;right:5%;bottom:22px;z-index:4;
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+  pointer-events:auto;
+}
+.ski-story.no-webgl .ski-hud-bottom{display:none;}
+.ski-step-nav{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(11,28,44,0.85);border:1px solid rgba(255,255,255,0.16);
+  padding:5px;border-radius:var(--radius-md);backdrop-filter:blur(8px);
+}
+.ski-step-btn{
+  border:none;background:transparent;color:rgba(255,255,255,0.7);
+  font-family:var(--font-body);font-weight:700;font-size:12px;letter-spacing:0.04em;text-transform:uppercase;
+  padding:8px 14px;border-radius:var(--radius-sm);min-height:38px;
+  transition:background-color 180ms ease, color 180ms ease;
+}
+.ski-step-btn:hover{color:#fff;background:rgba(255,255,255,0.08);}
+.ski-step-btn.active{background:var(--color-accent);color:#fff;}
+.ski-drag-hint{
+  font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;
+  color:rgba(255,255,255,0.55);
+}
+@media (max-width:640px){
+  .ski-hud-bottom{right:50%;transform:translateX(50%);align-items:center;bottom:14px;width:calc(100% - 32px);}
+  .ski-drag-hint{display:none;}
+}
+
 .ski-story-hint{
-  position:absolute;left:50%;bottom:28px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;
+  position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;
   color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
   animation:skiHintBob 1.8s ease-in-out infinite;
 }
+@media (max-width:640px){ .ski-story-hint{display:none;} }
 @keyframes skiHintBob{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,6px);}}
 @media (prefers-reduced-motion: reduce){ .ski-story-hint{animation:none;} }
 
-/* Part-callout arrows over the 3D canvas: a pulsing accent dot + label,
-   one per story part, positioned with --ax/--ay custom properties set
-   inline per element. Visibility is driven entirely by CSS, matching the
-   section's data-active-part attribute (kept in sync by ski-viewer.js)
-   against each annotation's data-for - so only the callout for whichever
-   part the ski is currently posed to show is ever visible. */
-.ski-annotations{position:absolute;inset:0;z-index:3;pointer-events:none;}
+/* Part-callout arrows over the 3D canvas */
+.ski-annotations{
+  position:absolute;inset:0;z-index:3;pointer-events:none;
+  opacity:0;transition:opacity 360ms ease;
+}
+.ski-story[data-model-ready="true"] .ski-annotations{opacity:1;}
 .ski-story.no-webgl .ski-annotations{display:none;}
 .ski-annotation{
   position:absolute;left:var(--ax);top:var(--ay);transform:translate(-50%,-50%) scale(0.85);
@@ -418,9 +466,6 @@ header.site-header{
   opacity:1;transform:translate(-50%,-50%) scale(1);
 }
 @media (max-width:640px){
-  /* Camera framing/panOffset shift under the mobile ski-story height
-     override, so the hand-tuned --ax/--ay positions above would drift
-     off the relevant part - hide rather than show a misplaced callout. */
   .ski-annotations{display:none;}
 }
 
@@ -440,14 +485,80 @@ header.site-header{
   .ski-story{--ski-vh:min(78dvh,560px);}
 }
 
-/* ---------- Services (flat cards, thin border, no rounded pills) ---------- */
-.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--color-border);border:1px solid var(--color-border);}
-.service-card{background:#fff;padding:var(--space-xl) var(--space-lg);transition:background-color 200ms ease;}
+/* ---------- 3D Card Tilt & Radial Spotlight ([data-tilt]) ---------- */
+[data-tilt]{
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform 360ms cubic-bezier(0.22,1,0.36,1), box-shadow 360ms ease, background-color 200ms ease, border-color 200ms ease;
+  will-change:transform;
+  overflow:hidden;
+}
+[data-tilt]::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(360px circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(30,155,224,0.11), transparent 70%);
+  opacity:0;transition:opacity 250ms ease;
+}
+@media (hover:hover) and (prefers-reduced-motion: no-preference){
+  [data-tilt]:hover{box-shadow:var(--shadow-lg);z-index:2;}
+  [data-tilt]:hover::after{opacity:1;}
+}
+
+/* ---------- Process ("Hogyan működik?") ---------- */
+.process-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-md);
+}
+.process-card{
+  background:var(--color-card);border:1px solid var(--color-border);
+  padding:var(--space-xl) var(--space-lg);border-radius:var(--radius-sm);
+  display:flex;flex-direction:column;gap:12px;
+}
+.process-step-num{
+  font-family:var(--font-display);font-size:34px;line-height:1;
+  color:var(--color-accent);letter-spacing:0.04em;
+}
+.process-card h3{
+  font-family:var(--font-body);font-weight:700;font-size:19px;text-transform:none;
+  letter-spacing:0;color:var(--color-primary);
+}
+.process-card p{
+  color:var(--color-text-muted);font-size:15px;line-height:1.65;
+}
+@media (max-width:860px){ .process-grid{grid-template-columns:1fr;} }
+
+/* ---------- Services (3D tilt cards, checklist, featured tier) ---------- */
+.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-md);align-items:stretch;}
+.service-card{
+  background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-sm);
+  padding:var(--space-xl) var(--space-lg);display:flex;flex-direction:column;
+}
 .service-card:hover{background:var(--color-card);}
-.service-index{font-family:var(--font-display);font-size:14px;letter-spacing:0.08em;color:var(--color-accent);}
-.service-card h3{margin-top:var(--space-md);font-family:var(--font-body);font-weight:700;text-transform:none;letter-spacing:0;font-size:19px;color:var(--color-primary);}
-.service-card p{margin-top:10px;color:var(--color-text-muted);font-size:14.5px;line-height:1.6;}
-.service-card .card-link{display:inline-flex;align-items:center;gap:6px;margin-top:var(--space-md);font-weight:700;font-size:13.5px;color:var(--color-primary);}
+.service-card--featured{
+  border:2px solid var(--color-accent);background:var(--color-card);
+  box-shadow:var(--shadow-md);
+}
+.service-card-top{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.service-index{font-family:var(--font-display);font-size:18px;letter-spacing:0.08em;color:var(--color-accent);}
+.service-badge{
+  background:var(--color-accent);color:#fff;font-size:11px;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:var(--radius-sm);
+}
+.service-card h3{margin-top:var(--space-md);font-family:var(--font-body);font-weight:700;text-transform:none;letter-spacing:0;font-size:21px;color:var(--color-primary);}
+.service-card p{margin-top:10px;color:var(--color-text-muted);font-size:15px;line-height:1.6;}
+.service-features{
+  margin-top:var(--space-md);padding-top:var(--space-md);border-top:1px solid var(--color-border);
+  display:flex;flex-direction:column;gap:10px;flex-grow:1;
+}
+.service-features li{
+  display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--color-text);font-weight:500;
+}
+.service-features li svg{
+  width:17px;height:17px;color:var(--color-accent);flex-shrink:0;margin-top:2px;
+}
+.service-card .card-link{
+  display:inline-flex;align-items:center;gap:6px;margin-top:var(--space-lg);
+  font-weight:700;font-size:14px;color:var(--color-primary);min-height:44px;
+}
+.service-card--featured .card-link{color:var(--color-accent-dark);}
 .service-card .card-link .icon{width:16px;height:16px;transition:transform 180ms ease;}
 .service-card:hover .card-link .icon{transform:translateX(4px);}
 @media (max-width:860px){ .service-grid{grid-template-columns:1fr;} }
@@ -455,12 +566,6 @@ header.site-header{
 
 /* ---------- About ---------- */
 .about-grid{display:grid;grid-template-columns:minmax(240px,340px) 1fr;gap:var(--space-2xl);align-items:start;}
-
-/* Clean single-plane photo card, no backing block - just a subtle border
-   and shadow consistent with the rest of the site. A pointer-driven 3D
-   tilt on the photo itself is wired up in main.js; perspective lives on
-   the wrap so the tilted child reads as a physical plane rather than a
-   flat skew. */
 .about-portrait-wrap{position:relative;perspective:1200px;}
 .about-portrait{
   position:relative;z-index:1;border:1px solid var(--color-border);overflow:hidden;background:var(--color-background);
@@ -483,9 +588,6 @@ header.site-header{
   .about-grid{grid-template-columns:1fr;}
   .about-portrait-wrap{max-width:360px;margin:0 auto;}
 }
-/* The tilt is driven by a mousemove handler, so it has nothing to attach
-   to on touch devices - and a fine-pointer check keeps it off devices
-   that only ever fire a synthetic mouse event on tap. */
 @media (hover:none), (prefers-reduced-motion: reduce){
   .about-portrait{transition:none;}
 }
@@ -494,15 +596,37 @@ header.site-header{
 .testimonial-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);max-width:760px;margin:0 auto;}
 .testimonial-card{
   background:var(--color-card);border:1px solid var(--color-border);padding:var(--space-lg) var(--space-md);
-  display:flex;flex-direction:column;gap:14px;position:relative;
+  display:flex;flex-direction:column;gap:14px;position:relative;border-radius:var(--radius-sm);
 }
-.testimonial-card::before{
-  content:"\201C";position:absolute;top:10px;left:16px;font-family:Georgia,serif;font-size:46px;line-height:1;
-  color:var(--color-accent);opacity:0.25;
-}
-.testimonial-card blockquote{margin:18px 0 0;font-size:16px;line-height:1.5;color:var(--color-primary);font-weight:600;}
-.testimonial-card figcaption{font-size:13px;letter-spacing:0.03em;color:var(--color-text-muted);}
+.testimonial-stars{display:inline-flex;gap:3px;color:var(--color-accent);}
+.testimonial-stars svg{width:16px;height:16px;}
+.testimonial-card blockquote{margin:4px 0 0;font-size:17px;line-height:1.5;color:var(--color-primary);font-weight:600;}
+.testimonial-card figcaption{font-size:13px;letter-spacing:0.03em;color:var(--color-text-muted);font-weight:600;}
 @media (max-width:520px){ .testimonial-grid{grid-template-columns:1fr;} }
+
+/* ---------- FAQ Accordion ---------- */
+.faq-list{
+  max-width:760px;display:flex;flex-direction:column;gap:12px;
+}
+.faq-item{
+  border:1px solid var(--color-border);border-radius:var(--radius-sm);background:#fff;
+  transition:border-color 180ms ease, background-color 180ms ease;
+}
+.faq-item[open]{border-color:var(--color-accent);background:var(--color-card);}
+.faq-item summary{
+  list-style:none;cursor:pointer;padding:18px 22px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  font-weight:700;font-size:16.5px;color:var(--color-primary);min-height:56px;
+}
+.faq-item summary::-webkit-details-marker{display:none;}
+.faq-icon{
+  width:20px;height:20px;color:var(--color-accent);flex-shrink:0;
+  transition:transform 220ms var(--ease);
+}
+.faq-item[open] .faq-icon{transform:rotate(180deg);}
+.faq-answer{
+  padding:0 22px 20px;color:var(--color-text-muted);font-size:15.5px;line-height:1.65;
+}
 
 /* ---------- CTA banner ---------- */
 .cta-banner{background:var(--color-primary);color:#fff;padding:var(--space-2xl) 0;}
@@ -541,11 +665,11 @@ header.site-header{
 .form-field label{display:block;font-weight:700;font-size:13px;letter-spacing:0.02em;text-transform:uppercase;color:var(--color-primary);margin-bottom:8px;}
 .form-field input,.form-field select,.form-field textarea{
   width:100%;padding:12px 14px;border:1px solid var(--color-border);border-radius:var(--radius-sm);
-  font:inherit;background:#fff;transition:border-color 180ms ease;
+  font:inherit;background:#fff;transition:border-color 180ms ease;min-height:44px;
 }
 .form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--color-accent);outline:none;box-shadow:0 0 0 3px rgba(30,155,224,0.15);}
 .form-consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.5;color:var(--color-text-muted);margin-bottom:var(--space-lg);}
-.form-consent input{margin-top:3px;flex-shrink:0;}
+.form-consent input{margin-top:3px;flex-shrink:0;width:18px;height:18px;}
 .contact-status{font-size:13px;margin-top:10px;min-height:16px;}
 .contact-status.is-success{color:#0F766E;}
 .contact-status.is-error{color:#B91C1C;}
@@ -556,8 +680,8 @@ footer{background:var(--color-primary);color:rgba(255,255,255,0.85);}
 .footer-brand p{margin-top:var(--space-sm);font-size:14px;color:rgba(255,255,255,0.6);max-width:280px;}
 .footer-social{display:flex;gap:10px;margin-top:var(--space-md);}
 .footer-social-link{
-  display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;
-  background:var(--color-accent);color:#fff;box-shadow:var(--shadow-sm);
+  display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;
+  background:var(--color-accent);color:#fff;box-shadow:var(--shadow-sm);border-radius:var(--radius-sm);
   transition:background-color 180ms ease, transform 180ms ease;
 }
 .footer-social-link:hover{background:var(--color-accent-dark);transform:translateY(-2px);}
@@ -577,7 +701,7 @@ footer{background:var(--color-primary);color:rgba(255,255,255,0.85);}
 @media (max-width:520px){ .footer-grid{grid-template-columns:1fr;} }
 
 /* ---------- Scroll reveal (subtle — matches MOTION 3/10) ---------- */
-.reveal{opacity:0;transform:translateY(12px);transition:opacity 350ms var(--ease), transform 350ms var(--ease);}
+.reveal{opacity:0;transform:translateY(12px);transition:opacity 350ms var(--ease) var(--reveal-delay, 0ms), transform 350ms var(--ease) var(--reveal-delay, 0ms);}
 .reveal.in-view{opacity:1;transform:none;}
 @media (prefers-reduced-motion: reduce){
   .reveal{opacity:1;transform:none;transition:none;}
