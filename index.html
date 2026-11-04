@@ -306,6 +306,46 @@
           <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
       </div>
+
+      <!-- MULTI-PAIR VOLUME DISCOUNT & FREE PICKUP BANNER -->
+      <div class="multi-pair-section reveal">
+        <div class="multi-pair-banner">
+          <div class="mp-header">
+            <span class="mp-badge" data-i18n="mpBadge">Több páros kedvezmény &amp; szállítás</span>
+            <h3 data-i18n="mpTitle">Több pár síléc? Családi kedvezmény &amp; Háztól-házig szállítás</h3>
+            <p data-i18n="mpDesc">Hozd el a család vagy a baráti társaság léceit, és spóroljatok! 3 vagy több pár esetén levesszük a cipekedés terhét a válladról: ingyenesen elmegyünk a lécekért és vissza is visszük őket 10 km-es körzetben.</p>
+          </div>
+          <div class="mp-perks-grid">
+            <div class="mp-perk-card">
+              <h4 class="mp-perk-title" data-i18n="mpPerk2Title">2 pár: -10% kedvezmény</h4>
+              <p class="mp-perk-desc" data-i18n="mpPerk2Desc">-10% kedvezmény a teljes munkadíjból</p>
+            </div>
+            <div class="mp-perk-card mp-perk-card--featured">
+              <span class="mp-perk-top-tag">Családi csomag</span>
+              <h4 class="mp-perk-title" data-i18n="mpPerk3Title">3+ pár: -15% kedvezmény + INGYENES szállítás</h4>
+              <p class="mp-perk-desc" data-i18n="mpPerk3Desc">-15% kedvezmény + ingyenes háztól-házig szállítás 10 km-en belül</p>
+            </div>
+            <div class="mp-perk-card">
+              <h4 class="mp-perk-title" data-i18n="mpPerk5Title">5+ pár: -20% csoportos kedvezmény</h4>
+              <p class="mp-perk-desc" data-i18n="mpPerk5Desc">Egyedi csoportos ajánlat + ingyenes szállítás</p>
+            </div>
+          </div>
+          <div class="mp-coverage-bar">
+            <span class="mp-coverage-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              <span data-i18n="mpTownsLabel">Ingyenes szállítási zóna (10 km):</span>
+            </span>
+            <span class="mp-coverage-towns" data-i18n="mpTowns">Délegyháza · Dunavarsány · Taksony · Dunaharaszti · Majosháza · Áporka · Kiskunlacháza · Szigethalom</span>
+          </div>
+          <div class="mp-footer">
+            <span class="mp-footer-hint">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <span>Előzetes időpont-egyeztetéssel · Hétvégén és este is</span>
+            </span>
+            <a href="/kapcsolat?pairs=3%2B&amp;pickup=yes" class="btn btn-primary" data-i18n="mpCta">Időpontfoglalás kedvezménnyel</a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -370,6 +410,7 @@
         <aside class="finder-rec-card reveal" aria-live="polite">
           <span class="finder-rec-badge" data-i18n="finderRecLabel">Neked ajánlott csomag</span>
           <h3 id="finderRecTitle" data-i18n="svc2Title">Prémium szerviz</h3>
+          <div class="finder-rec-promo" id="finderRecPromo"></div>
           <p class="finder-rec-reason" id="finderRecReason" data-i18n="finderRecReasonPrem">A talpkarcok, a jeges pályán való biztos élfogás vagy a bakancs/DIN kalibrálás miatt a Prémium szerviz ad teljes és biztonságos felújítást.</p>
           <ul class="finder-rec-feats">
             <li>
@@ -491,7 +532,7 @@
         <div class="location-map-wrap reveal">
           <div class="location-map">
             <iframe
-              src="https://www.google.com/maps?q=D%C3%A9legyh%C3%A1za,+Magyarorsz%C3%A1g&output=embed"
+              src="https://www.google.com/maps/q=D%C3%A9legyh%C3%A1za,+Magyarorsz%C3%A1g&output=embed"
               title="CarvteX Síszerviz — térkép" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
           <div class="location-map-hint">
