@@ -126,6 +126,7 @@
                 <button type="button" class="form-pill" data-pill-group="pairs" data-pill-val="2" aria-pressed="false" data-i18n="formPairs2">2 pár</button>
                 <button type="button" class="form-pill" data-pill-group="pairs" data-pill-val="3+" aria-pressed="false" data-i18n="formPairs3">3+ pár (családi)</button>
               </div>
+              <div class="form-pair-notice" id="pairNotice" style="display:none;" role="status"></div>
             </div>
             <div class="form-field">
               <label id="lblUrgency" data-i18n="formUrgencyLabel">Mikorra van rá szükséged?</label>
@@ -133,6 +134,21 @@
                 <button type="button" class="form-pill" data-pill-group="urgency" data-pill-val="normal" aria-pressed="true" data-i18n="formUrg1">Normál (24–48 órán belül)</button>
                 <button type="button" class="form-pill" data-pill-group="urgency" data-pill-val="urgent" aria-pressed="false" data-i18n="formUrg2">Hétvégén indulok (Sürgős)</button>
                 <button type="button" class="form-pill" data-pill-group="urgency" data-pill-val="preseason" aria-pressed="false" data-i18n="formUrg3">Szezon eleji felkészítés</button>
+              </div>
+            </div>
+            <div class="form-field">
+              <div class="pickup-box" id="pickupBox">
+                <label class="pickup-check-label" for="cPickup">
+                  <input type="checkbox" id="cPickup" name="pickup">
+                  <div class="pickup-check-text">
+                    <span class="pickup-check-title" data-i18n="pickupCheckLabel">Kérem a sílécek háztól-házig el- és visszaszállítását (10 km-es körzetben)</span>
+                    <span class="pickup-badge-free" id="pickupFreeBadge" data-i18n="pickupFreeTag" style="display:none;">INGYENES 3+ pár esetén!</span>
+                  </div>
+                </label>
+                <div class="pickup-address-wrap" id="pickupAddressWrap">
+                  <label for="cPickupAddress" data-i18n="pickupAddressLabel">Átvételi &amp; visszaszállítási cím</label>
+                  <input type="text" id="cPickupAddress" name="pickupAddress" placeholder="pl. 2337 Délegyháza, Fő utca 12." data-i18n-placeholder="pickupAddressPlaceholder">
+                </div>
               </div>
             </div>
             <div class="form-field">
@@ -219,6 +235,10 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
                 <span data-i18n="dropoffBoot"><strong>Kötésbeállításhoz:</strong> Kérjük, hozz magaddal egy darab síbakancsot a pontos DIN és talphossz-beállításhoz.</span>
               </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
+                <span data-i18n="dropoffPickup"><strong>Háztól-házig szállítás:</strong> 3+ pár síléc esetén díjmentes felvétel és visszahozatal 10 km-es körzetben (Délegyháza, Dunavarsány, Dunaharaszti, Taksony, Majosháza stb.).</span>
+              </li>
             </ul>
           </div>
 
@@ -266,6 +286,7 @@
     <div class="footer-col">
       <h4 data-i18n="footerContactTitle">Kapcsolat</h4>
       <ul>
+        <li>Délegyháza, Magyarország</li>
         <li><a href="mailto:carvtexszerviz@gmail.com">carvtexszerviz@gmail.com</a></li>
         <li><a href="tel:+36308849273">+36 30 884 9273</a></li>
       </ul>
