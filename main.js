@@ -169,6 +169,7 @@
     };
     var recTitle = document.getElementById('finderRecTitle');
     var recReason = document.getElementById('finderRecReason');
+    var recPromo = document.getElementById('finderRecPromo');
     var recFeats = [
       document.getElementById('finderRecFeat1'),
       document.getElementById('finderRecFeat2'),
@@ -212,6 +213,20 @@
         }
       }
 
+      if(recPromo){
+        if(state.pairs === '2'){
+          recPromo.setAttribute('data-i18n', 'finderPromo2');
+          recPromo.classList.add('is-visible');
+        } else if(state.pairs === '3+'){
+          recPromo.setAttribute('data-i18n', 'finderPromo3');
+          recPromo.classList.add('is-visible');
+        } else {
+          recPromo.removeAttribute('data-i18n');
+          recPromo.innerHTML = '';
+          recPromo.classList.remove('is-visible');
+        }
+      }
+
       if(window.applyLang){
         window.applyLang(document.documentElement.lang || 'hu');
       }
@@ -220,6 +235,9 @@
         var url = '/kapcsolat?service=' + encodeURIComponent(serviceParam) +
                   '&pairs=' + encodeURIComponent(state.pairs) +
                   '&boot=' + encodeURIComponent(state.boot);
+        if(state.pairs === '3+'){
+          url += '&pickup=yes';
+        }
         recCta.setAttribute('href', url);
       }
     }

@@ -5,6 +5,33 @@
   var selectedPairs = '1';
   var selectedUrgency = 'normal';
   var pillBtns = Array.prototype.slice.call(form.querySelectorAll('.form-pill'));
+  var pairNotice = document.getElementById('pairNotice');
+  var pickupBox = document.getElementById('pickupBox');
+  var pickupCheckbox = document.getElementById('cPickup');
+  var pickupFreeBadge = document.getElementById('pickupFreeBadge');
+  var pickupAddressWrap = document.getElementById('pickupAddressWrap');
+  var pickupAddressInput = document.getElementById('cPickupAddress');
+
+  function updatePairUi(val) {
+    if (!pairNotice) return;
+    if (val === '2') {
+      pairNotice.setAttribute('data-i18n', 'pairNotice2');
+      pairNotice.style.display = 'block';
+      if (pickupFreeBadge) pickupFreeBadge.style.display = 'none';
+    } else if (val === '3+') {
+      pairNotice.setAttribute('data-i18n', 'pairNotice3');
+      pairNotice.style.display = 'block';
+      if (pickupFreeBadge) pickupFreeBadge.style.display = 'inline-flex';
+    } else {
+      pairNotice.removeAttribute('data-i18n');
+      pairNotice.innerHTML = '';
+      pairNotice.style.display = 'none';
+      if (pickupFreeBadge) pickupFreeBadge.style.display = 'none';
+    }
+    if (window.applyLang) {
+      window.applyLang(document.documentElement.lang || 'hu');
+    }
+  }
 
   function selectPill(group, val) {
     pillBtns.forEach(function (btn) {
@@ -13,7 +40,10 @@
         btn.setAttribute('aria-pressed', match ? 'true' : 'false');
       }
     });
-    if (group === 'pairs') selectedPairs = val;
+    if (group === 'pairs') {
+      selectedPairs = val;
+      updatePairUi(val);
+    }
     if (group === 'urgency') selectedUrgency = val;
   }
 
@@ -25,11 +55,26 @@
     });
   });
 
-  // Pre-select service option and pairs if navigated with ?service=...&pairs=...
+  if (pickupCheckbox) {
+    pickupCheckbox.addEventListener('change', function () {
+      var isChecked = pickupCheckbox.checked;
+      if (pickupBox) pickupBox.classList.toggle('is-active', isChecked);
+      if (pickupAddressWrap) pickupAddressWrap.classList.toggle('is-open', isChecked);
+      if (pickupAddressInput) {
+        pickupAddressInput.required = isChecked;
+        if (isChecked) {
+          pickupAddressInput.focus();
+        }
+      }
+    });
+  }
+
+  // Pre-select service option, pairs, and pickup if navigated with ?service=...&pairs=...&pickup=...
   try {
     var params = new URLSearchParams(window.location.search);
     var requestedService = params.get('service');
     var requestedPairs = params.get('pairs');
+    var requestedPickup = params.get('pickup');
     var serviceSelect = document.getElementById('cService');
     if (requestedService && serviceSelect) {
       var map = {
@@ -50,6 +95,12 @@
     }
     if (requestedPairs && (requestedPairs === '1' || requestedPairs === '2' || requestedPairs === '3+')) {
       selectPill('pairs', requestedPairs);
+    }
+    if (requestedPickup === 'yes' || requestedPickup === '1' || requestedPickup === 'true') {
+      if (pickupCheckbox) {
+        pickupCheckbox.checked = true;
+        pickupCheckbox.dispatchEvent(new Event('change'));
+      }
     }
   } catch (e) {
     /* ignore URLSearchParams errors in legacy browsers */
@@ -74,8 +125,17 @@
     var activeUrgBtn = form.querySelector('.form-pill[data-pill-group="urgency"][aria-pressed="true"]');
     var pairsLabel = activePairsBtn ? activePairsBtn.textContent.trim() : selectedPairs;
     var urgLabel = activeUrgBtn ? activeUrgBtn.textContent.trim() : selectedUrgency;
+
+    var isPickupChecked = pickupCheckbox ? pickupCheckbox.checked : false;
+    var pickupAddressVal = (pickupAddressInput && isPickupChecked) ? pickupAddressInput.value.trim() : '';
+    var pickupSummary = 'Nem kér szállítást (műhely leadás)';
+    if (isPickupChecked) {
+      pickupSummary = (selectedPairs === '3+' ? 'Ingyenes háztól-házig szállítás (10 km)' : 'Háztól-házig szállítás kérése (10 km)') +
+        (pickupAddressVal ? ' — Cím: ' + pickupAddressVal : '');
+    }
+
     var rawMsg = (form.message.value || '').trim();
-    var metaPrefix = '[Sílécek száma: ' + pairsLabel + ' | Időzítés: ' + urgLabel + ']';
+    var metaPrefix = '[Sílécek száma: ' + pairsLabel + ' | Időzítés: ' + urgLabel + ' | Szállítás: ' + pickupSummary + ']';
     var combinedMessage = rawMsg ? (metaPrefix + '\n\n' + rawMsg) : metaPrefix;
 
     var payload = {
@@ -85,6 +145,8 @@
       service: form.service.value,
       pairs: pairsLabel,
       urgency: urgLabel,
+      pickup: isPickupChecked,
+      pickupAddress: pickupAddressVal,
       message: combinedMessage,
       consent: form.consent.checked,
       botcheck: form.botcheck.value
@@ -104,6 +166,10 @@
         status.textContent = successText ? successText.textContent : '';
         status.classList.add('is-success');
         form.reset();
+        selectPill('pairs', '1');
+        selectPill('urgency', 'normal');
+        if (pickupBox) pickupBox.classList.remove('is-active');
+        if (pickupAddressWrap) pickupAddressWrap.classList.remove('is-open');
       } else {
         status.textContent = errorText ? errorText.textContent : '';
         status.classList.add('is-error');
