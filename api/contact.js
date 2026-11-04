@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
   }
   body = body || {};
 
-  const { name, email, phone, service, message, consent, botcheck } = body;
+  const { name, email, phone, service, message, consent, botcheck, pairs, urgency, pickup, pickupAddress } = body;
 
   // Honeypot: real visitors never fill this hidden field. Bots usually do.
   // Silently accept without sending any email.
@@ -51,13 +51,20 @@ module.exports = async (req, res) => {
   // set CONTACT_FROM_EMAIL in Vercel to switch over — no code change needed.
   const fromAddress = process.env.CONTACT_FROM_EMAIL || 'CarvteX Website <onboarding@resend.dev>';
 
+  const pickupInfo = pickup
+    ? `IGEN (Cím: ${escapeHtml(pickupAddress || 'nincs megadva')})`
+    : 'Nem (személyes leadás a műhelyben)';
+
   const notifyHtml = `
-    <h2 style="font-family:sans-serif;color:#0B1C2C;">Új megkeresés — carvtex website</h2>
+    <h2 style="font-family:sans-serif;color:#0B1C2C;">Új megkeresés — CarvteX Síszerviz</h2>
     <table style="font-family:sans-serif;font-size:14px;color:#0B1C2C;border-collapse:collapse;">
       <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Név</td><td>${escapeHtml(name)}</td></tr>
       <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Email</td><td>${escapeHtml(email)}</td></tr>
       <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Telefon</td><td>${escapeHtml(phone || '-')}</td></tr>
       <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Szolgáltatás</td><td>${escapeHtml(service || '-')}</td></tr>
+      <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Sílécek száma</td><td>${escapeHtml(pairs || '-')}</td></tr>
+      <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Időzítés</td><td>${escapeHtml(urgency || '-')}</td></tr>
+      <tr><td style="padding:4px 12px 4px 0;font-weight:bold;">Háztól-házig szállítás (10 km)</td><td>${pickupInfo}</td></tr>
     </table>
     <p style="font-family:sans-serif;font-size:14px;color:#0B1C2C;"><b>Üzenet:</b><br>${escapeHtml(message || '-').replace(/\n/g, '<br>')}</p>
     <p style="font-family:sans-serif;font-size:12px;color:#55687C;">A carvtex website kapcsolat űrlapjáról küldve. Válaszolj közvetlenül erre az emailre, hogy elérd a feladót.</p>
