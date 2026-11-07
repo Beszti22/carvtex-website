@@ -106,85 +106,145 @@
 
 <main id="main">
 
-<!-- PAGE INTRO -->
-  <section class="page-intro">
+<!-- SERVICES HERO VISUAL — shared workbench-photo background spanning the
+     page intro and the 3D story below, so it reads as one continuous zone -->
+  <div class="services-visual-hero">
+  <section class="page-intro page-intro-services">
     <div class="container">
-      <span class="eyebrow" data-i18n="servicesEyebrow">Mit nyújtunk</span>
-      <h1 data-i18n="servicesH1">Szolgáltatások</h1>
+      <span class="eyebrow" data-i18n="servicesEyebrow">Amit csinálunk</span>
+      <h1 data-i18n="servicesH2">Szolgáltatások</h1>
       <p data-i18n="servicesLead">Egy gyors él- és wax-frissítéstől a teljes versenyfelkészítésig — minden léc ugyanazt a odafigyelést kapja.</p>
     </div>
   </section>
 
-<!-- 3D MODEL VIEWER SECTION (Step #2: Interactive Ski Anatomy Explorer) -->
-  <section class="model-section" id="ski-model" aria-label="3D Síléc-anatómia bemutató">
-    <div class="container">
-      <div class="model-wrap">
-        <div class="model-canvas-holder">
-          <canvas id="skiCanvas" aria-label="Interaktív 3D síléc modell. Húzd az egeret vagy az ujjad a forgatáshoz, görgess a zoomoláshoz."></canvas>
-          <div class="model-loader" id="modelLoader" role="status" aria-live="polite">
-            <div class="model-spinner" aria-hidden="true"></div>
-            <span class="model-loader-text" data-i18n="modelLoading">3D síléc betöltése...</span>
-          </div>
-          <div class="model-controls-hint">
-            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-            <span data-i18n="modelHint">Forgasd egérrel vagy érintéssel · Kattints az alkatrészekre</span>
-          </div>
-          <div class="model-overlay-badge">
-            <span class="badge-dot"></span>
-            <span>CarvteX 3D Lab</span>
-          </div>
-          <!-- 3D Hotspot pin anchors (positioned via Three.js vector projection) -->
-          <div class="hotspot-overlay" id="hotspotOverlay" aria-hidden="false">
-            <button type="button" class="hotspot-pin" id="pin-base" data-part="base" aria-label="Talp &amp; P-Tex anatómia">
-              <span class="pin-pulse"></span>
-              <span class="pin-dot"></span>
-              <span class="pin-tag" data-i18n="partBase">Talp (P-Tex)</span>
-            </button>
-            <button type="button" class="hotspot-pin" id="pin-edge" data-part="edge" aria-label="Acél él anatómia">
-              <span class="pin-pulse"></span>
-              <span class="pin-dot"></span>
-              <span class="pin-tag" data-i18n="partEdge">Acél él</span>
-            </button>
-            <button type="button" class="hotspot-pin" id="pin-binding" data-part="binding" aria-label="Kötés &amp; DIN anatómia">
-              <span class="pin-pulse"></span>
-              <span class="pin-dot"></span>
-              <span class="pin-tag" data-i18n="partBinding">Kötés / DIN</span>
-            </button>
-            <button type="button" class="hotspot-pin" id="pin-core" data-part="core" aria-label="Faszerkezet &amp; Topsheet anatómia">
-              <span class="pin-pulse"></span>
-              <span class="pin-dot"></span>
-              <span class="pin-tag" data-i18n="partCore">Famag &amp; Topsheet</span>
-            </button>
-          </div>
+<!-- 3D SKI STORY — sticky canvas, scroll-driven steps -->
+  <section class="ski-story" id="skiStory" aria-label="CarvteX síléc — interaktív bemutató">
+    <div class="ski-story-sticky">
+      <canvas id="skiCanvas" aria-hidden="true"></canvas>
+
+      <!-- 3D Model Loading Progress HUD -->
+      <div class="ski-loader" id="skiLoader" role="status" aria-live="polite">
+        <span class="ski-loader-spinner" aria-hidden="true"></span>
+        <span class="ski-loader-text" data-i18n="skiLoading">3D síléc modell betöltése…</span>
+        <span class="ski-loader-pct" id="skiLoaderPct">0%</span>
+      </div>
+
+      <div class="ski-story-fallback">
+        <strong>CARVTEX</strong>
+        <span data-i18n="viewerFallback">A 3D nézethez modern böngésző szükséges — lent minden más ugyanúgy működik.</span>
+      </div>
+
+      <div class="ski-story-hint" aria-hidden="true">
+        <span data-i18n="scrollHint">Görgess tovább</span>
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      </div>
+
+      <!-- Interactive 3-step quick-switcher pills + drag hint -->
+      <div class="ski-hud-bottom">
+        <span class="ski-drag-hint" data-i18n="skiDragHint">Húzd a forgatáshoz · Görgess a részletekért</span>
+        <div class="ski-step-nav" role="group" aria-label="Síléc részek gyorsválasztó">
+          <button type="button" class="ski-step-btn active" data-target-part="binding" aria-pressed="true" data-i18n="stepBtn1">01 Kötés</button>
+          <button type="button" class="ski-step-btn" data-target-part="steel_edges" aria-pressed="false" data-i18n="stepBtn2">02 Acélél</button>
+          <button type="button" class="ski-step-btn" data-target-part="base,sidewall" aria-pressed="false" data-i18n="stepBtn3">03 Talp &amp; Wax</button>
         </div>
-        <div class="model-info">
-          <div class="model-info-header">
-            <span class="eyebrow" data-i18n="anatomyEyebrow">Interaktív anatómia</span>
-            <h2 id="partTitle" data-i18n="partBase">Talp (P-Tex)</h2>
-          </div>
-          <p class="model-part-desc" id="partDesc" data-i18n="partBaseDesc">A síléc talpa porózus polietilénből készül, amely beszívja a forró waxot, biztosítva a maximális siklást és védelmet. Karcolások esetén P-Tex feltöltéssel és síkba csiszolással állítjuk helyre az eredeti szerkezetet.</p>
-          <div class="part-details-card" id="partDetails">
-            <h4 data-i18n="partWhyMatters">Miért kulcsfontosságú a havon?</h4>
-            <p id="partWhy" data-i18n="partBaseWhy">A száraz, fehéredő talp nemcsak lassítja a lécet, de tapad a hóra és növeli a fáradtságot. A friss melegwax 30–40%-kal javítja a siklási élményt és megakadályozza a talp oxidációját.</p>
-            <div class="part-service-link">
-              <span data-i18n="partRelatedSvc">Kapcsolódó szerviz:</span>
-              <strong id="partSvc" data-i18n="svc2Title">Prémium szerviz</strong>
-            </div>
-          </div>
-          <div class="model-tabs" role="tablist" aria-label="Síléc alkatrészek">
-            <button class="model-tab active" data-part="base" role="tab" aria-selected="true" data-i18n="partBase">Talp</button>
-            <button class="model-tab" data-part="edge" role="tab" aria-selected="false" data-i18n="partEdge">Acél él</button>
-            <button class="model-tab" data-part="binding" role="tab" aria-selected="false" data-i18n="partBinding">Kötés</button>
-            <button class="model-tab" data-part="core" role="tab" aria-selected="false" data-i18n="partCore">Szerkezet</button>
-          </div>
+      </div>
+
+      <!-- Part-callout arrows: only the one matching the section's
+           data-active-part (set by ski-viewer.js) is shown, via CSS. -->
+      <div class="ski-annotations" aria-hidden="true">
+        <div class="ski-annotation" data-for="binding" style="--ax:58%;--ay:42%;">
+          <span class="ski-annotation-dot"></span>
+          <span class="ski-annotation-label" data-i18n="annotBinding">Kötés</span>
+        </div>
+        <div class="ski-annotation" data-for="steel_edges" style="--ax:63%;--ay:50%;">
+          <span class="ski-annotation-dot"></span>
+          <span class="ski-annotation-label" data-i18n="annotEdge">Acélél</span>
+        </div>
+        <div class="ski-annotation" data-for="base,sidewall" style="--ax:50%;--ay:54%;">
+          <span class="ski-annotation-dot"></span>
+          <span class="ski-annotation-label" data-i18n="annotBase">Talp</span>
         </div>
       </div>
     </div>
-  </section>
 
-<!-- SERVICES -->
+    <!-- Scroll steps: each is at least 1 viewport tall so user has time to read -->
+    <div class="ski-story-steps" id="skiSteps">
+
+      <!-- STEP 1: BINDING / SAFETY -->
+      <div class="ski-step active" data-part="binding">
+        <div class="ski-step-card">
+          <span class="ski-step-badge" data-i18n="step1Badge">Biztonság &amp; Kontroll</span>
+          <h2 data-i18n="step1H2">Kötés &amp; DIN-beállítás</h2>
+          <p class="ski-step-lead" data-i18n="step1Lead">A síkötés a legfontosabb biztonsági felszerelésed: pontosan akkor kell kioldania, amikor kell, és stabilan fognia, amikor kanyarodsz.</p>
+
+          <div class="ski-step-details">
+            <h3 data-i18n="step1WhyTitle">Miért kulcsfontosságú?</h3>
+            <p data-i18n="step1WhyText">A rosszul beállított DIN-érték a leggyakoribb térd- és lábsérülések forrása. Egy bakancscsere, hízás, fogyás vagy fejlődés a sítechnikádban mind megváltoztatja a szükséges kioldási nyomatékot.</p>
+          </div>
+
+          <div class="ski-step-service">
+            <span class="service-pill" data-i18n="step1Svc">Kötésbeállítás / Prémium szerviz</span>
+            <span class="service-note" data-i18n="step1Note">DIN ISO 11088 szabvány szerint</span>
+          </div>
+
+          <a href="/kapcsolat?service=K%C3%B6t%C3%A9sbe%C3%A1ll%C3%ADt%C3%A1s" class="btn btn-primary" data-i18n="step1Cta">Kötésbeállítást kérek</a>
+        </div>
+      </div>
+
+      <!-- STEP 2: STEEL EDGES / GRIP -->
+      <div class="ski-step" data-part="steel_edges">
+        <div class="ski-step-card">
+          <span class="ski-step-badge" data-i18n="step2Badge">Kanyarstabilitás</span>
+          <h2 data-i18n="step2H2">Acélél precíziós élezés</h2>
+          <p class="ski-step-lead" data-i18n="step2Lead">Jeges pálya, kemény műhó? Csak a tökéletesen megmunkált, borotvaéles acélél tart meg a kanyarban.</p>
+
+          <div class="ski-step-details">
+            <h3 data-i18n="step2WhyTitle">Hogyan dolgozunk rajta?</h3>
+            <p data-i18n="step2WhyText">A síléc alsó és oldalsó élét a kívánt szögben (88°–89°) élezzük meg, majd finom gyémántkővel sorjátlanítjuk. Ez adja meg a sima kanyarváltást anélkül, hogy a léc "belekapna" a hóba.</p>
+          </div>
+
+          <div class="ski-step-service">
+            <span class="service-pill" data-i18n="step2Svc">Alapszerviz / Prémium szerviz</span>
+            <span class="service-note" data-i18n="step2Note">Verseny-technológia alapján</span>
+          </div>
+
+          <a href="/kapcsolat?service=Alapszerviz" class="btn btn-primary" data-i18n="step2Cta">Élezést kérek</a>
+        </div>
+      </div>
+
+      <!-- STEP 3: BASE & WAX / SPEED -->
+      <div class="ski-step" data-part="base,sidewall">
+        <div class="ski-step-card">
+          <span class="ski-step-badge" data-i18n="step3Badge">Siklás &amp; Védelem</span>
+          <h2 data-i18n="step3H2">Talpfeltöltés &amp; Melegwax</h2>
+          <p class="ski-step-lead" data-i18n="step3Lead">A száraz, fehéredő talp tapad a hóra és növeli a fáradtságot. A friss melegwax megvédi a talpat és visszaadja a gondtalan sebességet.</p>
+
+          <div class="ski-step-details">
+            <h3 data-i18n="step3WhyTitle">Miért kulcsfontosságú?</h3>
+            <p data-i18n="step3WhyText">A porózus P-Tex talp forró vasalással szívja magába a paraffin alapú waxot. A mély karcokat P-Tex pisztollyal kitöltjük, síkba csiszoljuk, majd speciális kefékkel nyitjuk meg a mikrostruktúrát.</p>
+          </div>
+
+          <div class="ski-step-service">
+            <span class="service-pill" data-i18n="step3Svc">Prémium szerviz</span>
+            <span class="service-note" data-i18n="step3Note">P-Tex javítás + melegwaxolás</span>
+          </div>
+
+          <a href="/kapcsolat?service=Pr%C3%A9mium%20szerviz" class="btn btn-primary" data-i18n="step3Cta">Prémium felújítást kérek</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  </div><!-- /.services-visual-hero -->
+
+<!-- STEP #1: SERVICE PACKAGES WITH DIRECT INQUIRY LINKS -->
   <section id="services">
     <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-i18n="tiersEyebrow">Válassz csomagot</span>
+        <h2 data-i18n="tiersH2">Szerviz csomagok</h2>
+        <p data-i18n="servicesLead">Egy gyors él- és wax-frissítéstől a teljes versenyfelkészítésig — minden léc ugyanazt a odafigyelést kapja.</p>
+      </div>
       <div class="service-grid">
         <div class="service-card reveal" data-tilt>
           <div class="service-card-top">
@@ -432,7 +492,93 @@
     </div>
   </section>
 
-<!-- BOTTOM CTA -->
+<!-- STEP #4: 3-CLICK SERVICE DIAGNOSTIC FINDER (ON SERVICES PAGE TOO) -->
+  <section id="serviceFinder">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-i18n="finderEyebrow">Gyors diagnosztika</span>
+        <h2 data-i18n="finderH2">Melyik szervizre van szüksége a lécednek?</h2>
+        <p data-i18n="finderLead">Válaszolj 3 gyors kérdésre, és megmutatjuk a lécednek megfelelő csomagot — amit 1 kattintással át is vihetsz az időpontfoglaláshoz.</p>
+      </div>
+      <div class="finder-grid">
+        <div class="finder-questions reveal">
+          <div class="finder-q-group" role="group" aria-labelledby="sfq1">
+            <h3 class="finder-q-title" id="sfq1" data-i18n="finderQ1">1. Milyen állapotban van most a síléced?</h3>
+            <div class="finder-opts">
+              <button type="button" class="finder-opt" data-q="condition" data-val="refresh" aria-pressed="false">
+                <span class="finder-opt-dot" aria-hidden="true"></span>
+                <span data-i18n="finderQ1Opt1">Csak felfrissíteném síút előtt (élezés &amp; wax)</span>
+              </button>
+              <button type="button" class="finder-opt" data-q="condition" data-val="scratched" aria-pressed="true">
+                <span class="finder-opt-dot" aria-hidden="true"></span>
+                <span data-i18n="finderQ1Opt2">Karcos a talp, vagy megcsúszik jeges pályán</span>
+              </button>
+              <button type="button" class="finder-opt" data-q="condition" data-val="binding_only" aria-pressed="false">
+                <span class="finder-opt-dot" aria-hidden="true"></span>
+                <span data-i18n="finderQ1Opt3">Csak a kötést kell a bakancsomhoz állítani</span>
+              </button>
+            </div>
+          </div>
+          <div class="finder-q-group" role="group" aria-labelledby="sfq2">
+            <h3 class="finder-q-title" id="sfq2" data-i18n="finderQ2">2. Váltottál síbakancsot, vagy változott a súlyod / tudásszinted?</h3>
+            <div class="finder-opts">
+              <button type="button" class="finder-opt" data-q="boot" data-val="no" aria-pressed="true">
+                <span class="finder-opt-dot" aria-hidden="true"></span>
+                <span data-i18n="finderQ2Opt1">Nem, ugyanazzal a bakanccsal csúszom</span>
+              </button>
+              <button type="button" class="finder-opt" data-q="boot" data-val="yes" aria-pressed="false">
+                <span class="finder-opt-dot" aria-hidden="true"></span>
+                <span data-i18n="finderQ2Opt2">Igen, új bakancsom van / kérek DIN-ellenőrzést</span>
+              </button>
+            </div>
+          </div>
+          <div class="finder-q-group" role="group" aria-labelledby="sfq3">
+            <h3 class="finder-q-title" id="sfq3" data-i18n="finderQ3">3. Hány pár sílécet hoznál?</h3>
+            <div class="finder-opts">
+              <button type="button" class="finder-opt" data-q="pairs" data-val="1" aria-pressed="true">
+                <span class="finder-opt-dot" aria-hidden="true"></span>
+                <span data-i18n="finderQ3Opt1">1 pár síléc</span>
+              </button>
+              <button type="button" class="finder-opt" data-q="pairs" data-val="2" aria-pressed="false">
+                <span class="finder-opt-dot" aria-hidden="true"></span>
+                <span data-i18n="finderQ3Opt2">2 pár síléc</span>
+              </button>
+              <button type="button" class="finder-opt" data-q="pairs" data-val="3+" aria-pressed="false">
+                <span class="finder-opt-dot" aria-hidden="true"></span>
+                <span data-i18n="finderQ3Opt3">3+ pár (családi / csoportos)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <aside class="finder-rec-card reveal" aria-live="polite">
+          <span class="finder-rec-badge" data-i18n="finderRecLabel">Neked ajánlott csomag</span>
+          <h3 id="finderRecTitle" data-i18n="svc2Title">Prémium szerviz</h3>
+          <div class="finder-rec-promo" id="finderRecPromo"></div>
+          <p class="finder-rec-reason" id="finderRecReason" data-i18n="finderRecReasonPrem">A talpkarcok, a jeges pályán való biztos élfogás vagy a bakancs/DIN kalibrálás miatt a Prémium szerviz ad teljes és biztonságos felújítást.</p>
+          <ul class="finder-rec-feats">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span id="finderRecFeat1" data-i18n="svc2Feat1">P-Tex talpfeltöltés és síkba csiszolás</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span id="finderRecFeat2" data-i18n="svc2Feat3">Hóhőmérséklethez választott melegwax</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span id="finderRecFeat3" data-i18n="svc2Feat4">Teljes kötés- és DIN-kalibrálás</span>
+            </li>
+          </ul>
+          <a href="/kapcsolat?service=Pr%C3%A9mium%20szerviz&amp;pairs=1&amp;boot=no" class="btn btn-primary" id="finderRecCta">
+            <span data-i18n="finderRecCta">Időpontfoglalás erre a csomagra</span>
+            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+<!-- CTA BANNER -->
   <section style="padding:0;border-top:none;">
     <div class="cta-banner reveal">
       <div class="container cta-banner-inner">
@@ -440,7 +586,7 @@
         <p data-i18n="ctaLead">Hozd be a léceidet szervizre — élezés, waxolás vagy teljes versenyfelkészítés, edzői szemmel elvégezve.</p>
         <div class="cta-actions">
           <a href="/kapcsolat" class="btn btn-primary" data-i18n="ctaBtn1">Időpontfoglalás</a>
-          <a href="/#about" class="btn btn-outline" data-i18n="navAbout">Rólunk</a>
+          <a href="mailto:carvtexszerviz@gmail.com" class="btn btn-outline" data-i18n="ctaBtn2">Írj emailt</a>
         </div>
       </div>
     </div>
