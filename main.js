@@ -137,23 +137,47 @@
   var baRange = document.getElementById('baRange');
   var baPresetBtns = Array.prototype.slice.call(document.querySelectorAll('.ba-preset-btn'));
   if(baStage && baRange){
+    var baAnimId = null;
     function setBaPos(val){
       var clamped = Math.max(4, Math.min(96, parseFloat(val) || 50));
       baStage.style.setProperty('--ba-pos', clamped + '%');
       baRange.value = String(clamped);
+      baStage.classList.toggle('ba-hide-before-tag', clamped < 22);
+      baStage.classList.toggle('ba-hide-after-tag', clamped > 78);
       baPresetBtns.forEach(function(btn){
         var target = parseFloat(btn.getAttribute('data-ba-pos'));
-        var isMatch = Math.abs(clamped - target) <= 8;
+        var isMatch = Math.abs(clamped - target) <= 12;
         btn.classList.toggle('active', isMatch);
         btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
       });
     }
+    function animateBaPos(targetVal, duration){
+      if(baAnimId) cancelAnimationFrame(baAnimId);
+      var startVal = parseFloat(baRange.value) || 50;
+      var target = Math.max(4, Math.min(96, parseFloat(targetVal) || 50));
+      var startTime = performance.now();
+      var dur = duration || 260;
+      function step(now){
+        var elapsed = now - startTime;
+        var progress = Math.min(1, elapsed / dur);
+        var ease = 1 - Math.pow(1 - progress, 3);
+        var current = startVal + (target - startVal) * ease;
+        setBaPos(current);
+        if(progress < 1){
+          baAnimId = requestAnimationFrame(step);
+        } else {
+          baAnimId = null;
+        }
+      }
+      baAnimId = requestAnimationFrame(step);
+    }
     baRange.addEventListener('input', function(){
+      if(baAnimId) cancelAnimationFrame(baAnimId);
       setBaPos(baRange.value);
     });
     baPresetBtns.forEach(function(btn){
       btn.addEventListener('click', function(){
-        setBaPos(btn.getAttribute('data-ba-pos'));
+        animateBaPos(btn.getAttribute('data-ba-pos'));
       });
     });
     setBaPos(50);
