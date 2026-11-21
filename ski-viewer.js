@@ -37,6 +37,7 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
   var steps = Array.prototype.slice.call(section.querySelectorAll('.ski-step'));
   var stepButtons = Array.prototype.slice.call(section.querySelectorAll('.ski-step-btn'));
+  var triggers = Array.prototype.slice.call(section.querySelectorAll('.ski-track-trigger'));
 
   var renderer;
   try {
@@ -92,7 +93,7 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
   // the text column on the left on desktop (>=860px); on mobile (<860px) we
   // center the ski so it never clips off the right edge.
   function getPanFraction() {
-    return window.innerWidth >= 860 ? 0.12 : 0;
+    return window.innerWidth >= 860 ? 0.16 : 0;
   }
 
   function fitModelToView() {
@@ -239,10 +240,10 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
   // driving their visibility directly.
   section.setAttribute('data-active-part', activePart);
 
-  var targetRotY = -0.75;
-  var currentRotY = -0.75;
-  var targetRotX = 0.7;
-  var currentRotX = 0.7;
+  var targetRotY = -0.6;
+  var currentRotY = -0.6;
+  var targetRotX = 0.65;
+  var currentRotX = 0.65;
 
   // Interactive user drag offset (springing back smoothly to the active step pose)
   var isDragging = false;
@@ -309,6 +310,13 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
       });
       if (stepEl) {
         activateStep(stepEl);
+      }
+      var triggerEl = triggers.find(function (t) {
+        return t.getAttribute('data-track-part') === targetPart;
+      });
+      if (triggerEl) {
+        triggerEl.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'center' });
+      } else if (stepEl) {
         stepEl.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'center' });
       }
     });
@@ -337,7 +345,14 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
     }
     var targetStep = partName && partToStep[partName];
     if (targetStep) {
-      targetStep.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'center' });
+      activateStep(targetStep);
+      var partKey = targetStep.getAttribute('data-part');
+      var triggerEl = triggers.find(function (t) {
+        return t.getAttribute('data-track-part') === partKey;
+      });
+      if (triggerEl) {
+        triggerEl.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'center' });
+      }
     }
   }
 
@@ -388,8 +403,8 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
   //     x = -Math.PI/2  -> clean top-down view of the BASE ("talp felfelé")
   // Story order: binding -> steel_edges -> base,sidewall
   var STEP_POSES = {
-    binding: { y: -0.75, x: 0.7, z: 2.45 },
-    steel_edges: { y: -0.75, x: 0.7 - Math.PI / 2, z: 2.55 },
+    binding: { y: -0.6, x: 0.65, z: 2.55 },
+    steel_edges: { y: -0.6, x: 0.65 - Math.PI / 2, z: 2.55 },
     'base,sidewall': { y: 0, x: -Math.PI / 2, z: 2.65 }
   };
 
@@ -425,15 +440,21 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
   var io = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
-          activateStep(entry.target);
+        if (entry.isIntersecting) {
+          var partKey = entry.target.getAttribute('data-track-part') || entry.target.getAttribute('data-part');
+          var stepEl = steps.find(function (s) {
+            return s.getAttribute('data-part') === partKey;
+          });
+          if (stepEl) {
+            activateStep(stepEl);
+          }
         }
       });
     },
-    { threshold: [0.35, 0.5, 0.7] }
+    { threshold: 0.35 }
   );
-  steps.forEach(function (s) {
-    io.observe(s);
+  (triggers.length ? triggers : steps).forEach(function (el) {
+    io.observe(el);
   });
 
   // Only run the continuous rotation loop while the story section is on screen,

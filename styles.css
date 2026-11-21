@@ -622,18 +622,34 @@ header.site-header{
   }
 }
 
-/* ---------- 3D SKI STORY — sticky canvas, scroll-driven steps ---------- */
-.ski-story{position:relative;background:transparent;border-top:none;--ski-vh:min(68vh,640px);}
-.ski-story{--ski-vh:min(68dvh,640px);} /* dvh fallback-pattern, see .hero above */
+/* ---------- 3D SKI STORY — sticky canvas, pinned steps, scroll track ---------- */
+.ski-story{
+  position:relative;
+  background:transparent;
+  border-top:none;
+  --ski-sticky-h:calc(100vh - var(--nav-h));
+  --ski-sticky-h:calc(100dvh - var(--nav-h));
+}
 
 .ski-story-sticky{
-  position:sticky;top:var(--nav-h);height:var(--ski-vh);
-  overflow:hidden;z-index:1;pointer-events:none;
+  position:sticky;
+  top:var(--nav-h);
+  height:var(--ski-sticky-h);
+  max-height:680px;
+  overflow:hidden;
+  z-index:1;
+  pointer-events:none;
 }
+
 #skiCanvas{
-  position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:auto;
-  -webkit-mask-image:linear-gradient(to right, transparent 0%, transparent 24%, black 44%, black 100%);
-  mask-image:linear-gradient(to right, transparent 0%, transparent 24%, black 44%, black 100%);
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  pointer-events:auto;
+  -webkit-mask-image:linear-gradient(to right, transparent 0%, transparent 26%, black 48%, black 100%);
+  mask-image:linear-gradient(to right, transparent 0%, transparent 26%, black 48%, black 100%);
 }
 @media (max-width:859px){
   #skiCanvas{
@@ -674,9 +690,66 @@ header.site-header{
 }
 .ski-story.no-webgl .ski-story-fallback strong{font-family:var(--font-display);font-size:28px;letter-spacing:0.05em;color:rgba(255,255,255,0.7);}
 
+/* Pinned step text cards: stay vertically centered beside the 3D ski, smoothly cross-fading in place without jumping or drifting */
+.ski-step-cards-pin{
+  position:absolute;
+  left:clamp(24px, 5vw, 64px);
+  top:50%;
+  transform:translateY(-50%);
+  width:calc(100% - 48px);
+  max-width:440px;
+  z-index:3;
+  pointer-events:none;
+}
+.ski-step{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(12px);
+  transition:opacity 320ms ease, transform 320ms cubic-bezier(0.16,1,0.3,1), visibility 320ms ease;
+  pointer-events:none;
+}
+.ski-step.active{
+  position:relative;
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+.ski-step-card{
+  background:rgba(11,28,44,0.88);
+  border:1px solid rgba(255,255,255,0.14);
+  border-left:4px solid var(--color-accent);
+  border-radius:var(--radius-md);
+  padding:24px 26px;
+  box-shadow:var(--shadow-xl);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.ski-step .eyebrow{color:var(--color-accent);}
+.ski-step h2{font-size:clamp(26px,3.6vw,38px);color:#fff;margin-top:10px;text-wrap:balance;line-height:1.1;}
+.ski-step .hero-sub,.ski-step p{max-width:420px;margin-top:10px;color:rgba(255,255,255,0.88);font-size:15px;line-height:1.55;}
+.ski-step-specs{
+  display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;padding-top:12px;
+  border-top:1px solid rgba(255,255,255,0.12);
+}
+.ski-spec-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(30,155,224,0.14);border:1px solid rgba(30,155,224,0.35);
+  color:#fff;font-size:11.5px;font-weight:700;letter-spacing:0.03em;
+  padding:4px 9px;border-radius:var(--radius-sm);
+}
+.ski-spec-pill svg{width:13px;height:13px;color:var(--color-accent);flex-shrink:0;}
+.ski-step .hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;}
+.ski-step .btn{padding:9px 18px;font-size:13.5px;min-height:38px;}
+
 /* Interactive 3-step quick-switcher HUD & drag hint */
 .ski-hud-bottom{
-  position:absolute;right:5%;bottom:22px;z-index:4;
+  position:absolute;right:clamp(20px, 3.5vw, 44px);bottom:20px;z-index:4;
   display:flex;flex-direction:column;align-items:flex-end;gap:8px;
   pointer-events:auto;
 }
@@ -699,13 +772,9 @@ header.site-header{
   font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;
   color:rgba(255,255,255,0.55);
 }
-@media (max-width:640px){
-  .ski-hud-bottom{right:50%;transform:translateX(50%);align-items:center;bottom:14px;width:calc(100% - 32px);}
-  .ski-drag-hint{display:none;}
-}
 
 .ski-story-hint{
-  position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;
+  position:absolute;left:50%;bottom:20px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:5px;
   color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
   animation:skiHintBob 1.8s ease-in-out infinite;
 }
@@ -750,47 +819,38 @@ header.site-header{
   .ski-annotations{display:none;}
 }
 
-.ski-story-steps{position:relative;z-index:2;margin-top:calc(-1 * var(--ski-vh));pointer-events:none;}
-.ski-step{
-  min-height:var(--ski-vh);display:flex;flex-direction:column;justify-content:center;
-  max-width:490px;padding:0 24px;pointer-events:none;opacity:0;
-  transform:translateY(10px);transition:opacity 350ms ease, transform 350ms ease;
+/* Invisible scroll track that stretches the section for 3 natural scroll phases */
+.ski-story-track{
+  position:relative;
+  margin-top:calc(-1 * min(var(--ski-sticky-h), 680px));
+  z-index:0;
+  pointer-events:none;
 }
-.ski-step.active{opacity:1;transform:none;pointer-events:auto;}
-@media (min-width:860px){ .ski-step{padding:0 0 0 6%;} }
-.ski-step-card{
-  background:rgba(11,28,44,0.88);
-  border:1px solid rgba(255,255,255,0.14);
-  border-left:4px solid var(--color-accent);
-  border-radius:var(--radius-md);
-  padding:28px 30px;
-  box-shadow:var(--shadow-xl);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
+.ski-track-trigger{
+  height:75vh;
+  min-height:500px;
+  pointer-events:none;
 }
-.ski-step .eyebrow{color:var(--color-accent);}
-.ski-step h2{font-size:clamp(30px,4.5vw,48px);color:#fff;margin-top:12px;text-wrap:balance;}
-.ski-step .hero-sub,.ski-step p{max-width:430px;margin-top:14px;color:rgba(255,255,255,0.88);font-size:16px;line-height:1.65;}
-.ski-step-specs{
-  display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;padding-top:16px;
-  border-top:1px solid rgba(255,255,255,0.12);
-}
-.ski-spec-pill{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(30,155,224,0.14);border:1px solid rgba(30,155,224,0.35);
-  color:#fff;font-size:12px;font-weight:700;letter-spacing:0.03em;
-  padding:5px 11px;border-radius:var(--radius-sm);
-}
-.ski-spec-pill svg{width:14px;height:14px;color:var(--color-accent);flex-shrink:0;}
-.ski-step .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:20px;}
 
 @media (max-width:859px){
-  .ski-story{--ski-vh:min(84vh,640px);--ski-vh:min(84dvh,640px);}
+  .ski-story-sticky{
+    max-height:none;
+    height:calc(100vh - var(--nav-h));
+    height:calc(100dvh - var(--nav-h));
+  }
+  .ski-step-cards-pin{
+    left:50%;
+    top:auto;
+    bottom:68px;
+    transform:translateX(-50%);
+    width:calc(100% - 32px);
+    max-width:500px;
+  }
   .ski-step{
-    justify-content:flex-end;
-    padding:0 16px 74px;
-    max-width:520px;
-    margin:0 auto;
+    transform:translateY(8px);
+  }
+  .ski-step.active{
+    transform:none;
   }
   .ski-step-card{
     padding:16px 18px;
@@ -798,14 +858,14 @@ header.site-header{
     box-shadow:0 12px 32px rgba(0,0,0,0.45);
   }
   .ski-step h2{
-    font-size:clamp(21px,5vw,28px);
+    font-size:clamp(20px,5vw,26px);
     margin-top:6px;
     line-height:1.15;
   }
   .ski-step .hero-sub,.ski-step p{
-    font-size:14px;
-    line-height:1.5;
-    margin-top:8px;
+    font-size:13.5px;
+    line-height:1.45;
+    margin-top:6px;
     max-width:100%;
   }
   .ski-step-specs{
@@ -815,19 +875,17 @@ header.site-header{
   }
   .ski-spec-pill{
     font-size:11px;
-    padding:4px 8px;
+    padding:3px 7px;
   }
   .ski-step .hero-ctas{
     margin-top:12px;
   }
   .ski-step .btn{
     width:100%;
-    min-height:42px;
-    padding:10px 16px;
-    font-size:14px;
+    min-height:38px;
+    padding:8px 14px;
+    font-size:13.5px;
   }
-}
-@media (max-width:640px){
   .ski-hud-bottom{
     right:50%;
     transform:translateX(50%);
@@ -851,6 +909,7 @@ header.site-header{
     min-height:36px;
     white-space:nowrap;
   }
+  .ski-drag-hint{display:none;}
 }
 
 /* ---------- STEP #2: INTERACTIVE BEFORE / AFTER RESTORATION SLIDER ---------- */
