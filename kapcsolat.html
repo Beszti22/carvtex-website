@@ -140,7 +140,8 @@
               <select id="formSkis" name="skis">
                 <option value="1">1 pár síléc</option>
                 <option value="2">2 pár síléc (-10% kedvezmény)</option>
-                <option value="3+">3+ pár síléc (-15% + INGYEN szállítás)</option>
+                <option value="3-4">3–4 pár síléc (-15% + INGYEN szállítás)</option>
+                <option value="5+">5+ pár síléc (-20% csoportos kedvezmény)</option>
               </select>
             </div>
           </div>
@@ -149,9 +150,10 @@
               <label for="formService" data-i18n="formService">Választott szolgáltatás</label>
               <select id="formService" name="service">
                 <option value="Alapszerviz" data-i18n="formServiceOpt1">Alapszerviz (8 500 Ft)</option>
-                <option value="Prémium szerviz" selected data-i18n="formServiceOpt2">Prémium szerviz (11 000 Ft)</option>
-                <option value="Kötésbeállítás" data-i18n="formServiceOpt3">Kötésbeállítás (2 500 Ft)</option>
-                <option value="Korcsolyaélezés" data-i18n="formServiceOpt4">Korcsolyaélezés (Műkorcsolya / Hoki)</option>
+                <option value="Prémium szerviz" selected data-i18n="formServiceOpt2">Prémium szerviz (11 000 Ft-tól)</option>
+                <option value="CarvteX Race" data-i18n="formServiceOpt3">CarvteX Race versenyszerviz (15 000 Ft-tól)</option>
+                <option value="A-la-carte" data-i18n="formServiceOptAlacarte">Műhelyszolgáltatás / Egyéni javítás (Élezés, Wax, Talp)</option>
+                <option value="Korcsolyaélezés" data-i18n="formServiceOpt4">Korcsolyaélezés (2 900 Ft-tól)</option>
               </select>
             </div>
             <div class="form-group">
@@ -170,7 +172,7 @@
               <span class="pickup-toggle-custom"></span>
               <span class="pickup-toggle-text">
                 <span data-i18n="pickupCheckLabel">Kérem a sílécek háztól-házig el- és visszaszállítását (20 km-es körzetben)</span>
-                <span class="pickup-badge" id="pickupBadge" data-i18n="pickupFreeTag">INGYENES 3+ pár esetén!</span>
+                <span class="pickup-badge" id="pickupBadge" data-i18n="pickupFreeTag">INGYENES 3+ pár vagy 25 000 Ft felett!</span>
               </span>
             </label>
             <div class="pickup-address-field" id="pickupAddressField" style="display:none;">
@@ -189,6 +191,8 @@
               <span data-i18n="formConsent">Hozzájárulok, hogy a CarvteX Síszerviz ezeket az adatokat a megkeresésem megválaszolásához felhasználja.</span>
             </label>
           </div>
+          <!-- Honeypot anti-spam field -->
+          <input type="text" name="botcheck" style="display:none !important;" tabindex="-1" autocomplete="off" aria-hidden="true">
           <button type="submit" class="btn btn-primary" id="formSubmitBtn">
             <span data-i18n="formSubmit">Küldés</span>
             <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -249,7 +253,7 @@
               <p data-i18n="dropoffParking"><strong>Ingyenes, kényelmes parkolás</strong> közvetlenül a műhely előtt a lécek kipakolásához.</p>
               <p data-i18n="dropoffFlexible"><strong>Rugalmas időpontok:</strong> Munka után, akár esti órákban vagy hétvégén is leadhatod a léceket.</p>
               <p data-i18n="dropoffBoot"><strong>Kötésbeállításhoz:</strong> Kérjük, a lécek mellett az egyik síbakancsot is hozd magaddal!</p>
-              <p data-i18n="dropoffPickup"><strong>Háztól-házig szállítás:</strong> 3+ pár síléc esetén díjmentes felvétel és visszahozatal 20 km-es körzetben (Délegyháza, Dunavarsány, Dunaharaszti, Taksony, Majosháza stb.).</p>
+              <p data-i18n="dropoffPickup"><strong>Háztól-házig szállítás:</strong> 3+ pár vagy 25 000 Ft feletti szervizelés esetén díjmentes felvétel és visszahozatal 20 km-es körzetben (Délegyháza, Dunavarsány, Dunaharaszti, Taksony, Majosháza stb.).</p>
             </div>
           </div>
         </aside>
@@ -282,7 +286,7 @@
       <ul>
         <li><a href="/szolgaltatasok#services" data-i18n="svc1Title">Alapszerviz</a></li>
         <li><a href="/szolgaltatasok#services" data-i18n="svc2Title">Prémium szerviz</a></li>
-        <li><a href="/szolgaltatasok#services" data-i18n="svc3Title">Kötésbeállítás</a></li>
+        <li><a href="/szolgaltatasok#services" data-i18n="svc3Title">CarvteX Race</a></li>
       </ul>
     </div>
     <div class="footer-col">
