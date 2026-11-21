@@ -133,58 +133,131 @@
     </div>
   </section>
 
-<!-- STEP #1: 3D SKI STORY (three.js canvas + stepped scroll story) -->
-  <section class="ski-story-section" id="skiStory">
-    <div class="container ski-story-container">
-      <div class="ski-story-sticky">
-        <div class="ski-viewer-wrap" id="skiViewerWrap">
-          <canvas id="skiCanvas" aria-label="Interaktív 3D síléc modell"></canvas>
-          <div class="ski-loading" id="skiLoading">
-            <span class="spinner" aria-hidden="true"></span>
-            <span class="ski-loading-text" data-i18n="skiLoading" id="skiLoadingText">3D modell betöltése…</span>
-            <span class="ski-loading-pct" id="skiLoadingPct">0%</span>
+<!-- 3D SKI STORY — sticky canvas, scroll-driven steps -->
+  <section class="ski-story" id="skiStory" aria-label="CarvteX síléc — interaktív bemutató">
+    <div class="ski-story-sticky">
+      <canvas id="skiCanvas" aria-hidden="true"></canvas>
+
+      <!-- 3D Model Loading Progress HUD -->
+      <div class="ski-loader" id="skiLoader" role="status" aria-live="polite">
+        <span class="ski-loader-spinner" aria-hidden="true"></span>
+        <span class="ski-loader-text" data-i18n="skiLoading">3D síléc modell betöltése…</span>
+        <span class="ski-loader-pct" id="skiLoaderPct">0%</span>
+      </div>
+
+      <div class="ski-story-fallback">
+        <strong>CARVTEX</strong>
+        <span data-i18n="viewerFallback">A 3D nézethez modern böngésző szükséges — lent minden más ugyanúgy működik.</span>
+      </div>
+
+      <div class="ski-story-hint" aria-hidden="true">
+        <span data-i18n="scrollHint">Görgess tovább</span>
+        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      </div>
+
+      <!-- Interactive 3-step quick-switcher pills + drag hint -->
+      <div class="ski-hud-bottom">
+        <span class="ski-drag-hint" data-i18n="skiDragHint">Húzd a forgatáshoz · Görgess a részletekért</span>
+        <div class="ski-step-nav" role="group" aria-label="Síléc részek gyorsválasztó">
+          <button type="button" class="ski-step-btn active" data-target-part="binding" aria-pressed="true" data-i18n="stepBtn1">01 Kötés</button>
+          <button type="button" class="ski-step-btn" data-target-part="steel_edges" aria-pressed="false" data-i18n="stepBtn2">02 Acélél</button>
+          <button type="button" class="ski-step-btn" data-target-part="base,sidewall" aria-pressed="false" data-i18n="stepBtn3">03 Talp &amp; Wax</button>
+        </div>
+      </div>
+
+      <!-- Part-callout arrows: only the one matching the section's
+           data-active-part (set by ski-viewer.js) is shown, via CSS. -->
+      <div class="ski-annotations" aria-hidden="true">
+        <div class="ski-annotation" data-for="binding" style="--ax:58%;--ay:42%;">
+          <span class="ski-annotation-dot"></span>
+          <span class="ski-annotation-label" data-i18n="annotBinding">Kötés</span>
+        </div>
+        <div class="ski-annotation" data-for="steel_edges" style="--ax:63%;--ay:50%;">
+          <span class="ski-annotation-dot"></span>
+          <span class="ski-annotation-label" data-i18n="annotEdge">Acélél</span>
+        </div>
+        <div class="ski-annotation" data-for="base,sidewall" style="--ax:50%;--ay:54%;">
+          <span class="ski-annotation-dot"></span>
+          <span class="ski-annotation-label" data-i18n="annotBase">Talp</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll steps: each is at least 1 viewport tall so user has time to read -->
+    <div class="ski-story-steps" id="skiSteps">
+
+      <!-- STEP 1: BINDING / SAFETY -->
+      <div class="ski-step active" data-part="binding">
+        <div class="ski-step-card">
+          <span class="ski-step-badge eyebrow" data-i18n="stepBindingEyebrow">01. Lépés · Biztonság</span>
+          <h2 data-i18n="stepBindingH3">Milliméter-pontos kötésbeállítás</h2>
+          <p class="ski-step-lead" data-i18n="stepBindingP">Előfeszítés és DIN kioldási érték kalibrálása a síbakancs pontos talphossza, testsúly, magasság és síelési stílus alapján. Egy kötés, ami akkor old ki, amikor muszáj — és akkor tart, amikor kell.</p>
+
+          <div class="ski-step-specs">
+            <span class="ski-spec-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>DIN ISO 11088 kalibráció</span>
+            </span>
+            <span class="ski-spec-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Bakancsméret &amp; előfeszítés</span>
+            </span>
           </div>
-          <div class="ski-fallback" id="skiFallback">
-            <p data-i18n="viewerFallback">A 3D nézethez modern böngésző szükséges — a lentebbi leírások így is elérhetők.</p>
-          </div>
-          <div class="ski-drag-hint" id="skiDragHint">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-            <span data-i18n="skiDragHint">Húzd az egeret a forgatáshoz · Görgess a részletekhez</span>
+
+          <div class="hero-ctas">
+            <a href="/kapcsolat?service=K%C3%B6t%C3%A9sbe%C3%A1ll%C3%ADt%C3%A1s" class="btn btn-primary" data-i18n="navBook">Kötésbeállítást kérek</a>
           </div>
         </div>
-
-        <nav class="ski-step-nav" aria-label="Munkafázisok">
-          <button type="button" class="ski-step-btn active" data-step-target="1" data-i18n="stepBtn1">01 Kötés</button>
-          <button type="button" class="ski-step-btn" data-step-target="2" data-i18n="stepBtn2">02 Acél él</button>
-          <button type="button" class="ski-step-btn" data-step-target="3" data-i18n="stepBtn3">03 Talp & Wax</button>
-        </nav>
       </div>
 
-      <div class="ski-story-scroll">
-        <article class="ski-step-card" data-step="0">
-          <span class="eyebrow" data-i18n="stepTopsheetEyebrow">Minden lécen elvégezzük</span>
-          <h3 data-i18n="stepTopsheetH3">Szemrevételezés és állapotfelmérés</h3>
-          <p data-i18n="stepTopsheetP">Mielőtt bármilyen szerszám hozzáérne a léchez, alaposan átvizsgáljuk a fedlapot, az oldalfalat és az előfeszítést rejtett repedések vagy réteg-elválások után kutatva.</p>
-        </article>
+      <!-- STEP 2: STEEL EDGES / GRIP -->
+      <div class="ski-step" data-part="steel_edges">
+        <div class="ski-step-card">
+          <span class="ski-step-badge eyebrow" data-i18n="stepEdgeEyebrow">02. Lépés · Tapadás</span>
+          <h2 data-i18n="stepEdgeH3">Kézi és gépi élélezés</h2>
+          <p class="ski-step-lead" data-i18n="stepEdgeP">Oldalél csiszolása 87°-os precíz szögre (vagy egyedi kérésre), finom diamond-kővel sorjátlanítva. Stabil élfogás a jeges szakaszokon is, sima kanyarváltás, felesleges kaparás nélkül.</p>
 
-        <article class="ski-step-card" data-step="1">
-          <span class="eyebrow" data-i18n="stepBindingEyebrow">01. Lépés · Biztonság</span>
-          <h3 data-i18n="stepBindingH3">Milliméter-pontos kötésbeállítás</h3>
-          <p data-i18n="stepBindingP">Előfeszítés és DIN kioldási érték kalibrálása a síbakancs pontos talphossza, testsúly, magasság és síelési stílus alapján. Egy kötés, ami akkor old ki, amikor muszáj — és akkor tart, amikor kell.</p>
-        </article>
+          <div class="ski-step-specs">
+            <span class="ski-spec-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>87° verseny-oldalszög</span>
+            </span>
+            <span class="ski-spec-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Gyémántköves sorjátlanítás</span>
+            </span>
+          </div>
 
-        <article class="ski-step-card" data-step="2">
-          <span class="eyebrow" data-i18n="stepEdgeEyebrow">02. Lépés · Tapadás</span>
-          <h3 data-i18n="stepEdgeH3">Kézi és gépi élélezés</h3>
-          <p data-i18n="stepEdgeP">Oldalél csiszolása 87°-os precíz szögre (vagy egyedi kérésre), finom diamond-kővel sorjátlanítva. Stabil élfogás a jeges szakaszokon is, sima kanyarváltás, felesleges kaparás nélkül.</p>
-        </article>
-
-        <article class="ski-step-card" data-step="3">
-          <span class="eyebrow" data-i18n="stepBaseEyebrow">03. Lépés · Siklás</span>
-          <h3 data-i18n="stepBaseH3">P-Tex talpjavítás, melegwax & polírozás</h3>
-          <p data-i18n="stepBaseP">A mély karcok kitöltése P-Tex anyaggal, struktúra megnyitása, hőillesztett melegwaxolás az adott hóhőmérséklethez, majd többkefés kézi polírozás a tökéletes siklásért.</p>
-        </article>
+          <div class="hero-ctas">
+            <a href="/kapcsolat?service=Alapszerviz" class="btn btn-primary" data-i18n="navBook">Élezést kérek</a>
+          </div>
+        </div>
       </div>
+
+      <!-- STEP 3: BASE & WAX / SPEED -->
+      <div class="ski-step" data-part="base,sidewall" data-highlight="sidewall">
+        <div class="ski-step-card">
+          <span class="ski-step-badge eyebrow" data-i18n="stepBaseEyebrow">03. Lépés · Siklás</span>
+          <h2 data-i18n="stepBaseH3">P-Tex talpjavítás, melegwax &amp; polírozás</h2>
+          <p class="ski-step-lead" data-i18n="stepBaseP">A mély karcok kitöltése P-Tex anyaggal, struktúra megnyitása, hőillesztett melegwaxolás az adott hóhőmérséklethez, majd többkefés kézi polírozás a tökéletes siklásért.</p>
+
+          <div class="ski-step-specs">
+            <span class="ski-spec-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>P-Tex pisztolyos feltöltés</span>
+            </span>
+            <span class="ski-spec-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Vasalás &amp; 3-kefés polírozás</span>
+            </span>
+          </div>
+
+          <div class="hero-ctas">
+            <a href="/kapcsolat?service=Pr%C3%A9mium%20szerviz" class="btn btn-primary" data-i18n="navBook">Prémium felújítást kérek</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 

@@ -308,6 +308,7 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
         return s.getAttribute('data-part') === targetPart;
       });
       if (stepEl) {
+        activateStep(stepEl);
         stepEl.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'center' });
       }
     });
@@ -424,12 +425,12 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
   var io = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting && entry.intersectionRatio > 0.45) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
           activateStep(entry.target);
         }
       });
     },
-    { threshold: [0.45] }
+    { threshold: [0.35, 0.5, 0.7] }
   );
   steps.forEach(function (s) {
     io.observe(s);
