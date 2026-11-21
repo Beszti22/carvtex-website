@@ -348,9 +348,51 @@ header.site-header{
   align-items:flex-start;
   margin-bottom:var(--space-md);
   user-select:none;
+  position:relative;
 }
-.hero-skyline{display:block;width:140px;height:auto;color:var(--color-accent);line-height:0;margin-bottom:4px;}
-.hero-brand-icon{width:100%;height:auto;display:block;}
+
+/* Mountain silhouette with steel edge glow and glint */
+.hero-skyline{
+  display:block;
+  width:144px;
+  height:auto;
+  color:var(--color-accent);
+  line-height:0;
+  margin-bottom:6px;
+  position:relative;
+  overflow:visible;
+  filter:drop-shadow(0 0 12px rgba(30,155,224,0.48)) drop-shadow(0 0 26px rgba(30,155,224,0.24));
+  transition:filter 300ms ease;
+}
+.hero-skyline:hover{
+  filter:drop-shadow(0 0 18px rgba(30,155,224,0.75)) drop-shadow(0 0 36px rgba(30,155,224,0.4));
+}
+.hero-brand-icon{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+/* Steel blade glint sweep across the mountain ridge */
+.hero-skyline::after{
+  content:"";
+  position:absolute;
+  top:-20%;
+  left:-100%;
+  width:50%;
+  height:140%;
+  background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.95) 50%, rgba(30,155,224,0.9) 75%, transparent 100%);
+  transform:skewX(-28deg);
+  animation:steelGlint 4.6s cubic-bezier(0.4, 0, 0.2, 1) infinite 1.8s;
+  pointer-events:none;
+}
+@keyframes steelGlint{
+  0%, 65% { left: -100%; opacity: 0; }
+  68% { opacity: 0.95; }
+  82% { left: 180%; opacity: 0; }
+  100% { left: 180%; opacity: 0; }
+}
+
 .hero-brand-word{
   font-family:var(--font-display);
   font-size:clamp(36px,6vw,56px);
@@ -359,16 +401,22 @@ header.site-header{
   text-transform:uppercase;
   color:#fff;
   display:inline-flex;
+  position:relative;
 }
-.hero-brand-word .accent{color:var(--color-accent);}
+.hero-brand-word .accent{
+  color:var(--color-accent);
+  text-shadow:0 0 14px rgba(30,155,224,0.65), 0 0 28px rgba(30,155,224,0.35);
+  position:relative;
+}
 .hero-brand-sub{
   font-family:var(--font-body);
   font-size:clamp(11px,1.4vw,13px);
   font-weight:700;
-  letter-spacing:0.28em;
+  letter-spacing:0.32em;
   text-transform:uppercase;
   color:var(--color-accent);
-  margin-top:4px;
+  margin-top:5px;
+  text-shadow:0 0 10px rgba(30,155,224,0.35);
 }
 
 /* Mask reveal on hero load */
@@ -381,6 +429,43 @@ header.site-header{
 }
 @keyframes letterUp{
   to{transform:translateY(0);}
+}
+
+/* Live Workshop Status Pill */
+.hero-live-status{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:rgba(11,28,44,0.78);
+  border:1px solid rgba(30,155,224,0.45);
+  padding:7px 16px 7px 12px;
+  border-radius:24px;
+  color:#fff;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:0.02em;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 4px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
+  margin-bottom:var(--space-md);
+  user-select:none;
+}
+.hero-live-status .live-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#10b981;
+  box-shadow:0 0 8px #10b981, 0 0 16px rgba(16,185,129,0.6);
+  animation:livePulse 2s ease-in-out infinite;
+  flex-shrink:0;
+}
+@keyframes livePulse{
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.65; }
+}
+.hero-live-status .live-text strong{
+  color:var(--color-accent);
+  font-weight:700;
 }
 
 .hero-eyebrow{
@@ -446,6 +531,27 @@ header.site-header{
   border-color:rgba(30,155,224,0.45);
 }
 .badge .icon{width:15px;height:15px;color:var(--color-accent);}
+
+/* Skate badge highlight */
+.badge-skate{
+  background:rgba(30,155,224,0.16);
+  border-color:rgba(30,155,224,0.55);
+  color:#fff;
+  text-decoration:none;
+  cursor:pointer;
+  transition:all 200ms ease;
+}
+.badge-skate:hover{
+  background:rgba(30,155,224,0.3);
+  border-color:var(--color-accent);
+  box-shadow:0 0 16px rgba(30,155,224,0.45);
+  transform:translateY(-1px);
+  color:#fff;
+}
+.badge-skate .badge-icon{
+  font-size:15px;
+  line-height:1;
+}
 
 @media (max-width:860px){
   .hero{min-height:auto;padding:var(--space-2xl) 0;}
