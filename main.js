@@ -133,36 +133,46 @@
   }
 
   /* ----- Interactive Before / After Ski Restoration Slider ----- */
-  var baStage = document.getElementById('baStage');
-  var baRange = document.getElementById('baRange');
+  var baContainer = document.getElementById('baContainer');
+  var baBeforeLayer = document.getElementById('baBeforeLayer');
+  var baHandle = document.getElementById('baHandle');
   var baPresetBtns = Array.prototype.slice.call(document.querySelectorAll('.ba-preset-btn'));
-  if(baStage && baRange){
+
+  if(baContainer && baBeforeLayer && baHandle){
     var baAnimId = null;
+    var currentBaPos = 5; // Starts showing Utána (CarvteX Prémium) with handle on the left (5%)
+    var isDraggingBa = false;
+
     function setBaPos(val){
-      var clamped = Math.max(4, Math.min(96, parseFloat(val) || 50));
-      baStage.style.setProperty('--ba-pos', clamped + '%');
-      baRange.value = String(clamped);
-      baStage.classList.toggle('ba-hide-before-tag', clamped < 22);
-      baStage.classList.toggle('ba-hide-after-tag', clamped > 78);
+      var clamped = Math.max(2, Math.min(98, parseFloat(val) || 50));
+      currentBaPos = clamped;
+      baHandle.style.left = clamped + '%';
+      baBeforeLayer.style.clipPath = 'inset(0 ' + (100 - clamped) + '% 0 0)';
+
+      baContainer.classList.toggle('ba-hide-before-tag', clamped < 18);
+      baContainer.classList.toggle('ba-hide-after-tag', clamped > 82);
+
       baPresetBtns.forEach(function(btn){
         var target = parseFloat(btn.getAttribute('data-ba-pos'));
-        var isMatch = Math.abs(clamped - target) <= 12;
+        var isMatch = Math.abs(clamped - target) <= 10;
         btn.classList.toggle('active', isMatch);
         btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
       });
     }
+
     function animateBaPos(targetVal, duration){
       if(baAnimId) cancelAnimationFrame(baAnimId);
-      var startVal = parseFloat(baRange.value) || 50;
-      var target = Math.max(4, Math.min(96, parseFloat(targetVal) || 50));
+      var startVal = currentBaPos;
+      var target = Math.max(2, Math.min(98, parseFloat(targetVal) || 50));
       var startTime = performance.now();
-      var dur = duration || 260;
+      var dur = duration || 280;
+
       function step(now){
         var elapsed = now - startTime;
         var progress = Math.min(1, elapsed / dur);
         var ease = 1 - Math.pow(1 - progress, 3);
-        var current = startVal + (target - startVal) * ease;
-        setBaPos(current);
+        var cur = startVal + (target - startVal) * ease;
+        setBaPos(cur);
         if(progress < 1){
           baAnimId = requestAnimationFrame(step);
         } else {
@@ -171,117 +181,200 @@
       }
       baAnimId = requestAnimationFrame(step);
     }
-    baRange.addEventListener('input', function(){
+
+    function handleBaPointer(e){
+      var rect = baContainer.getBoundingClientRect();
+      var clientX = (e.touches && e.touches.length > 0) ? e.touches[0].clientX : e.clientX;
+      var x = clientX - rect.left;
+      var pct = (x / rect.width) * 100;
+      setBaPos(pct);
+    }
+
+    baContainer.addEventListener('mousedown', function(e){
+      isDraggingBa = true;
       if(baAnimId) cancelAnimationFrame(baAnimId);
-      setBaPos(baRange.value);
+      handleBaPointer(e);
     });
+
+    window.addEventListener('mousemove', function(e){
+      if(!isDraggingBa) return;
+      handleBaPointer(e);
+    });
+
+    window.addEventListener('mouseup', function(){
+      isDraggingBa = false;
+    });
+
+    baContainer.addEventListener('touchstart', function(e){
+      isDraggingBa = true;
+      if(baAnimId) cancelAnimationFrame(baAnimId);
+      handleBaPointer(e);
+    }, { passive: true });
+
+    window.addEventListener('touchmove', function(e){
+      if(!isDraggingBa) return;
+      handleBaPointer(e);
+    }, { passive: true });
+
+    window.addEventListener('touchend', function(){
+      isDraggingBa = false;
+    });
+
     baPresetBtns.forEach(function(btn){
       btn.addEventListener('click', function(){
         animateBaPos(btn.getAttribute('data-ba-pos'));
       });
     });
-    setBaPos(50);
+
+    setBaPos(5);
   }
 
   /* ----- 3-Click Service Diagnostic Finder ----- */
   var finderRoot = document.getElementById('serviceFinder');
   if(finderRoot){
     var state = {
-      condition: 'scratched',
-      boot: 'no',
-      pairs: '1'
+      base: 'scratched',   // 'scratched' | 'smooth'
+      edge: 'slipping',    // 'slipping' | 'ok'
+      quantity: '1'        // '1' | '2' | '3+'
     };
-    var recTitle = document.getElementById('finderRecTitle');
-    var recReason = document.getElementById('finderRecReason');
-    var recPromo = document.getElementById('finderRecPromo');
-    var recFeats = [
-      document.getElementById('finderRecFeat1'),
-      document.getElementById('finderRecFeat2'),
-      document.getElementById('finderRecFeat3')
-    ];
-    var recCta = document.getElementById('finderRecCta');
+    var currentStep = 1;
+
+    var steps = Array.prototype.slice.call(finderRoot.querySelectorAll('.finder-step'));
+    var dots = Array.prototype.slice.call(finderRoot.querySelectorAll('.step-dot'));
+    var optBtns = Array.prototype.slice.call(finderRoot.querySelectorAll('.finder-opt'));
+    var titleEl = document.getElementById('finderTitle');
+    var descEl = document.getElementById('finderDesc');
+    var promoEl = document.getElementById('finderPromo');
+    var ctaEl = document.getElementById('finderCtaBtn');
+    var resetBtn = document.getElementById('finderResetBtn');
+
+    function goToStep(stepNum){
+      currentStep = stepNum;
+      steps.forEach(function(s){
+        var sNum = parseInt(s.getAttribute('data-step'), 10);
+        s.classList.toggle('active', sNum === currentStep);
+      });
+      dots.forEach(function(d){
+        var dNum = parseInt(d.getAttribute('data-step-dot'), 10);
+        d.classList.toggle('active', dNum === currentStep);
+      });
+    }
+
+    dots.forEach(function(dot){
+      dot.style.cursor = 'pointer';
+      dot.addEventListener('click', function(){
+        var targetStep = parseInt(dot.getAttribute('data-step-dot'), 10);
+        if(targetStep) goToStep(targetStep);
+      });
+    });
 
     function updateFinderRecommendation(){
-      var pkgKey = 'premium';
-      var serviceParam = 'Prémium szerviz';
-      if(state.condition === 'scratched' || (state.condition === 'refresh' && state.boot === 'yes')){
-        pkgKey = 'premium';
-        serviceParam = 'Prémium szerviz';
-      } else if(state.condition === 'binding_only'){
-        pkgKey = 'binding';
-        serviceParam = 'Kötésbeállítás';
-      } else {
-        pkgKey = 'base';
-        serviceParam = 'Alapszerviz';
+      var isPremium = (state.base === 'scratched' || state.edge === 'slipping');
+      var lang = document.documentElement.lang || 'hu';
+      var serviceName = isPremium ? 'Prémium szerviz' : 'Alapszerviz';
+
+      if(titleEl){
+        titleEl.setAttribute('data-i18n', isPremium ? 'svc2Title' : 'svc1Title');
+        titleEl.textContent = isPremium ? 'Prémium szerviz' : 'Alapszerviz';
       }
 
-      if(recTitle && recReason){
-        if(pkgKey === 'premium'){
-          recTitle.setAttribute('data-i18n', 'svc2Title');
-          recReason.setAttribute('data-i18n', 'finderRecReasonPrem');
-          if(recFeats[0]) recFeats[0].setAttribute('data-i18n', 'svc2Feat1');
-          if(recFeats[1]) recFeats[1].setAttribute('data-i18n', 'svc2Feat3');
-          if(recFeats[2]) recFeats[2].setAttribute('data-i18n', 'svc2Feat4');
-        } else if(pkgKey === 'binding'){
-          recTitle.setAttribute('data-i18n', 'svc3Title');
-          recReason.setAttribute('data-i18n', 'finderRecReasonBind');
-          if(recFeats[0]) recFeats[0].setAttribute('data-i18n', 'svc3Feat1');
-          if(recFeats[1]) recFeats[1].setAttribute('data-i18n', 'svc3Feat2');
-          if(recFeats[2]) recFeats[2].setAttribute('data-i18n', 'svc3Feat3');
+      if(descEl){
+        descEl.setAttribute('data-i18n', isPremium ? 'finderRecReasonPrem' : 'finderRecReasonBase');
+        if(isPremium){
+          descEl.textContent = (lang === 'en')
+            ? 'Complete ski restoration: deep gouge repair with P-Tex, machine edge tuning, performance hot waxing and DIN binding calibration.'
+            : 'Mély sérülések feltöltése P-Tex anyaggal, oldal- és alsó él precíziós gépi élezése, hőillesztett melegwaxolás és biztonsági kötéskalibráció.';
         } else {
-          recTitle.setAttribute('data-i18n', 'svc1Title');
-          recReason.setAttribute('data-i18n', 'finderRecReasonBase');
-          if(recFeats[0]) recFeats[0].setAttribute('data-i18n', 'svc1Feat1');
-          if(recFeats[1]) recFeats[1].setAttribute('data-i18n', 'svc1Feat2');
-          if(recFeats[2]) recFeats[2].setAttribute('data-i18n', 'svc1Feat3');
+          descEl.textContent = (lang === 'en')
+            ? 'Ideal for regular in-season maintenance: machine edge sharpening, hot iron wax and multi-brush polishing for skis with sound bases.'
+            : 'Ideális szezonközi frissítéshez: gépi élélezés, hőillesztett melegwaxolás és többkefés polírozás ép talpú léceknek.';
         }
       }
 
-      if(recPromo){
-        if(state.pairs === '2'){
-          recPromo.setAttribute('data-i18n', 'finderPromo2');
-          recPromo.classList.add('is-visible');
-        } else if(state.pairs === '3+'){
-          recPromo.setAttribute('data-i18n', 'finderPromo3');
-          recPromo.classList.add('is-visible');
+      if(promoEl){
+        if(state.quantity === '2'){
+          promoEl.style.display = 'block';
+          promoEl.innerHTML = (lang === 'en')
+            ? '🎿 <strong>Family/Duo Bonus:</strong> -10% discount on total service fee!'
+            : '🎿 <strong>Páros kedvezmény:</strong> -10% kedvezmény a teljes munkadíjból!';
+        } else if(state.quantity === '3+'){
+          promoEl.style.display = 'block';
+          promoEl.innerHTML = (lang === 'en')
+            ? '🚚 <strong>Family Special:</strong> -15% discount + FREE pickup & return delivery within 20 km!'
+            : '🚚 <strong>Családi csomag:</strong> -15% kedvezmény + INGYENES háztól-házig szállítás 20 km-en belül!';
         } else {
-          recPromo.removeAttribute('data-i18n');
-          recPromo.innerHTML = '';
-          recPromo.classList.remove('is-visible');
+          promoEl.style.display = 'none';
+          promoEl.innerHTML = '';
         }
+      }
+
+      if(ctaEl){
+        var url = '/kapcsolat?service=' + encodeURIComponent(serviceName) +
+                  '&pairs=' + encodeURIComponent(state.quantity);
+        if(state.quantity === '3+'){
+          url += '&pickup=yes';
+        }
+        ctaEl.setAttribute('href', url);
       }
 
       if(window.applyLang){
-        window.applyLang(document.documentElement.lang || 'hu');
-      }
-
-      if(recCta){
-        var url = '/kapcsolat?service=' + encodeURIComponent(serviceParam) +
-                  '&pairs=' + encodeURIComponent(state.pairs) +
-                  '&boot=' + encodeURIComponent(state.boot);
-        if(state.pairs === '3+'){
-          url += '&pickup=yes';
-        }
-        recCta.setAttribute('href', url);
+        window.applyLang(lang);
       }
     }
 
-    var optBtns = Array.prototype.slice.call(finderRoot.querySelectorAll('.finder-opt'));
     optBtns.forEach(function(btn){
       btn.addEventListener('click', function(){
         var q = btn.getAttribute('data-q');
         var val = btn.getAttribute('data-val');
         if(!q || !val) return;
         state[q] = val;
+
         optBtns.forEach(function(other){
           if(other.getAttribute('data-q') === q){
-            other.setAttribute('aria-pressed', other === btn ? 'true' : 'false');
+            var isSel = (other === btn);
+            other.classList.toggle('selected', isSel);
+            other.setAttribute('aria-pressed', isSel ? 'true' : 'false');
           }
         });
+
+        if(currentStep === 1){
+          goToStep(2);
+        } else if(currentStep === 2){
+          goToStep(3);
+        }
+
         updateFinderRecommendation();
       });
     });
 
+    if(resetBtn){
+      resetBtn.addEventListener('click', function(){
+        state = { base: 'scratched', edge: 'slipping', quantity: '1' };
+        optBtns.forEach(function(btn){
+          var q = btn.getAttribute('data-q');
+          var val = btn.getAttribute('data-val');
+          var isDefault = (q === 'base' && val === 'scratched') ||
+                          (q === 'edge' && val === 'slipping') ||
+                          (q === 'quantity' && val === '1');
+          btn.classList.toggle('selected', isDefault);
+          btn.setAttribute('aria-pressed', isDefault ? 'true' : 'false');
+        });
+        goToStep(1);
+        updateFinderRecommendation();
+      });
+    }
+
+    optBtns.forEach(function(btn){
+      var q = btn.getAttribute('data-q');
+      var val = btn.getAttribute('data-val');
+      var isDefault = (q === 'base' && val === 'scratched') ||
+                      (q === 'edge' && val === 'slipping') ||
+                      (q === 'quantity' && val === '1');
+      btn.classList.toggle('selected', isDefault);
+      btn.setAttribute('aria-pressed', isDefault ? 'true' : 'false');
+    });
+
+    goToStep(1);
     updateFinderRecommendation();
   }
 
