@@ -67,6 +67,7 @@
       finderCta: `Book this package`,
       finderReset: `↺ Start over`,
 
+      heroEyebrow: `Alpine Ski Coach Workshop · Délegyháza`,
       heroH1: `Precision care<br>for your <span>skis.</span>`,
       heroSub: `CarvteX Ski Service — tuning, waxing and binding setup from an alpine ski coach who knows exactly what your skis need to perform.`,
       heroCta1: `Book a Service`,
@@ -366,6 +367,7 @@
       finderCta: `Időpontfoglalás ehhez a csomaghoz`,
       finderReset: `↺ Újraszámolás`,
 
+      heroEyebrow: `Alpesi síedzői műhelymunka · Délegyháza`,
       heroH1: `Precíz gondoskodás<br>a <span>síléced</span> számára.`,
       heroSub: `CarvteX Síszerviz — élezés, waxolás és kötésbeállítás egy alpesi síedzőtől, aki pontosan tudja, mire van szüksége a lécednek.`,
       heroCta1: `Időpontfoglalás`,
