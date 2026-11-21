@@ -14,8 +14,8 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 (function () {
   var section = document.getElementById('skiStory');
   var canvas = document.getElementById('skiCanvas');
-  var loaderEl = document.getElementById('skiLoader');
-  var loaderPctEl = document.getElementById('skiLoaderPct');
+  var loaderEl = document.getElementById('skiLoading') || document.getElementById('skiLoader');
+  var loaderPctEl = document.getElementById('skiLoadingPct') || document.getElementById('skiLoaderPct');
   if (!section || !canvas) return;
 
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -170,7 +170,10 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
       modelLoaded = true;
       section.setAttribute('data-model-ready', 'true');
-      if (loaderEl) loaderEl.setAttribute('aria-hidden', 'true');
+      if (loaderEl) {
+        loaderEl.classList.add('hidden');
+        loaderEl.setAttribute('aria-hidden', 'true');
+      }
       applyHighlight(activeHighlight);
       renderFrame();
     },
@@ -183,7 +186,10 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
     function (err) {
       console.error('CarvteX 3D model failed to load:', err);
       section.classList.add('no-webgl');
-      if (loaderEl) loaderEl.setAttribute('aria-hidden', 'true');
+      if (loaderEl) {
+        loaderEl.classList.add('hidden');
+        loaderEl.setAttribute('aria-hidden', 'true');
+      }
     }
   );
 
@@ -238,7 +244,7 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
   var targetRotX = 0.7;
   var currentRotX = 0.7;
 
-  // Interactive user drag offset (springs smoothly back when released)
+  // Interactive user drag offset (springing back smoothly to the active step pose)
   var isDragging = false;
   var dragStartX = 0;
   var dragStartY = 0;
