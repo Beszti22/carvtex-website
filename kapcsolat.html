@@ -82,7 +82,7 @@
       <img src="/assets/logo-icon.png" alt="CarvteX" class="brand-icon-img">
       <span class="brand-text">
         <span class="brand-name">CarvteX</span>
-        <span class="brand-sub">Síszerviz</span>
+        <span class="brand-sub" data-i18n="brandSub">Síszerviz</span>
       </span>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Primary">
@@ -116,177 +116,139 @@
     </div>
   </section>
 
-<!-- CONTACT -->
-  <section id="contact">
+<!-- CONTACT FORM & WORKSHOP INFO -->
+  <section>
     <div class="container">
       <div class="contact-grid">
-        <div class="contact-form-wrap">
-          <form class="reveal" id="contactForm" novalidate>
-            <div class="form-field">
-              <label for="cName" data-i18n="formName">Név</label>
-              <input type="text" id="cName" name="name" required>
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="formName" data-i18n="formName">Neved *</label>
+              <input type="text" id="formName" name="name" required autocomplete="name" placeholder="pl. Kovács Péter">
             </div>
-            <div class="form-field">
-              <label for="cEmail" data-i18n="formEmail">Email</label>
-              <input type="email" id="cEmail" name="email" required>
+            <div class="form-group">
+              <label for="formEmail" data-i18n="formEmail">Email címed *</label>
+              <input type="email" id="formEmail" name="email" required autocomplete="email" placeholder="pl. peter@pelda.hu">
             </div>
-            <div class="form-field">
-              <label for="cPhone" data-i18n="formPhone">Telefon (opcionális)</label>
-              <input type="tel" id="cPhone" name="phone">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="formPhone" data-i18n="formPhone">Telefonszámod *</label>
+              <input type="tel" id="formPhone" name="phone" required autocomplete="tel" placeholder="+36 30 123 4567">
             </div>
-            <div class="form-field">
-              <label for="cService" data-i18n="formService">Szolgáltatás</label>
-              <select id="cService" name="service">
-                <option value="" data-i18n="formServiceOpt0">Még nem tudom</option>
-                <option value="Alapszerviz" data-i18n="formServiceOpt1">Alapszerviz</option>
-                <option value="Prémium szerviz" data-i18n="formServiceOpt2">Prémium szerviz</option>
-                <option value="Kötésbeállítás" data-i18n="formServiceOpt3">Kötésbeállítás</option>
-                <option value="Korcsolyaélezés" data-i18n="formServiceOpt4">Korcsolyaélezés</option>
+            <div class="form-group">
+              <label for="formSkis" data-i18n="formSkis">Sílécek száma</label>
+              <select id="formSkis" name="skis">
+                <option value="1">1 pár síléc</option>
+                <option value="2">2 pár síléc (-10% kedvezmény)</option>
+                <option value="3+">3+ pár síléc (-15% + INGYEN szállítás)</option>
               </select>
             </div>
-            <div class="form-field">
-              <label id="lblPairs" data-i18n="formPairsLabel">Sílécek száma</label>
-              <div class="form-pills" role="group" aria-labelledby="lblPairs">
-                <button type="button" class="form-pill" data-pill-group="pairs" data-pill-val="1" aria-pressed="true" data-i18n="formPairs1">1 pár</button>
-                <button type="button" class="form-pill" data-pill-group="pairs" data-pill-val="2" aria-pressed="false" data-i18n="formPairs2">2 pár</button>
-                <button type="button" class="form-pill" data-pill-group="pairs" data-pill-val="3+" aria-pressed="false" data-i18n="formPairs3">3+ pár (családi)</button>
-              </div>
-              <div class="form-pair-notice" id="pairNotice" style="display:none;" role="status"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="formService" data-i18n="formService">Választott szolgáltatás</label>
+              <select id="formService" name="service">
+                <option value="Alapszerviz" data-i18n="formServiceOpt1">Alapszerviz (8 500 Ft)</option>
+                <option value="Prémium szerviz" selected data-i18n="formServiceOpt2">Prémium szerviz (11 000 Ft)</option>
+                <option value="Kötésbeállítás" data-i18n="formServiceOpt3">Kötésbeállítás (2 500 Ft)</option>
+                <option value="Korcsolyaélezés" data-i18n="formServiceOpt4">Korcsolyaélezés (Műkorcsolya / Hoki)</option>
+              </select>
             </div>
-            <div class="form-field">
-              <label id="lblUrgency" data-i18n="formUrgencyLabel">Mikorra van rá szükséged?</label>
-              <div class="form-pills" role="group" aria-labelledby="lblUrgency">
-                <button type="button" class="form-pill" data-pill-group="urgency" data-pill-val="normal" aria-pressed="true" data-i18n="formUrg1">Normál (24–48 órán belül)</button>
-                <button type="button" class="form-pill" data-pill-group="urgency" data-pill-val="urgent" aria-pressed="false" data-i18n="formUrg2">Hétvégén indulok (Sürgős)</button>
-                <button type="button" class="form-pill" data-pill-group="urgency" data-pill-val="preseason" aria-pressed="false" data-i18n="formUrg3">Szezon eleji felkészítés</button>
-              </div>
+            <div class="form-group">
+              <label for="formDate" data-i18n="formDate">Tervezett leadási időpont</label>
+              <input type="date" id="formDate" name="date">
             </div>
-            <div class="form-field">
-              <div class="pickup-box" id="pickupBox">
-                <label class="pickup-check-label" for="cPickup">
-                  <input type="checkbox" id="cPickup" name="pickup">
-                  <div class="pickup-check-text">
-                    <span class="pickup-check-title" data-i18n="pickupCheckLabel">Kérem a sílécek és korcsolyák háztól-házig el- és visszaszállítását (20 km-es körzetben)</span>
-                    <span class="pickup-badge-free" id="pickupFreeBadge" data-i18n="pickupFreeTag" style="display:none;">INGYENES 3+ pár esetén!</span>
-                  </div>
-                </label>
-                <div class="pickup-address-wrap" id="pickupAddressWrap">
-                  <label for="cPickupAddress" data-i18n="pickupAddressLabel">Átvételi &amp; visszaszállítási cím</label>
-                  <input type="text" id="cPickupAddress" name="pickupAddress" placeholder="pl. 2337 Délegyháza, Fő utca 12." data-i18n-placeholder="pickupAddressPlaceholder">
+          </div>
+
+          <!-- Dynamic multi-pair perk notice -->
+          <div class="pair-notice" id="pairNotice" style="display:none;"></div>
+
+          <!-- Door-to-door pickup checkbox -->
+          <div class="pickup-toggle-wrap">
+            <label class="pickup-toggle-label">
+              <input type="checkbox" id="pickupCheckbox" name="pickup">
+              <span class="pickup-toggle-custom"></span>
+              <span class="pickup-toggle-text">
+                <span data-i18n="pickupCheckLabel">Kérem a sílécek háztól-házig el- és visszaszállítását (20 km-es körzetben)</span>
+                <span class="pickup-badge" id="pickupBadge" data-i18n="pickupFreeTag">INGYENES 3+ pár esetén!</span>
+              </span>
+            </label>
+            <div class="pickup-address-field" id="pickupAddressField" style="display:none;">
+              <label for="pickupAddress" data-i18n="pickupAddressLabel">Átvételi & visszaszállítási cím *</label>
+              <input type="text" id="pickupAddress" name="pickupAddress" placeholder="pl. 2337 Délegyháza, Fő utca 12." data-i18n-placeholder="pickupAddressPlaceholder">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="formMessage" data-i18n="formMessage">Üzenet</label>
+            <textarea id="formMessage" name="message" rows="4" placeholder="Milyen lécekről van szó? Van bármilyen sérülés rajta?"></textarea>
+          </div>
+          <div class="form-group form-consent">
+            <label>
+              <input type="checkbox" required name="consent">
+              <span data-i18n="formConsent">Hozzájárulok, hogy a CarvteX Síszerviz ezeket az adatokat a megkeresésem megválaszolásához felhasználja.</span>
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary" id="formSubmitBtn">
+            <span data-i18n="formSubmit">Küldés</span>
+            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+          <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+        </form>
+
+        <aside class="contact-info">
+          <div class="info-card">
+            <span class="eyebrow" data-i18n="locationEyebrow">Műhely & Átvétel</span>
+            <h3 data-i18n="dropoffTitle">Tudnivalók a leadáshoz</h3>
+            <div class="info-list">
+              <div class="info-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <div>
+                  <strong>Cím:</strong>
+                  <span data-i18n="dropoffAddress">2337 Délegyháza, Pest vármegye (pontos címet foglaláskor küldünk)</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <div>
+                  <strong>Nyitvatartás:</strong>
+                  <span data-i18n="dropoffHours">Hétfő–Szombat: Előzetes egyeztetés alapján</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <div>
+                  <strong>Telefon / WhatsApp:</strong>
+                  <a href="tel:+36308849273">+36 30 884 9273</a>
+                </div>
+              </div>
+              <div class="info-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <div>
+                  <strong>Email:</strong>
+                  <a href="mailto:carvtexszerviz@gmail.com">carvtexszerviz@gmail.com</a>
                 </div>
               </div>
             </div>
-            <div class="form-field">
-              <label for="cMessage" data-i18n="formMessage">Üzenet</label>
-              <textarea id="cMessage" name="message" rows="4"></textarea>
-            </div>
-            <label class="form-consent" for="cConsent">
-              <input type="checkbox" id="cConsent" name="consent" required>
-              <span data-i18n="formConsent">Hozzájárulok, hogy a CarvteX Síszerviz ezeket az adatokat a megkeresésem megválaszolásához felhasználja.</span>
-            </label>
-            <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
-              <label for="cBotcheck">Leave this field empty</label>
-              <input type="text" id="cBotcheck" name="botcheck" tabindex="-1" autocomplete="off">
-            </div>
-            <button type="submit" class="btn btn-primary" id="contactSubmitBtn" data-i18n="formSubmit">Küldés</button>
-            <p class="contact-status" id="contactStatus" role="status"></p>
-            <span id="i18nContactSending" data-i18n="formSending" hidden>Küldés...</span>
-            <span id="i18nContactSuccess" data-i18n="formSuccess" hidden>Köszönjük, a megkeresésed megérkezett. Hamarosan jelentkezünk.</span>
-            <span id="i18nContactError" data-i18n="formError" hidden>Hiba történt. Kérjük, próbáld újra, vagy írj nekünk emailt közvetlenül.</span>
-          </form>
-        </div>
-        <div class="contact-side reveal">
-          <div class="contact-details">
-            <div class="contact-details-row">
-              <span class="contact-address-label" data-i18n="contactNameLabel">Név</span>
-              <strong>Szappanos Bence</strong>
-            </div>
-            <div class="contact-details-row">
-              <span class="contact-address-label" data-i18n="contactPhoneLabel">Telefon</span>
-              <a href="tel:+36308849273">+36 30 884 9273</a>
-            </div>
-            <div class="contact-details-row">
-              <span class="contact-address-label" data-i18n="contactWhatsappLabel">WhatsApp</span>
-              <a href="https://wa.me/36308849273" target="_blank" rel="noopener">+36 30 884 9273</a>
-            </div>
-            <div class="contact-details-row">
-              <span class="contact-address-label" data-i18n="contactEmailLabel">Email</span>
-              <a href="mailto:carvtexszerviz@gmail.com">carvtexszerviz@gmail.com</a>
-            </div>
-            <div class="contact-details-row">
-              <span class="contact-address-label" data-i18n="contactAddressLabel">Helyszín</span>
-              <strong data-i18n="contactAddressValue">Délegyháza, Magyarország (Budapest déli agglomeráció)</strong>
-            </div>
-
-            <div class="nav-actions-bar" style="margin-top:8px;">
-              <a href="https://www.google.com/maps/dir/?api=1&destination=D%C3%A9legyh%C3%A1za" target="_blank" rel="noopener" class="btn btn-primary nav-btn-google">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-                <span data-i18n="navBtnGoogle">Google Maps útvonal</span>
-              </a>
-              <a href="https://waze.com/ul?q=D%C3%A9legyh%C3%A1za&navigate=yes" target="_blank" rel="noopener" class="btn nav-btn-waze">
-                <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19.32 10.04a7.8 7.8 0 0 0-.25-1.95 8.1 8.1 0 0 0-7.85-6.09c-4.48 0-8.1 3.63-8.1 8.1 0 1.95.7 3.75 1.86 5.15L4 18.5a.75.75 0 0 0 .97.97l3.25-.97a8.03 8.03 0 0 0 2.99.58c4.48 0 8.11-3.63 8.11-8.11 0-.35-.03-.7-.09-1.03h.09zM9 11a1.25 1.25 0 1 1 0-2.5A1.25 1.25 0 0 1 9 11zm6 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
-                <span data-i18n="navBtnWaze">Waze navigáció</span>
-              </a>
+            <div class="info-notes">
+              <p data-i18n="dropoffParking"><strong>Ingyenes, kényelmes parkolás</strong> közvetlenül a műhely előtt a lécek kipakolásához.</p>
+              <p data-i18n="dropoffFlexible"><strong>Rugalmas időpontok:</strong> Munka után, akár esti órákban vagy hétvégén is leadhatod a léceket.</p>
+              <p data-i18n="dropoffBoot"><strong>Kötésbeállításhoz:</strong> Kérjük, a lécek mellett az egyik síbakancsot is hozd magaddal!</p>
+              <p data-i18n="dropoffPickup"><strong>Háztól-házig szállítás:</strong> 3+ pár síléc esetén díjmentes felvétel és visszahozatal 20 km-es körzetben (Délegyháza, Dunavarsány, Dunaharaszti, Taksony, Majosháza stb.).</p>
             </div>
           </div>
-
-          <div class="drive-times-card">
-            <div class="drive-times-header">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <h4 data-i18n="driveTimesTitle">Autós menetidő a műhelybe</h4>
-            </div>
-            <div class="drive-times-grid">
-              <div class="drive-pill"><strong data-i18n="driveTown1">Dunavarsány / Taksony</strong><span data-i18n="driveTime1">~5–10 perc</span></div>
-              <div class="drive-pill"><strong data-i18n="driveTown2">Dunaharaszti</strong><span data-i18n="driveTime2">~12–15 perc</span></div>
-              <div class="drive-pill"><strong data-i18n="driveTown3">Szigetszentmiklós</strong><span data-i18n="driveTime3">~18–20 perc</span></div>
-              <div class="drive-pill"><strong data-i18n="driveTown4">Budapest M0 / Soroksár</strong><span data-i18n="driveTime4">~25 perc</span></div>
-              <div class="drive-pill"><strong data-i18n="driveTown5">Kiskunlacháza / Ráckeve</strong><span data-i18n="driveTime5">~10–15 perc</span></div>
-              <div class="drive-pill"><strong data-i18n="driveTown6">Alsónémedi / Dabas</strong><span data-i18n="driveTime6">~20 perc</span></div>
-            </div>
-          </div>
-
-          <div class="dropoff-info-card">
-            <h4 data-i18n="dropoffTitle">Tudnivalók a leadáshoz</h4>
-            <ul class="dropoff-list">
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
-                <span data-i18n="dropoffParking"><strong>Ingyenes, kényelmes parkolás</strong> közvetlenül a műhely előtt a lécek ki- és bepakolásához.</span>
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
-                <span data-i18n="dropoffFlexible"><strong>Rugalmas átvétel:</strong> Előzetes egyeztetés után munkaidő után (este) vagy hétvégén is leadhatod a léceidet.</span>
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
-                <span data-i18n="dropoffBoot"><strong>Kötésbeállításhoz:</strong> Kérjük, hozz magaddal egy darab síbakancsot a pontos DIN és talphossz-beállításhoz.</span>
-              </li>
-              <li>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
-                <span data-i18n="dropoffPickup"><strong>Háztól-házig szállítás:</strong> 3+ pár síléc / korcsolya esetén díjmentes felvétel és visszahozatal 20 km-es körzetben (Délegyháza, Dunavarsány, Dunaharaszti, Taksony, Majosháza stb.).</span>
-              </li>
-            </ul>
-          </div>
-
-          <div class="contact-map">
-            <iframe
-              src="https://www.google.com/maps?q=D%C3%A9legyh%C3%A1za,+Magyarorsz%C3%A1g&output=embed"
-              title="CarvteX Síszerviz — térkép" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-          <div class="location-map-hint">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-            <span data-i18n="locExactAddressHint">A pontos házszámot az időpont megerősítésekor küldjük el.</span>
-          </div>
-        </div>
+        </aside>
       </div>
     </div>
   </section>
 
 </main>
 
-<footer>
+<footer class="site-footer">
   <div class="container footer-grid">
-    <div class="footer-brand">
-      <a href="/" class="brand" style="color:#fff;">
+    <div class="footer-col footer-col-wide">
+      <a href="/" class="brand footer-brand">
         <img src="/assets/logo-icon.png" alt="CarvteX" class="footer-icon-img">
         CarvteX
       </a>
@@ -296,8 +258,8 @@
       <h4 data-i18n="footerQuickLinks">Gyorslinkek</h4>
       <ul>
         <li><a href="/#about" data-i18n="navAbout">Rólunk</a></li>
-        <li><a href="/szolgaltatasok" data-i18n="navServices">Szolgáltatások</a>
-      <a href="/szolgaltatasok#skates" data-i18n="navSkates">Korcsolyaszerviz</a></li>
+        <li><a href="/szolgaltatasok" data-i18n="navServices">Szolgáltatások</a></li>
+        <li><a href="/szolgaltatasok#skates" data-i18n="navSkates">Korcsolyaszerviz</a></li>
         <li><a href="/kapcsolat" data-i18n="navContact">Kapcsolat</a></li>
       </ul>
     </div>
