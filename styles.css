@@ -340,6 +340,49 @@ header.site-header{
   padding:var(--space-2xl) 0;
   max-width:660px;
 }
+
+/* Hero brand stamp: big Bebas Neue + silhouette mark */
+.hero-brand{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:flex-start;
+  margin-bottom:var(--space-md);
+  user-select:none;
+}
+.hero-skyline{display:block;width:140px;height:auto;color:var(--color-accent);line-height:0;margin-bottom:4px;}
+.hero-brand-icon{width:100%;height:auto;display:block;}
+.hero-brand-word{
+  font-family:var(--font-display);
+  font-size:clamp(36px,6vw,56px);
+  letter-spacing:0.06em;
+  line-height:0.95;
+  text-transform:uppercase;
+  color:#fff;
+  display:inline-flex;
+}
+.hero-brand-word .accent{color:var(--color-accent);}
+.hero-brand-sub{
+  font-family:var(--font-body);
+  font-size:clamp(11px,1.4vw,13px);
+  font-weight:700;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:var(--color-accent);
+  margin-top:4px;
+}
+
+/* Mask reveal on hero load */
+.mask-reveal{display:inline-block;overflow:hidden;vertical-align:bottom;}
+.mask-reveal > span{
+  display:inline-block;
+  transform:translateY(115%);
+  animation:letterUp 700ms cubic-bezier(0.16,1,0.3,1) forwards;
+  animation-delay:calc(var(--i, 0) * 45ms + 120ms);
+}
+@keyframes letterUp{
+  to{transform:translateY(0);}
+}
+
 .hero-eyebrow{
   margin-bottom:var(--space-md);
 }
