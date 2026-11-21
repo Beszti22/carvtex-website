@@ -82,13 +82,13 @@
       <img src="/assets/logo-icon.png" alt="CarvteX" class="brand-icon-img">
       <span class="brand-text">
         <span class="brand-name">CarvteX</span>
-        <span class="brand-sub">Síszerviz</span>
+        <span class="brand-sub" data-i18n="brandSub">Síszerviz</span>
       </span>
     </a>
     <nav class="nav-links" id="navLinks" aria-label="Primary">
-      <a href="/szolgaltatasok#skates" data-i18n="navSkates">Korcsolyaszerviz</a>
       <a href="/#about" data-i18n="navAbout">Rólunk</a>
       <a href="/szolgaltatasok" aria-current="page" data-i18n="navServices">Szolgáltatások</a>
+      <a href="/szolgaltatasok#skates" data-i18n="navSkates">Korcsolyaszerviz</a>
       <a href="/kapcsolat" data-i18n="navContact">Kapcsolat</a>
       <a href="/kapcsolat" class="btn btn-primary mobile-cta" data-i18n="navBook">Időpontfoglalás</a>
     </nav>
@@ -109,444 +109,405 @@
 
 <!-- SERVICES HERO VISUAL — shared workbench-photo background spanning the
      page intro and the 3D story below, so it reads as one continuous zone -->
-  <div class="services-visual-hero">
+<div class="services-visual-hero">
+
+<!-- PAGE INTRO -->
   <section class="page-intro page-intro-services">
     <div class="container">
-      <span class="eyebrow" data-i18n="servicesEyebrow">Amit csinálunk</span>
-      <h1 data-i18n="servicesH2">Szolgáltatások</h1>
-      <p data-i18n="servicesLead">Egy gyors él- és wax-frissítéstől a teljes versenyfelkészítésig — minden léc ugyanazt a odafigyelést kapja.</p>
+      <span class="eyebrow" data-i18n="storyEyebrow">Részletes bemutató</span>
+      <h1>Szolgáltatások & 3D folyamat</h1>
+      <p data-i18n="storyLead">Görgess tovább, és nézd meg közelebbről, hogyan készítjük fel a léc élét, talpát és kötését.</p>
     </div>
   </section>
 
-<!-- 3D SKI STORY — sticky canvas, scroll-driven steps -->
-  <section class="ski-story" id="skiStory" aria-label="CarvteX síléc — interaktív bemutató">
-    <div class="ski-story-sticky">
-      <canvas id="skiCanvas" aria-hidden="true"></canvas>
-
-      <!-- 3D Model Loading Progress HUD -->
-      <div class="ski-loader" id="skiLoader" role="status" aria-live="polite">
-        <span class="ski-loader-spinner" aria-hidden="true"></span>
-        <span class="ski-loader-text" data-i18n="skiLoading">3D síléc modell betöltése…</span>
-        <span class="ski-loader-pct" id="skiLoaderPct">0%</span>
-      </div>
-
-      <div class="ski-story-fallback">
-        <strong>CARVTEX</strong>
-        <span data-i18n="viewerFallback">A 3D nézethez modern böngésző szükséges — lent minden más ugyanúgy működik.</span>
-      </div>
-
-      <div class="ski-story-hint" aria-hidden="true">
-        <span data-i18n="scrollHint">Görgess tovább</span>
-        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-      </div>
-
-      <!-- Interactive 3-step quick-switcher pills + drag hint -->
-      <div class="ski-hud-bottom">
-        <span class="ski-drag-hint" data-i18n="skiDragHint">Húzd a forgatáshoz · Görgess a részletekért</span>
-        <div class="ski-step-nav" role="group" aria-label="Síléc részek gyorsválasztó">
-          <button type="button" class="ski-step-btn active" data-target-part="binding" aria-pressed="true" data-i18n="stepBtn1">01 Kötés</button>
-          <button type="button" class="ski-step-btn" data-target-part="steel_edges" aria-pressed="false" data-i18n="stepBtn2">02 Acélél</button>
-          <button type="button" class="ski-step-btn" data-target-part="base,sidewall" aria-pressed="false" data-i18n="stepBtn3">03 Talp &amp; Wax</button>
-        </div>
-      </div>
-
-      <!-- Part-callout arrows: only the one matching the section's
-           data-active-part (set by ski-viewer.js) is shown, via CSS. -->
-      <div class="ski-annotations" aria-hidden="true">
-        <div class="ski-annotation" data-for="binding" style="--ax:58%;--ay:42%;">
-          <span class="ski-annotation-dot"></span>
-          <span class="ski-annotation-label" data-i18n="annotBinding">Kötés</span>
-        </div>
-        <div class="ski-annotation" data-for="steel_edges" style="--ax:63%;--ay:50%;">
-          <span class="ski-annotation-dot"></span>
-          <span class="ski-annotation-label" data-i18n="annotEdge">Acélél</span>
-        </div>
-        <div class="ski-annotation" data-for="base,sidewall" style="--ax:50%;--ay:54%;">
-          <span class="ski-annotation-dot"></span>
-          <span class="ski-annotation-label" data-i18n="annotBase">Talp</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scroll steps: each is at least 1 viewport tall so user has time to read -->
-    <div class="ski-story-steps" id="skiSteps">
-
-      <!-- STEP 1: BINDING / SAFETY -->
-      <div class="ski-step active" data-part="binding">
-        <div class="ski-step-card">
-          <span class="ski-step-badge" data-i18n="step1Badge">Biztonság &amp; Kontroll</span>
-          <h2 data-i18n="step1H2">Kötés &amp; DIN-beállítás</h2>
-          <p class="ski-step-lead" data-i18n="step1Lead">A síkötés a legfontosabb biztonsági felszerelésed: pontosan akkor kell kioldania, amikor kell, és stabilan fognia, amikor kanyarodsz.</p>
-
-          <div class="ski-step-details">
-            <h3 data-i18n="step1WhyTitle">Miért kulcsfontosságú?</h3>
-            <p data-i18n="step1WhyText">A rosszul beállított DIN-érték a leggyakoribb térd- és lábsérülések forrása. Egy bakancscsere, hízás, fogyás vagy fejlődés a sítechnikádban mind megváltoztatja a szükséges kioldási nyomatékot.</p>
+<!-- STEP #1: 3D SKI STORY (three.js canvas + stepped scroll story) -->
+  <section class="ski-story-section" id="skiStory">
+    <div class="container ski-story-container">
+      <div class="ski-story-sticky">
+        <div class="ski-viewer-wrap" id="skiViewerWrap">
+          <canvas id="skiCanvas" aria-label="Interaktív 3D síléc modell"></canvas>
+          <div class="ski-loading" id="skiLoading">
+            <span class="spinner" aria-hidden="true"></span>
+            <span data-i18n="skiLoading">3D modell betöltése…</span>
           </div>
-
-          <div class="ski-step-service">
-            <span class="service-pill" data-i18n="step1Svc">Kötésbeállítás / Prémium szerviz</span>
-            <span class="service-note" data-i18n="step1Note">DIN ISO 11088 szabvány szerint</span>
+          <div class="ski-fallback" id="skiFallback">
+            <p data-i18n="viewerFallback">A 3D nézethez modern böngésző szükséges — a lentebbi leírások így is elérhetők.</p>
           </div>
-
-          <a href="/kapcsolat?service=K%C3%B6t%C3%A9sbe%C3%A1ll%C3%ADt%C3%A1s" class="btn btn-primary" data-i18n="step1Cta">Kötésbeállítást kérek</a>
+          <div class="ski-drag-hint" id="skiDragHint">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span data-i18n="skiDragHint">Húzd az egeret a forgatáshoz · Görgess a részletekhez</span>
+          </div>
         </div>
+
+        <nav class="ski-step-nav" aria-label="Munkafázisok">
+          <button type="button" class="ski-step-btn active" data-step-target="1" data-i18n="stepBtn1">01 Kötés</button>
+          <button type="button" class="ski-step-btn" data-step-target="2" data-i18n="stepBtn2">02 Acél él</button>
+          <button type="button" class="ski-step-btn" data-step-target="3" data-i18n="stepBtn3">03 Talp & Wax</button>
+        </nav>
       </div>
 
-      <!-- STEP 2: STEEL EDGES / GRIP -->
-      <div class="ski-step" data-part="steel_edges">
-        <div class="ski-step-card">
-          <span class="ski-step-badge" data-i18n="step2Badge">Kanyarstabilitás</span>
-          <h2 data-i18n="step2H2">Acélél precíziós élezés</h2>
-          <p class="ski-step-lead" data-i18n="step2Lead">Jeges pálya, kemény műhó? Csak a tökéletesen megmunkált, borotvaéles acélél tart meg a kanyarban.</p>
+      <div class="ski-story-scroll">
+        <article class="ski-step-card" data-step="0">
+          <span class="eyebrow" data-i18n="stepTopsheetEyebrow">Minden lécen elvégezzük</span>
+          <h3 data-i18n="stepTopsheetH3">Szemrevételezés és állapotfelmérés</h3>
+          <p data-i18n="stepTopsheetP">Mielőtt bármilyen szerszám hozzáérne a léchez, alaposan átvizsgáljuk a fedlapot, az oldalfalat és az előfeszítést rejtett repedések vagy réteg-elválások után kutatva.</p>
+        </article>
 
-          <div class="ski-step-details">
-            <h3 data-i18n="step2WhyTitle">Hogyan dolgozunk rajta?</h3>
-            <p data-i18n="step2WhyText">A síléc alsó és oldalsó élét a kívánt szögben (87°-os verseny-szögben vagy egyedi igény szerint) élezzük meg, majd finom gyémántkővel sorjátlanítjuk. Ez adja meg a sima kanyarváltást anélkül, hogy a léc "belekapna" a hóba.</p>
-          </div>
+        <article class="ski-step-card" data-step="1">
+          <span class="eyebrow" data-i18n="stepBindingEyebrow">01. Lépés · Biztonság</span>
+          <h3 data-i18n="stepBindingH3">Milliméter-pontos kötésbeállítás</h3>
+          <p data-i18n="stepBindingP">Előfeszítés és DIN kioldási érték kalibrálása a síbakancs pontos talphossza, testsúly, magasság és síelési stílus alapján. Egy kötés, ami akkor old ki, amikor muszáj — és akkor tart, amikor kell.</p>
+        </article>
 
-          <div class="ski-step-service">
-            <span class="service-pill" data-i18n="step2Svc">Alapszerviz / Prémium szerviz</span>
-            <span class="service-note" data-i18n="step2Note">Verseny-technológia alapján</span>
-          </div>
+        <article class="ski-step-card" data-step="2">
+          <span class="eyebrow" data-i18n="stepEdgeEyebrow">02. Lépés · Tapadás</span>
+          <h3 data-i18n="stepEdgeH3">Kézi és gépi élélezés</h3>
+          <p data-i18n="stepEdgeP">Oldalél csiszolása 87°-os precíz szögre (vagy egyedi kérésre), finom diamond-kővel sorjátlanítva. Stabil élfogás a jeges szakaszokon is, sima kanyarváltás, felesleges kaparás nélkül.</p>
+        </article>
 
-          <a href="/kapcsolat?service=Alapszerviz" class="btn btn-primary" data-i18n="step2Cta">Élezést kérek</a>
-        </div>
+        <article class="ski-step-card" data-step="3">
+          <span class="eyebrow" data-i18n="stepBaseEyebrow">03. Lépés · Siklás</span>
+          <h3 data-i18n="stepBaseH3">P-Tex talpjavítás, melegwax & polírozás</h3>
+          <p data-i18n="stepBaseP">A mély karcok kitöltése P-Tex anyaggal, struktúra megnyitása, hőillesztett melegwaxolás az adott hóhőmérséklethez, majd többkefés kézi polírozás a tökéletes siklásért.</p>
+        </article>
       </div>
-
-      <!-- STEP 3: BASE & WAX / SPEED -->
-      <div class="ski-step" data-part="base,sidewall">
-        <div class="ski-step-card">
-          <span class="ski-step-badge" data-i18n="step3Badge">Siklás &amp; Védelem</span>
-          <h2 data-i18n="step3H2">Talpfeltöltés &amp; Melegwax</h2>
-          <p class="ski-step-lead" data-i18n="step3Lead">A száraz, fehéredő talp tapad a hóra és növeli a fáradtságot. A friss melegwax megvédi a talpat és visszaadja a gondtalan sebességet.</p>
-
-          <div class="ski-step-details">
-            <h3 data-i18n="step3WhyTitle">Miért kulcsfontosságú?</h3>
-            <p data-i18n="step3WhyText">A porózus P-Tex talp forró vasalással szívja magába a paraffin alapú waxot. A mély karcokat P-Tex pisztollyal kitöltjük, síkba csiszoljuk, majd speciális kefékkel nyitjuk meg a mikrostruktúrát.</p>
-          </div>
-
-          <div class="ski-step-service">
-            <span class="service-pill" data-i18n="step3Svc">Prémium szerviz</span>
-            <span class="service-note" data-i18n="step3Note">P-Tex javítás + melegwaxolás</span>
-          </div>
-
-          <a href="/kapcsolat?service=Pr%C3%A9mium%20szerviz" class="btn btn-primary" data-i18n="step3Cta">Prémium felújítást kérek</a>
-        </div>
-      </div>
-
     </div>
   </section>
-  </div><!-- /.services-visual-hero -->
 
-<!-- STEP #3: INTERACTIVE BEFORE / AFTER SKI BASE & EDGE RESTORATION SLIDER -->
-  <section class="ba-section" id="beforeAfter">
+</div><!-- /.services-visual-hero -->
+
+<!-- STEP #2: INTERACTIVE BEFORE / AFTER RESTORATION SLIDER -->
+  <section class="before-after-section" id="restoration">
     <div class="container">
-      <div class="ba-header-bar reveal">
-        <div class="section-head">
-          <span class="eyebrow" data-i18n="baEyebrow">Látható különbség</span>
-          <h2 data-i18n="baH2">Előtte &amp; Utána: Mit tesz a CarvteX szerviz?</h2>
-          <p data-i18n="baLead">Húzd el a csúszkát vagy kattints a gombokra, és nézd meg közelről, hogyan alakul át egy szezon végén karcos, életlen síléc a kézi és gépi edzői felújítás során.</p>
-        </div>
-        <div class="ba-presets" role="group" aria-label="Előtte és utána nézet gyorsgombok">
-          <button type="button" class="ba-preset-btn" data-ba-pos="90" aria-pressed="false" data-i18n="baBtnBefore">Előtte (Elhasznált léc)</button>
-          <button type="button" class="ba-preset-btn active" data-ba-pos="50" aria-pressed="true" data-i18n="baBtnSplit">50 / 50 Összehasonlítás</button>
-          <button type="button" class="ba-preset-btn" data-ba-pos="10" aria-pressed="false" data-i18n="baBtnAfter">Utána (CarvteX Prémium)</button>
-        </div>
+      <div class="section-head center reveal">
+        <span class="eyebrow">Állapotfelmérés és Talp-restauráció</span>
+        <h2>Lásd a különbséget a talpon</h2>
+        <p>Húzd a csúszkát és nézd meg, hogyan kel életre egy szezon végén karcos, életlen síléc a kézi és gépi edzői felújítás során.</p>
       </div>
 
-      <div class="ba-stage reveal" id="baStage">
-        <div class="ba-viewport">
-          <!-- BEFORE LAYER: Worn, oxidized ski base + rounded 90°+ edge + stone gouges -->
-          <div class="ba-layer ba-layer-before" aria-hidden="true">
-            <span class="ba-tag ba-tag-before" data-i18n="baTagBefore">ELŐTTE · Karcos &amp; kiszáradt</span>
-            <svg class="ba-svg" viewBox="0 0 1100 380" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="wornBaseGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#353f49"/>
-                  <stop offset="50%" stop-color="#434e5a"/>
-                  <stop offset="100%" stop-color="#2c353e"/>
-                </linearGradient>
-                <linearGradient id="wornEdgeGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#8b7355"/>
-                  <stop offset="50%" stop-color="#6e7781"/>
-                  <stop offset="100%" stop-color="#9a6b3b"/>
-                </linearGradient>
-              </defs>
-              <!-- Ski Base Macro Silhouette -->
-              <rect x="60" y="54" width="980" height="272" rx="36" fill="url(#wornBaseGrad)" stroke="#5c6875" stroke-width="2"/>
-              <!-- Dull / Rusted Steel Edges (top & bottom rails) -->
-              <rect x="76" y="54" width="948" height="14" rx="6" fill="url(#wornEdgeGrad)"/>
-              <rect x="76" y="312" width="948" height="14" rx="6" fill="url(#wornEdgeGrad)"/>
-              <!-- Oxidized dry patches (chalky white-grey haze along edges) -->
-              <ellipse cx="290" cy="105" rx="190" ry="38" fill="#7c8896" opacity="0.28"/>
-              <ellipse cx="640" cy="270" rx="240" ry="42" fill="#7c8896" opacity="0.25"/>
-              <ellipse cx="480" cy="185" rx="290" ry="55" fill="#6b7785" opacity="0.22"/>
-              <!-- Deep Stone Gouges & Irregular Scratches -->
-              <path d="M130 140 L390 168 L540 152" stroke="#181e24" stroke-width="5.5" stroke-linecap="round" fill="none"/>
-              <path d="M132 142 L388 170 L538 154" stroke="#9aa6b2" stroke-width="1.5" stroke-dasharray="8 6" fill="none"/>
-              <path d="M210 235 L495 208 L760 246" stroke="#151a20" stroke-width="6.5" stroke-linecap="round" fill="none"/>
-              <path d="M212 237 L493 210 L758 248" stroke="#a3b1bf" stroke-width="1.8" stroke-dasharray="10 5" fill="none"/>
-              <path d="M310 112 L680 135" stroke="#1f262e" stroke-width="4" stroke-linecap="round" fill="none"/>
-              <path d="M160 278 L430 262 L620 288" stroke="#222930" stroke-width="4.5" stroke-linecap="round" fill="none"/>
-              <path d="M440 175 L840 198" stroke="#181e24" stroke-width="5" stroke-linecap="round" fill="none"/>
-              <!-- Rust / Burr callout circles on top & bottom steel edges -->
-              <circle cx="260" cy="61" r="16" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 3"/>
-              <circle cx="385" cy="222" r="22" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 3"/>
-              <!-- Cross-section diagram inset (bottom-left) -->
-              <g transform="translate(95, 225)">
-                <rect x="0" y="0" width="175" height="72" rx="6" fill="rgba(15,20,26,0.88)" stroke="rgba(245,158,11,0.45)"/>
-                <text x="14" y="24" fill="#f59e0b" font-family="Bebas Neue, sans-serif" font-size="17" letter-spacing="1">ÉLSZÖG: &gt;90° (LEKOPOTT)</text>
-                <text x="14" y="44" fill="#cbd5e1" font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600">Talp: Karcos, oxidált P-Tex</text>
-                <text x="14" y="61" fill="#94a3b8" font-family="Source Sans 3, sans-serif" font-size="11.5">Siklási ellenállás: Magas</text>
-              </g>
-            </svg>
+      <div class="ba-preset-controls reveal">
+        <button type="button" class="ba-preset-btn" data-ba-pos="90">Előtte (Elhasznált léc)</button>
+        <button type="button" class="ba-preset-btn" data-ba-pos="50">50 / 50 Összehasonlítás</button>
+        <button type="button" class="ba-preset-btn active" data-ba-pos="10">Utána (CarvteX Prémium)</button>
+      </div>
+
+      <div class="before-after-wrapper reveal">
+        <div class="before-after-container" id="baContainer">
+          <!-- AFTER LAYER (Bottom: Restored state) -->
+          <div class="ba-layer ba-after">
+            <span class="ba-tag ba-tag-after">Utána · Pályakész állapot</span>
+            <div class="ba-ski-svg-wrap">
+              <svg viewBox="0 0 1000 280" class="ba-ski-svg" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <linearGradient id="afterBaseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#0f172a" />
+                    <stop offset="50%" stop-color="#020617" />
+                    <stop offset="100%" stop-color="#0f172a" />
+                  </linearGradient>
+                  <pattern id="afterStructure" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <line x1="0" y1="10" x2="20" y2="10" stroke="#1e293b" stroke-width="0.75" />
+                    <line x1="5" y1="0" x2="5" y2="20" stroke="#1e293b" stroke-width="0.5" stroke-dasharray="2,2" />
+                  </pattern>
+                </defs>
+                <rect x="40" y="30" width="920" height="220" rx="40" fill="url(#afterBaseGrad)" stroke="#38bdf8" stroke-width="2"/>
+                <rect x="40" y="30" width="920" height="220" rx="40" fill="url(#afterStructure)" />
+                <rect x="55" y="30" width="890" height="12" fill="#e2e8f0" stroke="#0284c7" stroke-width="1.5" />
+                <rect x="55" y="238" width="890" height="12" fill="#e2e8f0" stroke="#0284c7" stroke-width="1.5" />
+                <path d="M 120 70 L 880 70" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.4" />
+                <path d="M 120 210 L 880 210" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.4" />
+              </svg>
+            </div>
+            <div class="ba-spec-callout ba-spec-after">
+              <span class="spec-title">Élszög: 87° precíz</span>
+              <span class="spec-desc">Melegwaxolva, mikromintás versenystruktúra</span>
+            </div>
           </div>
 
-          <!-- AFTER LAYER: CarvteX P-Tex filled, stone-ground, hot-waxed base + 87° laser steel edge -->
-          <div class="ba-layer ba-layer-after" aria-hidden="true">
-            <span class="ba-tag ba-tag-after" data-i18n="baTagAfter">UTÁNA · Pályakész állapot</span>
-            <svg class="ba-svg" viewBox="0 0 1100 380" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="tunedBaseGrad" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#0b1520"/>
-                  <stop offset="45%" stop-color="#112233"/>
-                  <stop offset="55%" stop-color="#162d44"/>
-                  <stop offset="100%" stop-color="#09121c"/>
-                </linearGradient>
-                <linearGradient id="tunedEdgeGrad" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#93c5fd"/>
-                  <stop offset="50%" stop-color="#ffffff"/>
-                  <stop offset="100%" stop-color="#38bdf8"/>
-                </linearGradient>
-                <pattern id="stoneGrindPattern" width="24" height="8" patternUnits="userSpaceOnUse">
-                  <line x1="0" y1="4" x2="18" y2="4" stroke="#1e9be0" stroke-width="0.7" stroke-opacity="0.22"/>
-                </pattern>
-              </defs>
-              <!-- Deep Graphite Sintered Base -->
-              <rect x="60" y="54" width="980" height="272" rx="36" fill="url(#tunedBaseGrad)" stroke="#1e9be0" stroke-width="2"/>
-              <!-- Precision Linear Stone-Grind Micro-Structure -->
-              <rect x="76" y="68" width="948" height="244" fill="url(#stoneGrindPattern)"/>
-              <!-- Hot-Wax Hydrophobic Gloss Sheen -->
-              <ellipse cx="680" cy="190" rx="310" ry="95" fill="#1e9be0" opacity="0.10"/>
-              <!-- Mirror-Polished 87° Steel Edges (top & bottom rails) -->
-              <rect x="76" y="54" width="948" height="12" rx="2" fill="url(#tunedEdgeGrad)"/>
-              <rect x="76" y="314" width="948" height="12" rx="2" fill="url(#tunedEdgeGrad)"/>
-              <!-- Precision Specular Highlights on Steel Edges -->
-              <line x1="120" y1="60" x2="980" y2="60" stroke="#ffffff" stroke-width="2" stroke-opacity="0.85"/>
-              <line x1="120" y1="320" x2="980" y2="320" stroke="#ffffff" stroke-width="2" stroke-opacity="0.85"/>
-              <!-- Cross-section diagram inset (bottom-right) -->
-              <g transform="translate(815, 225)">
-                <rect x="0" y="0" width="190" height="72" rx="6" fill="rgba(11,28,44,0.92)" stroke="rgba(30,155,224,0.65)"/>
-                <text x="14" y="24" fill="#1e9be0" font-family="Bebas Neue, sans-serif" font-size="17" letter-spacing="1">ÉLSZÖG: 87° / 0.5° PRECÍZ</text>
-                <text x="14" y="44" fill="#ffffff" font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600">Talp: Síkba csiszolt + Melegwax</text>
-                <text x="14" y="61" fill="#7dd3fc" font-family="Source Sans 3, sans-serif" font-size="11.5">Siklás &amp; élfogás: 100% Versenykész</text>
-              </g>
-            </svg>
+          <!-- BEFORE LAYER (Top: Damaged base, clipped by slider) -->
+          <div class="ba-layer ba-before" id="baBeforeLayer">
+            <span class="ba-tag ba-tag-before">Előtte · Karcos & kiszáradt</span>
+            <div class="ba-ski-svg-wrap">
+              <svg viewBox="0 0 1000 280" class="ba-ski-svg" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <linearGradient id="beforeBaseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#334155" />
+                    <stop offset="50%" stop-color="#1e293b" />
+                    <stop offset="100%" stop-color="#334155" />
+                  </linearGradient>
+                </defs>
+                <rect x="40" y="30" width="920" height="220" rx="40" fill="url(#beforeBaseGrad)" stroke="#475569" stroke-width="2"/>
+                <!-- Scratches & rock damages -->
+                <path d="M 120 140 Q 300 170 480 150" stroke="#0f172a" stroke-width="4" stroke-linecap="round" />
+                <path d="M 140 142 L 460 152" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4,6" opacity="0.6"/>
+                <path d="M 390 190 L 720 210" stroke="#0f172a" stroke-width="5" stroke-linecap="round" />
+                <path d="M 410 192 L 700 211" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,5" opacity="0.6"/>
+                <path d="M 280 85 L 600 100" stroke="#0f172a" stroke-width="3.5" />
+                <!-- Dry base patches -->
+                <ellipse cx="280" cy="110" rx="120" ry="40" fill="#475569" opacity="0.3" />
+                <ellipse cx="600" cy="180" rx="150" ry="45" fill="#475569" opacity="0.3" />
+                <!-- Rusty/burred edges -->
+                <rect x="55" y="30" width="890" height="12" fill="#78350f" stroke="#b45309" stroke-width="1" />
+                <rect x="55" y="238" width="890" height="12" fill="#78350f" stroke="#b45309" stroke-width="1" />
+                <!-- Edge burr callouts -->
+                <circle cx="250" cy="36" r="15" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="3,3"/>
+                <circle cx="350" cy="244" r="15" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="3,3"/>
+              </svg>
+            </div>
+            <div class="ba-spec-callout ba-spec-before">
+              <span class="spec-title">Élszög: &gt;90° (lekopott)</span>
+              <span class="spec-desc">Talp: Karcos, oxidált P-Tex · Siklási ellenállás: Magas</span>
+            </div>
           </div>
 
-          <!-- Accessible Range Input (Keyboard + Drag + Touch) -->
-          <input type="range" class="ba-range" id="baRange" min="4" max="96" value="50" aria-label="Síléc állapotának összehasonlítása szerviz előtt és után" data-i18n-aria="baSliderLabel">
-
-          <!-- Visual Divider & Handle -->
-          <div class="ba-divider" aria-hidden="true">
-            <div class="ba-handle">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 15 12 9 6" transform="translate(6,0)"/></svg>
+          <!-- DRAGGABLE HANDLE -->
+          <div class="ba-handle" id="baHandle">
+            <div class="ba-handle-line"></div>
+            <div class="ba-handle-button" aria-label="Húzd a csúszkát balra vagy jobbra">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Diagnostic Callout Cards (Before vs After) -->
-      <div class="ba-callouts reveal">
-        <div class="ba-callout-group">
-          <div class="ba-callout-card ba-callout-card--before">
-            <strong>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              <span data-i18n="baBefore1Title">90°+ lekerekedett, sorjás acélél</span>
-            </strong>
-            <p data-i18n="baBefore1Desc">Jeges, kemény pályán megcsúszik a léc; bizonytalan, késlekedő kanyarvétel.</p>
-          </div>
-          <div class="ba-callout-card ba-callout-card--before">
-            <strong>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              <span data-i18n="baBefore2Title">Kiszáradt, oxidált talp &amp; mély kőnyomok</span>
-            </strong>
-            <p data-i18n="baBefore2Desc">A karcok örvényeket és tapadást keltenek a hóban, ami érezhetően lefékezi a siklást.</p>
-          </div>
+      <!-- Detail callout pills below slider -->
+      <div class="ba-cards-grid reveal">
+        <div class="ba-callout-card">
+          <div class="ba-card-icon">⚡</div>
+          <h4>87° Versenyszintű Élszög</h4>
+          <p>A CarvteX-nél 87°-os oldalszöggel dolgozunk, így a jeges, letaposott szakaszokon is azonnal és stabilan harap a léc, megcsúszás nélkül.</p>
         </div>
-        <div class="ba-callout-group">
-          <div class="ba-callout-card ba-callout-card--after">
-            <strong>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="baAfter1Title">Borotvaéles 87° / 0.5° precíziós él</span>
-            </strong>
-            <p data-i18n="baAfter1Desc">Azonnali élfogás jeges lejtőn is, kiszámítható és stabil ívtartás minden kanyarban.</p>
-          </div>
-          <div class="ba-callout-card ba-callout-card--after">
-            <strong>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="baAfter2Title">P-Texszel feltöltött, sík &amp; melegwaxolt talp</span>
-            </strong>
-            <p data-i18n="baAfter2Desc">Telített pórusok és kefélt struktúra a gyors, akadálytalan siklásért már az első méterektől.</p>
-          </div>
+        <div class="ba-callout-card">
+          <div class="ba-card-icon">💎</div>
+          <h4>Diamond-köves Finiselés</h4>
+          <p>Az él csiszolása után finom polírkövekkel távolítjuk el a mikrosorjákat, így az él nemcsak éles, hanem sima és hosszú élettartamú lesz.</p>
+        </div>
+        <div class="ba-callout-card">
+          <div class="ba-card-icon">🔥</div>
+          <h4>Mély melegwaxolás</h4>
+          <p>Nem gépi gyorspermet: a P-Tex molekuláiba mélyen beleitatott, kézzel vasalt és több fázisban polírozott melegwax a maximális siklásért.</p>
         </div>
       </div>
     </div>
   </section>
 
-
-
-<!-- STEP #1: SERVICE PACKAGES WITH DIRECT INQUIRY LINKS -->
+<!-- STEP #3: PACKAGES OVERVIEW (anchors #services) -->
   <section id="services">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow" data-i18n="tiersEyebrow">Válassz csomagot</span>
-        <h2 data-i18n="tiersH2">Szerviz csomagok</h2>
-        <p data-i18n="servicesLead">Egy gyors él- és wax-frissítéstől a teljes versenyfelkészítésig — minden léc ugyanazt a odafigyelést kapja.</p>
+        <span class="eyebrow" data-i18n="servicesEyebrow">Csomagok és árak</span>
+        <h2 data-i18n="servicesH2">Átlátható árak, rejtett költségek nélkül</h2>
+        <p data-i18n="servicesLead">A gyors utazás előtti karbantartástól a teljes versenyfelkészítésig. Nincsenek meglepetések.</p>
       </div>
+
       <div class="service-grid">
-        <div class="service-card reveal" data-tilt>
-          <div class="service-card-top">
-            <span class="service-index">01</span>
-          </div>
-          <span class="service-meta-pill">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span data-i18n="svc1Time">24–48 órás határidő · 5–7 sínaponként</span>
-          </span>
+        <div class="service-card reveal">
+          <div class="service-badge" data-i18n="svc1Badge">Rendszeres karbantartás</div>
           <h3 data-i18n="svc1Title">Alapszerviz</h3>
           <div class="service-price">
             <span class="service-price-val" data-i18n="svc1Price">8 500 Ft</span>
             <span class="service-price-unit" data-i18n="svc1PriceUnit">/ pár</span>
           </div>
-          <p data-i18n="svc1Desc">Élezés, waxolás — az alapok, ahogy kell.</p>
+          <p data-i18n="svc1Desc">Ideális szezonközi frissítéshez, vagy olyan síelések után, ahol a talp nem szenvedett mély sérülést.</p>
           <ul class="service-features">
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="svc1Feat1">Talptisztítás és állapotfelmérés</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="svc1Feat2">Precíz élezés a kívánt szögben</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="svc1Feat3">Melegwaxolás és kefélés</span>
-            </li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc1Feat1">Teljes állapotfelmérés</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc1Feat2">Gépi élélezés (oldal- és alsó él)</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc1Feat3">Hőillesztett melegwaxolás</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc1Feat4">Többkefés polírozás</span></li>
           </ul>
-          <a href="/kapcsolat?service=Alapszerviz" class="card-link">
-            <span data-i18n="svcCta">Időpontot foglalok erre</span>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+          <a href="/kapcsolat" class="btn btn-outline-dark" data-i18n="svc1Cta">Alapszerviz foglalása</a>
         </div>
-        <div class="service-card service-card--featured reveal" data-tilt>
-          <div class="service-card-top">
-            <span class="service-index">02</span>
-            <span class="service-badge" data-i18n="svc2Badge">Legnépszerűbb</span>
-          </div>
-          <span class="service-meta-pill">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span data-i18n="svc2Time">24–48 órás határidő · Teljes felújítás</span>
-          </span>
+
+        <div class="service-card service-card--featured reveal">
+          <div class="service-badge" data-i18n="svc2Badge">Legnépszerűbb</div>
           <h3 data-i18n="svc2Title">Prémium szerviz</h3>
           <div class="service-price">
             <span class="service-price-val" data-i18n="svc2Price">11 000 Ft</span>
             <span class="service-price-unit" data-i18n="svc2PriceUnit">/ pár</span>
           </div>
-          <p data-i18n="svc2Desc">Élezés, waxolás, talpfeltöltés, oldalélcsiszolás és kötésbeállítás — teljes felkészítés komoly síeléshez.</p>
+          <p data-i18n="svc2Desc">Komplett síléc-újjáélesztés: mély talpkarcolások feltöltése P-Tex-szel, kézi kőfinomítás és professzionális kötéskalibráció.</p>
           <ul class="service-features">
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="svc2Feat1">P-Tex talpfeltöltés és síkba csiszolás</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="svc2Feat2">Oldalélcsiszolás és verseny-tuning</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="svc2Feat3">Hóhőmérséklethez választott melegwax</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="svc2Feat4">Teljes kötés- és DIN-kalibrálás</span>
-            </li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc2Feat1">Minden, ami az Alapszervizben benne van</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc2Feat2">P-Tex talpfeltöltés és síkbahúzás</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc2Feat3">Diamond-köves kézi élfinomítás & polír</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc2Feat4">Kötésellenőrzés & DIN kalibráció</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc2Feat5">Választható magas fluor-tartalmú versenywax</span></li>
           </ul>
-          <a href="/kapcsolat?service=Pr%C3%A9mium%20szerviz" class="card-link">
-            <span data-i18n="svcCta">Időpontot foglalok erre</span>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+          <a href="/kapcsolat" class="btn btn-primary" data-i18n="svc2Cta">Prémium szerviz foglalása</a>
         </div>
-        <div class="service-card reveal" data-tilt>
-          <div class="service-card-top">
-            <span class="service-index">03</span>
-          </div>
-          <span class="service-meta-pill">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span data-i18n="svc3Time">15–20 perc · Bakancscserénél kötelező</span>
-          </span>
+
+        <div class="service-card reveal">
+          <div class="service-badge" data-i18n="svc3Badge">A biztonságodért</div>
           <h3 data-i18n="svc3Title">Kötésbeállítás</h3>
           <div class="service-price">
             <span class="service-price-val" data-i18n="svc3Price">2 500 Ft</span>
-            <span class="service-price-free" data-i18n="svc3PriceFree">Szervizzel együtt INGYENES</span>
+            <span class="service-price-unit" data-i18n="svc3PriceFree">Szervizzel együtt INGYENES</span>
           </div>
-          <p data-i18n="svc3Desc">Pontos kötésbeállítás a bakancsodhoz és a DIN-értékedhez igazítva.</p>
+          <p data-i18n="svc3Desc">Független biztonsági ellenőrzés és kalibráció a hivatalos DIN szabványok szerint — új bakancsnál kiemelten fontos.</p>
           <ul class="service-features">
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="svc3Feat1">Bakancs-talphossz pontos beállítása</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="svc3Feat2">Súlyhoz és tudáshoz számolt DIN-érték</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span data-i18n="svc3Feat3">Biztonsági és kopás-ellenőrzés</span>
-            </li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc3Feat1">Bakancs-talphossz pontos illesztése</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc3Feat2">Előfeszítés (forward pressure) beállítása</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc3Feat3">DIN kioldási érték kalibrálása</span></li>
+            <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="svc3Feat4">Kioldó mechanizmus ellenőrzése</span></li>
           </ul>
-          <a href="/kapcsolat?service=K%C3%B6t%C3%A9sbe%C3%A1ll%C3%ADt%C3%A1s" class="card-link">
-            <span data-i18n="svcCta">Időpontfoglalás erre</span>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+          <a href="/kapcsolat" class="btn btn-outline-dark" data-i18n="svc3Cta">Kötésbeállítás foglalása</a>
         </div>
       </div>
 
-      <!-- MULTI-PAIR VOLUME DISCOUNT & FREE PICKUP BANNER -->
-      <div class="multi-pair-section reveal" style="margin-top:var(--space-2xl);">
-        <div class="multi-pair-banner">
-          <div class="mp-header">
-            <span class="mp-badge" data-i18n="mpBadge">Több páros kedvezmény &amp; szállítás</span>
-            <h3 data-i18n="mpTitle">Több pár síléc? Családi kedvezmény &amp; Háztól-házig szállítás</h3>
-            <p data-i18n="mpDesc">Hozd el a család vagy a baráti társaság léceit, és spóroljatok! 3 vagy több pár esetén levesszük a cipekedés terhét a válladról: ingyenesen elmegyünk a lécekért és vissza is visszük őket 20 km-es körzetben.</p>
-          </div>
-          <div class="mp-perks-grid">
-            <div class="mp-perk-card">
-              <h4 class="mp-perk-title" data-i18n="mpPerk2Title">2 pár: -10% kedvezmény</h4>
-              <p class="mp-perk-desc" data-i18n="mpPerk2Desc">-10% kedvezmény a teljes munkadíjból</p>
+      <!-- MULTI-PAIR & PICKUP BANNER -->
+      <div class="multi-pair-banner reveal" style="margin-top:var(--space-2xl);">
+        <div class="mp-banner-content">
+          <div class="mp-badge" data-i18n="mpBadge">Több páros kedvezmény & szállítás</div>
+          <h3 data-i18n="mpTitle">Több pár síléc? Családi kedvezmény & Háztól-házig szállítás</h3>
+          <p data-i18n="mpDesc">Hozd el a család vagy a baráti társaság léceit, és spóroljatok! 3 vagy több pár esetén levesszük a cipekedés terhét a válladról: ingyenesen elmegyünk a lécekért és vissza is visszük őket 20 km-es körzetben.</p>
+          <div class="mp-perks">
+            <div class="mp-perk-item">
+              <span class="mp-perk-icon">🎿🎿</span>
+              <div>
+                <strong data-i18n="mpPerk2Title">2 pár: -10% kedvezmény</strong>
+                <span data-i18n="mpPerk2Desc">-10% kedvezmény a teljes munkadíjból</span>
+              </div>
             </div>
-            <div class="mp-perk-card mp-perk-card--featured">
-              <span class="mp-perk-top-tag">Családi csomag</span>
-              <h4 class="mp-perk-title" data-i18n="mpPerk3Title">3+ pár: -15% kedvezmény + INGYENES szállítás</h4>
-              <p class="mp-perk-desc" data-i18n="mpPerk3Desc">-15% kedvezmény + ingyenes háztól-házig szállítás 20 km-en belül</p>
+            <div class="mp-perk-item mp-perk-highlight">
+              <span class="mp-perk-icon">🚚</span>
+              <div>
+                <strong data-i18n="mpPerk3Title">3+ pár: -15% kedvezmény + INGYENES szállítás</strong>
+                <span data-i18n="mpPerk3Desc">-15% kedvezmény + ingyenes háztól-házig szállítás 20 km-en belül</span>
+              </div>
             </div>
-            <div class="mp-perk-card">
-              <h4 class="mp-perk-title" data-i18n="mpPerk5Title">5+ pár: -20% csoportos kedvezmény</h4>
-              <p class="mp-perk-desc" data-i18n="mpPerk5Desc">Egyedi csoportos ajánlat + ingyenes szállítás</p>
+            <div class="mp-perk-item">
+              <span class="mp-perk-icon">🏔️</span>
+              <div>
+                <strong data-i18n="mpPerk5Title">5+ pár: -20% csoportos kedvezmény</strong>
+                <span data-i18n="mpPerk5Desc">Egyedi csoportos ajánlat + ingyenes szállítás</span>
+              </div>
             </div>
           </div>
-          <div class="mp-coverage-bar">
-            <span class="mp-coverage-label">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-              <span data-i18n="mpTownsLabel">Ingyenes szállítási zóna (20 km):</span>
-            </span>
-            <span class="mp-coverage-towns" data-i18n="mpTowns">Délegyháza · Dunavarsány · Taksony · Dunaharaszti · Majosháza · Áporka · Kiskunlacháza · Szigethalom</span>
+          <div class="mp-towns">
+            <span class="mp-towns-label" data-i18n="mpTownsLabel">Ingyenes szállítási zóna (20 km):</span>
+            <span class="mp-towns-list" data-i18n="mpTowns">Délegyháza · Dunavarsány · Taksony · Dunaharaszti · Majosháza · Áporka · Kiskunlacháza · Szigethalom</span>
           </div>
-          <div class="mp-footer">
-            <span class="mp-footer-hint">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-              <span>Előzetes időpont-egyeztetéssel · Hétvégén és este is</span>
-            </span>
-            <a href="/kapcsolat?pairs=3%2B&amp;pickup=yes" class="btn btn-primary" data-i18n="mpCta">Időpontfoglalás kedvezménnyel</a>
+        </div>
+        <div class="mp-banner-cta">
+          <a href="/kapcsolat" class="btn btn-primary" data-i18n="mpCta">Időpontfoglalás kedvezménnyel</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- STEP #4: 3-CLICK SERVICE DIAGNOSTIC FINDER -->
+  <section class="finder-section" id="serviceFinder" aria-label="CarvteX Csomagválasztó Segéd">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-i18n="finderEyebrow">Interaktív Segéd</span>
+        <h2 data-i18n="finderH2">Melyik csomag való a sílécednek?</h2>
+        <p data-i18n="finderLead">Válaszolj 3 gyors kérdésre, és az edzői tapasztalatunk alapján azonnal megmutatjuk a neked ideális szervizcsomagot.</p>
+      </div>
+
+      <div class="finder-grid reveal">
+        <!-- Interactive questions -->
+        <div class="finder-card finder-quiz">
+          <div class="finder-step-progress" aria-hidden="true">
+            <span class="step-dot active" data-step-dot="1"></span>
+            <span class="step-line"></span>
+            <span class="step-dot" data-step-dot="2"></span>
+            <span class="step-line"></span>
+            <span class="step-dot" data-step-dot="3"></span>
+          </div>
+
+          <div class="finder-step active" data-step="1">
+            <span class="finder-step-num">1 / 3. Kérdés</span>
+            <h3 class="finder-question" data-i18n="finderQ1">Milyen állapotban van most a síléced talpa?</h3>
+            <div class="finder-options">
+              <button type="button" class="finder-opt" data-q="base" data-val="scratched">
+                <span class="opt-indicator"></span>
+                <span class="opt-text">
+                  <strong data-i18n="finderQ1Opt1Title">Mély karcok, kövek nyomai láthatók rajta</strong>
+                  <span data-i18n="finderQ1Opt1Sub">Fehér foltok, kiszáradt felület vagy egyenetlenség</span>
+                </span>
+              </button>
+              <button type="button" class="finder-opt" data-q="base" data-val="smooth">
+                <span class="opt-indicator"></span>
+                <span class="opt-text">
+                  <strong data-i18n="finderQ1Opt2Title">A talp ép, nincsenek mély sérülések</strong>
+                  <span data-i18n="finderQ1Opt2Sub">Csak lassabban csúszik, friss waxra van szüksége</span>
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <div class="finder-step" data-step="2">
+            <span class="finder-step-num">2 / 3. Kérdés</span>
+            <h3 class="finder-question" data-i18n="finderQ2">Hogy viselkedik a léc éle a kemény, jeges szakaszokon?</h3>
+            <div class="finder-options">
+              <button type="button" class="finder-opt" data-q="edge" data-val="slipping">
+                <span class="opt-indicator"></span>
+                <span class="opt-text">
+                  <strong data-i18n="finderQ2Opt1Title">Elcsúszik, kapar, nem fog stabilan íven</strong>
+                  <span data-i18n="finderQ2Opt1Sub">Érezhetően tompa, bizonytalan kanyarváltás</span>
+                </span>
+              </button>
+              <button type="button" class="finder-opt" data-q="edge" data-val="ok">
+                <span class="opt-indicator"></span>
+                <span class="opt-text">
+                  <strong data-i18n="finderQ2Opt2Title">Még tart valamennyire, de ráfér az élezés</strong>
+                  <span data-i18n="finderQ2Opt2Sub">Egy gyors szezonközi élfrissítés elegendő</span>
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <div class="finder-step" data-step="3">
+            <span class="finder-step-num">3 / 3. Kérdés</span>
+            <h3 class="finder-question" data-i18n="finderQ3">Hány pár sílécet hoznál szervizelni?</h3>
+            <div class="finder-options">
+              <button type="button" class="finder-opt" data-q="quantity" data-val="1">
+                <span class="opt-indicator"></span>
+                <span class="opt-text">
+                  <strong data-i18n="finderQ3Opt1Title">1 pár síléc (saját felszerelés)</strong>
+                  <span data-i18n="finderQ3Opt1Sub">Személyes leadás a délegyházi műhelyben</span>
+                </span>
+              </button>
+              <button type="button" class="finder-opt" data-q="quantity" data-val="2">
+                <span class="opt-indicator"></span>
+                <span class="opt-text">
+                  <strong data-i18n="finderQ3Opt2Title">2 pár síléc (-10% kedvezmény)</strong>
+                  <span data-i18n="finderQ3Opt2Sub">Páros felszerelés azonnali kedvezménnyel</span>
+                </span>
+              </button>
+              <button type="button" class="finder-opt" data-q="quantity" data-val="3+">
+                <span class="opt-indicator"></span>
+                <span class="opt-text">
+                  <strong data-i18n="finderQ3Opt3Title">3 vagy több pár (Családi csomag: -15% + INGYEN szállítás)</strong>
+                  <span data-i18n="finderQ3Opt3Sub">Ingyenes háztól-házig felvétel és visszaszállítás 20 km-en belül!</span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Result Card -->
+        <div class="finder-card finder-result" id="finderResult">
+          <div class="finder-result-badge" id="finderBadge" data-i18n="finderBadge">Javasolt szervizcsomag</div>
+          <h3 class="finder-result-title" id="finderTitle">Prémium szerviz</h3>
+          <p class="finder-result-desc" id="finderDesc">Mély sérülések feltöltése P-Tex anyaggal, oldal- és alsó él precíziós gépi élezése, hőillesztett melegwaxolás és biztonsági kötéskalibráció.</p>
+          
+          <div class="finder-result-highlights">
+            <div class="highlight-item" id="finderTurnaround">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Elkészülés: <strong>24–48 óra</strong></span>
+            </div>
+            <div class="highlight-item" id="finderSafety">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Biztonsági kötésellenőrzés: <strong>Tartalmazza</strong></span>
+            </div>
+          </div>
+
+          <div class="finder-result-promo" id="finderPromo" style="display:none;"></div>
+
+          <div class="finder-result-action">
+            <a href="/kapcsolat" class="btn btn-primary" id="finderCtaBtn" data-i18n="finderCta">Időpontfoglalás ehhez a csomaghoz</a>
+            <button type="button" class="btn-text" id="finderResetBtn" data-i18n="finderReset">↺ Újraszámolás</button>
           </div>
         </div>
       </div>
@@ -634,105 +595,100 @@
   <section class="matrix-section" id="comparison">
     <div class="container">
       <div class="section-head reveal">
-        <span class="eyebrow" data-i18n="matrixEyebrow">Összehasonlítás</span>
-        <h2 data-i18n="matrixH2">Melyik csomag mit tartalmaz?</h2>
-        <p data-i18n="matrixLead">Részletes bontás, hogy pontosan lásd, milyen munkafázisokat végzünk el a síléceden.</p>
+        <span class="eyebrow">Összehasonlítás</span>
+        <h2>Melyik csomag mit tartalmaz?</h2>
+        <p>Részletes bontás, hogy pontosan lásd, milyen munkafázisokat végzünk el a síléceden.</p>
       </div>
+
       <div class="matrix-table-wrap reveal">
         <table class="matrix-table">
           <thead>
             <tr>
-              <th scope="col" data-i18n="matrixColFeature">Munkafázis / Szolgáltatás</th>
-              <th scope="col" class="th-tier">
-                <span class="tier-name" data-i18n="svc1Title">Alapszerviz</span>
-                <span class="tier-sub" data-i18n="matrixTier1Sub">Rendszeres karbantartás</span>
+              <th>Munkafázis / Szolgáltatás</th>
+              <th class="th-tier">
+                <span class="tier-name">Alapszerviz</span>
+                <span class="tier-sub">Rendszeres karbantartás</span>
               </th>
-              <th scope="col" class="th-tier th-tier--featured">
-                <span class="matrix-rec-badge" data-i18n="svc2Badge">Legnépszerűbb</span>
-                <span class="tier-name" data-i18n="svc2Title">Prémium szerviz</span>
-                <span class="tier-sub" data-i18n="matrixTier2Sub">Komplett felújítás</span>
+              <th class="th-tier th-tier--featured">
+                <span class="matrix-rec-badge">Legnépszerűbb</span>
+                <span class="tier-name">Prémium szerviz</span>
+                <span class="tier-sub">Komplett felújítás</span>
               </th>
-              <th scope="col" class="th-tier">
-                <span class="tier-name" data-i18n="svc3Title">Kötésbeállítás</span>
-                <span class="tier-sub" data-i18n="matrixTier3Sub">Biztonsági kalibráció</span>
+              <th class="th-tier">
+                <span class="tier-name">Kötésbeállítás</span>
+                <span class="tier-sub">Biztonsági kalibráció</span>
               </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th scope="row">
-                <strong data-i18n="featInspect">Állapotfelmérés és talptisztítás</strong>
-                <span class="feat-hint" data-i18n="featInspectHint">Régi wax eltávolítása, sérülések feltárása</span>
+              <th>
+                <strong>Állapotfelmérés és talptisztítás</strong>
+                <span class="feat-hint">Régi wax eltávolítása, sérülések feltárása</span>
               </th>
-              <td><span class="check-yes" aria-label="Igen">✓</span></td>
-              <td class="col-featured"><span class="check-yes" aria-label="Igen">✓</span></td>
-              <td><span class="check-no" aria-label="Nem">—</span></td>
+              <td><span class="check-yes">✓</span></td>
+              <td class="col-featured"><span class="check-yes">✓</span></td>
+              <td><span class="check-no">—</span></td>
             </tr>
             <tr>
-              <th scope="row">
-                <strong data-i18n="featEdge">Acél él élezése (alul &amp; oldalról)</strong>
-                <span class="feat-hint" data-i18n="featEdgeHint">Precíz szögek a stabil élfogásért jeges pályán is</span>
+              <th>
+                <strong>Acél él élezése (alul &amp; oldalról)</strong>
+                <span class="feat-hint">Precíziós szögek a stabil élfogásért jeges pályán is</span>
               </th>
-              <td><span class="check-yes" aria-label="Igen">✓</span></td>
-              <td class="col-featured"><span class="check-yes" aria-label="Igen">✓</span></td>
-              <td><span class="check-no" aria-label="Nem">—</span></td>
+              <td><span class="check-yes">✓</span></td>
+              <td class="col-featured"><span class="check-yes">✓</span></td>
+              <td><span class="check-no">—</span></td>
             </tr>
             <tr>
-              <th scope="row">
-                <strong data-i18n="featWax">Hőillesztett melegwaxolás &amp; polírozás</strong>
-                <span class="feat-hint" data-i18n="featWaxHint">Kézi vasalás és többkefés struktúra-nyitás</span>
+              <th>
+                <strong>Hőillesztett melegwaxolás &amp; polírozás</strong>
+                <span class="feat-hint">Kézi vasalás és többkefés struktúra-nyitás</span>
               </th>
-              <td><span class="check-yes" aria-label="Igen">✓</span></td>
-              <td class="col-featured"><span class="check-yes" aria-label="Igen">✓</span></td>
-              <td><span class="check-no" aria-label="Nem">—</span></td>
+              <td><span class="check-yes">✓</span></td>
+              <td class="col-featured"><span class="check-yes">✓</span></td>
+              <td><span class="check-no">—</span></td>
             </tr>
             <tr>
-              <th scope="row">
-                <strong data-i18n="featPtex">P-Tex talpfeltöltés &amp; síkba húzás</strong>
-                <span class="feat-hint" data-i18n="featPtexHint">Mély karcok, kövek okozta sérülések kitöltése</span>
+              <th>
+                <strong>P-Tex talpfeltöltés &amp; síkba húzás</strong>
+                <span class="feat-hint">Mély karcok, kövek okozta sérülések kitöltése</span>
               </th>
-              <td><span class="check-no" aria-label="Nem">—</span></td>
-              <td class="col-featured"><span class="check-yes" aria-label="Igen">✓</span></td>
-              <td><span class="check-no" aria-label="Nem">—</span></td>
+              <td><span class="check-no">—</span></td>
+              <td class="col-featured"><span class="check-yes">✓</span></td>
+              <td><span class="check-no">—</span></td>
             </tr>
             <tr>
-              <th scope="row">
-                <strong data-i18n="featSide">Oldalél finomcsiszolás &amp; sorjátlanítás</strong>
-                <span class="feat-hint" data-i18n="featSideHint">Finom diamond-kő befejezés a sima kanyarváltásért</span>
+              <th>
+                <strong>Oldalél finomcsiszolás &amp; sorjátlanítás</strong>
+                <span class="feat-hint">Finom diamond-kő befejezés a sima kanyarváltásért</span>
               </th>
-              <td><span class="check-no" aria-label="Nem">—</span></td>
-              <td class="col-featured"><span class="check-yes" aria-label="Igen">✓</span></td>
-              <td><span class="check-no" aria-label="Nem">—</span></td>
+              <td><span class="check-no">—</span></td>
+              <td class="col-featured"><span class="check-yes">✓</span></td>
+              <td><span class="check-no">—</span></td>
             </tr>
             <tr>
-              <th scope="row">
-                <strong data-i18n="featBinding">Bakancs-talphossz &amp; kötés előfeszítés</strong>
-                <span class="feat-hint" data-i18n="featBindingHint">Milliméter-pontos illesztés a síbakancshoz</span>
+              <th>
+                <strong>Bakancs-talphossz &amp; kötés előfeszítés</strong>
+                <span class="feat-hint">Milliméter-pontos illesztés a síbakancshoz</span>
               </th>
-              <td><span class="check-no" aria-label="Nem">—</span></td>
-              <td class="col-featured"><span class="check-yes" aria-label="Igen">✓</span></td>
-              <td><span class="check-yes" aria-label="Igen">✓</span></td>
+              <td><span class="check-no">—</span></td>
+              <td class="col-featured"><span class="check-yes">✓</span></td>
+              <td><span class="check-yes">✓</span></td>
             </tr>
             <tr>
-              <th scope="row">
-                <strong data-i18n="featDin">DIN kioldási érték kalibrálás</strong>
-                <span class="feat-hint" data-i18n="featDinHint">Testsúly, magasság, kor és síelési stílus alapján</span>
+              <th>
+                <strong>DIN kioldási érték kalibrálás</strong>
+                <span class="feat-hint">Testsúly, magasság, kor és síelési stílus alapján</span>
               </th>
-              <td><span class="check-no" aria-label="Nem">—</span></td>
-              <td class="col-featured"><span class="check-yes" aria-label="Igen">✓</span></td>
-              <td><span class="check-yes" aria-label="Igen">✓</span></td>
+              <td><span class="check-no">—</span></td>
+              <td class="col-featured"><span class="check-yes">✓</span></td>
+              <td><span class="check-yes">✓</span></td>
             </tr>
             <tr class="matrix-cta-row">
-              <th scope="row" data-i18n="matrixColBook">Időpontfoglalás</th>
-              <td>
-                <a href="/kapcsolat?service=Alapszerviz" class="btn btn-outline-dark" data-i18n="matrixBtn1">Foglalás</a>
-              </td>
-              <td class="col-featured">
-                <a href="/kapcsolat?service=Pr%C3%A9mium%20szerviz" class="btn btn-primary" data-i18n="matrixBtn2">Foglalás</a>
-              </td>
-              <td>
-                <a href="/kapcsolat?service=K%C3%B6t%C3%A9sbe%C3%A1ll%C3%ADt%C3%A1s" class="btn btn-outline-dark" data-i18n="matrixBtn3">Foglalás</a>
-              </td>
+              <th>Időpontfoglalás</th>
+              <td><a href="/kapcsolat" class="btn btn-outline-dark">Foglalás</a></td>
+              <td class="col-featured"><a href="/kapcsolat" class="btn btn-primary">Foglalás</a></td>
+              <td><a href="/kapcsolat" class="btn btn-outline-dark">Foglalás</a></td>
             </tr>
           </tbody>
         </table>
@@ -740,112 +696,12 @@
     </div>
   </section>
 
-<!-- STEP #4: 3-CLICK SERVICE DIAGNOSTIC FINDER (ON SERVICES PAGE TOO) -->
-  <section id="serviceFinder">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="eyebrow" data-i18n="finderEyebrow">Gyors diagnosztika</span>
-        <h2 data-i18n="finderH2">Melyik szervizre van szüksége a lécednek?</h2>
-        <p data-i18n="finderLead">Válaszolj 3 gyors kérdésre, és megmutatjuk a lécednek megfelelő csomagot — amit 1 kattintással át is vihetsz az időpontfoglaláshoz.</p>
-      </div>
-      <div class="finder-grid">
-        <div class="finder-questions reveal">
-          <div class="finder-q-group" role="group" aria-labelledby="sfq1">
-            <h3 class="finder-q-title" id="sfq1" data-i18n="finderQ1">1. Milyen állapotban van most a síléced?</h3>
-            <div class="finder-opts">
-              <button type="button" class="finder-opt" data-q="condition" data-val="refresh" aria-pressed="false">
-                <span class="finder-opt-dot" aria-hidden="true"></span>
-                <span data-i18n="finderQ1Opt1">Csak felfrissíteném síút előtt (élezés &amp; wax)</span>
-              </button>
-              <button type="button" class="finder-opt" data-q="condition" data-val="scratched" aria-pressed="true">
-                <span class="finder-opt-dot" aria-hidden="true"></span>
-                <span data-i18n="finderQ1Opt2">Karcos a talp, vagy megcsúszik jeges pályán</span>
-              </button>
-              <button type="button" class="finder-opt" data-q="condition" data-val="binding_only" aria-pressed="false">
-                <span class="finder-opt-dot" aria-hidden="true"></span>
-                <span data-i18n="finderQ1Opt3">Csak a kötést kell a bakancsomhoz állítani</span>
-              </button>
-            </div>
-          </div>
-          <div class="finder-q-group" role="group" aria-labelledby="sfq2">
-            <h3 class="finder-q-title" id="sfq2" data-i18n="finderQ2">2. Váltottál síbakancsot, vagy változott a súlyod / tudásszinted?</h3>
-            <div class="finder-opts">
-              <button type="button" class="finder-opt" data-q="boot" data-val="no" aria-pressed="true">
-                <span class="finder-opt-dot" aria-hidden="true"></span>
-                <span data-i18n="finderQ2Opt1">Nem, ugyanazzal a bakanccsal csúszom</span>
-              </button>
-              <button type="button" class="finder-opt" data-q="boot" data-val="yes" aria-pressed="false">
-                <span class="finder-opt-dot" aria-hidden="true"></span>
-                <span data-i18n="finderQ2Opt2">Igen, új bakancsom van / kérek DIN-ellenőrzést</span>
-              </button>
-            </div>
-          </div>
-          <div class="finder-q-group" role="group" aria-labelledby="sfq3">
-            <h3 class="finder-q-title" id="sfq3" data-i18n="finderQ3">3. Hány pár sílécet hoznál?</h3>
-            <div class="finder-opts">
-              <button type="button" class="finder-opt" data-q="pairs" data-val="1" aria-pressed="true">
-                <span class="finder-opt-dot" aria-hidden="true"></span>
-                <span data-i18n="finderQ3Opt1">1 pár síléc</span>
-              </button>
-              <button type="button" class="finder-opt" data-q="pairs" data-val="2" aria-pressed="false">
-                <span class="finder-opt-dot" aria-hidden="true"></span>
-                <span data-i18n="finderQ3Opt2">2 pár síléc</span>
-              </button>
-              <button type="button" class="finder-opt" data-q="pairs" data-val="3+" aria-pressed="false">
-                <span class="finder-opt-dot" aria-hidden="true"></span>
-                <span data-i18n="finderQ3Opt3">3+ pár (családi / csoportos)</span>
-              </button>
-            </div>
-          </div>
-        </div>
-        <aside class="finder-rec-card reveal" aria-live="polite">
-          <span class="finder-rec-badge" data-i18n="finderRecLabel">Neked ajánlott csomag</span>
-          <h3 id="finderRecTitle" data-i18n="svc2Title">Prémium szerviz</h3>
-          <div class="finder-rec-promo" id="finderRecPromo"></div>
-          <p class="finder-rec-reason" id="finderRecReason" data-i18n="finderRecReasonPrem">A talpkarcok, a jeges pályán való biztos élfogás vagy a bakancs/DIN kalibrálás miatt a Prémium szerviz ad teljes és biztonságos felújítást.</p>
-          <ul class="finder-rec-feats">
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span id="finderRecFeat1" data-i18n="svc2Feat1">P-Tex talpfeltöltés és síkba csiszolás</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span id="finderRecFeat2" data-i18n="svc2Feat3">Hóhőmérséklethez választott melegwax</span>
-            </li>
-            <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span id="finderRecFeat3" data-i18n="svc2Feat4">Teljes kötés- és DIN-kalibrálás</span>
-            </li>
-          </ul>
-          <a href="/kapcsolat?service=Pr%C3%A9mium%20szerviz&amp;pairs=1&amp;boot=no" class="btn btn-primary" id="finderRecCta">
-            <span data-i18n="finderRecCta">Időpontfoglalás erre a csomagra</span>
-            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-        </aside>
-      </div>
-    </div>
-  </section>
-
-<!-- CTA BANNER -->
-  <section style="padding:0;border-top:none;">
-    <div class="cta-banner reveal">
-      <div class="container cta-banner-inner">
-        <h2 data-i18n="ctaH2">Készen állsz a szezonra?</h2>
-        <p data-i18n="ctaLead">Hozd be a léceidet szervizre — élezés, waxolás vagy teljes versenyfelkészítés, edzői szemmel elvégezve.</p>
-        <div class="cta-actions">
-          <a href="/kapcsolat" class="btn btn-primary" data-i18n="ctaBtn1">Időpontfoglalás</a>
-          <a href="mailto:carvtexszerviz@gmail.com" class="btn btn-outline" data-i18n="ctaBtn2">Írj emailt</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
 </main>
 
-<footer>
+<footer class="site-footer">
   <div class="container footer-grid">
-    <div class="footer-brand">
-      <a href="/" class="brand" style="color:#fff;">
+    <div class="footer-col footer-col-wide">
+      <a href="/" class="brand footer-brand">
         <img src="/assets/logo-icon.png" alt="CarvteX" class="footer-icon-img">
         CarvteX
       </a>
@@ -856,6 +712,7 @@
       <ul>
         <li><a href="/#about" data-i18n="navAbout">Rólunk</a></li>
         <li><a href="/szolgaltatasok" data-i18n="navServices">Szolgáltatások</a></li>
+        <li><a href="/szolgaltatasok#skates" data-i18n="navSkates">Korcsolyaszerviz</a></li>
         <li><a href="/kapcsolat" data-i18n="navContact">Kapcsolat</a></li>
       </ul>
     </div>
@@ -870,6 +727,7 @@
     <div class="footer-col">
       <h4 data-i18n="footerContactTitle">Kapcsolat</h4>
       <ul>
+        <li>Délegyháza, Magyarország</li>
         <li><a href="mailto:carvtexszerviz@gmail.com">carvtexszerviz@gmail.com</a></li>
         <li><a href="tel:+36308849273">+36 30 884 9273</a></li>
       </ul>
