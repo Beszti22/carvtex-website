@@ -1812,3 +1812,174 @@ footer{background:var(--color-primary);color:rgba(255,255,255,0.85);}
   outline:none;
   border-color:var(--color-accent);
 }
+
+
+/* ---------- Service Card Prices & Race Tier ---------- */
+.service-price {
+  margin: 12px 0 6px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.service-price-val {
+  font-family: var(--font-display);
+  font-size: 34px;
+  line-height: 1;
+  color: var(--color-primary);
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+.service-card--featured .service-price-val {
+  color: var(--color-accent-dark);
+}
+.service-price-unit {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+.service-price-free {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: #16a34a;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Ice Skate Sharpening Section ---------- */
+.skates-section {
+  padding: var(--space-3xl) 0;
+  background: var(--color-card);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  position: relative;
+}
+.skates-grid-layout {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: var(--space-2xl);
+  align-items: center;
+  margin-top: var(--space-xl);
+}
+.skates-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  position: relative;
+}
+.skates-img-card {
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+  background: #0B1C2C;
+}
+.skates-img-card img {
+  width: 100%;
+  height: 290px;
+  object-fit: cover;
+  display: block;
+  transition: transform 400ms ease;
+}
+.skates-img-card:hover img {
+  transform: scale(1.04);
+}
+.skates-img-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 14px;
+  background: linear-gradient(to top, rgba(11,28,44,0.92) 0%, rgba(11,28,44,0) 100%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.skates-offers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+.skate-item {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+.skate-item:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+}
+.skate-item-featured {
+  border: 2px solid var(--color-accent);
+  background: #ffffff;
+}
+.skate-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+  gap: 8px;
+}
+.skate-item-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.35;
+}
+.skate-item-desc {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin-bottom: 12px;
+  flex-grow: 1;
+}
+.skate-item-price {
+  font-family: var(--font-display);
+  font-size: 26px;
+  color: var(--color-accent-dark);
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+.skate-item-price small {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+.skates-cta-wrap {
+  margin-top: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+.skates-note {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.skates-note svg {
+  width: 16px;
+  height: 16px;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+@media (max-width: 860px) {
+  .skates-grid-layout { grid-template-columns: 1fr; gap: var(--space-xl); }
+  .skates-gallery { order: 2; }
+  .skates-content-col { order: 1; }
+}
+@media (max-width: 520px) {
+  .skates-gallery { grid-template-columns: 1fr; }
+  .skates-img-card img { height: 210px; }
+  .skates-offers { grid-template-columns: 1fr; }
+}

@@ -241,7 +241,7 @@ module.exports = async (req, res) => {
                   </tr>
                   <tr>
                     <td style="padding:6px 0;color:#64748b;">Szállítás módja:</td>
-                    <td style="padding:6px 0;color:#0B1C2C;font-weight:600;">${isPickup ? '🚚 Háztól-házig szállítás (10 km-es körzetben)' : '🏠 Személyes leadás a délegyházi műhelyben'}</td>
+                    <td style="padding:6px 0;color:#0B1C2C;font-weight:600;">${isPickup ? '🚚 Háztól-házig szállítás (20 km-es körzetben)' : '🏠 Személyes leadás a délegyházi műhelyben'}</td>
                   </tr>
                   ${isPickup ? `
                   <tr>

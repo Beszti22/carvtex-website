@@ -88,6 +88,7 @@
     <nav class="nav-links" id="navLinks" aria-label="Primary">
       <a href="/#about" data-i18n="navAbout">Rólunk</a>
       <a href="/szolgaltatasok" data-i18n="navServices">Szolgáltatások</a>
+      <a href="/szolgaltatasok#skates" data-i18n="navSkates">Korcsolyaszerviz</a>
       <a href="/kapcsolat" aria-current="page" data-i18n="navContact">Kapcsolat</a>
       <a href="/kapcsolat" class="btn btn-primary mobile-cta" data-i18n="navBook">Időpontfoglalás</a>
     </nav>
@@ -140,6 +141,7 @@
                 <option value="Alapszerviz" data-i18n="formServiceOpt1">Alapszerviz</option>
                 <option value="Prémium szerviz" data-i18n="formServiceOpt2">Prémium szerviz</option>
                 <option value="Kötésbeállítás" data-i18n="formServiceOpt3">Kötésbeállítás</option>
+                <option value="Korcsolyaélezés" data-i18n="formServiceOpt4">Korcsolyaélezés</option>
               </select>
             </div>
             <div class="form-field">
@@ -164,7 +166,7 @@
                 <label class="pickup-check-label" for="cPickup">
                   <input type="checkbox" id="cPickup" name="pickup">
                   <div class="pickup-check-text">
-                    <span class="pickup-check-title" data-i18n="pickupCheckLabel">Kérem a sílécek háztól-házig el- és visszaszállítását (10 km-es körzetben)</span>
+                    <span class="pickup-check-title" data-i18n="pickupCheckLabel">Kérem a sílécek és korcsolyák háztól-házig el- és visszaszállítását (20 km-es körzetben)</span>
                     <span class="pickup-badge-free" id="pickupFreeBadge" data-i18n="pickupFreeTag" style="display:none;">INGYENES 3+ pár esetén!</span>
                   </div>
                 </label>
@@ -260,7 +262,7 @@
               </li>
               <li>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
-                <span data-i18n="dropoffPickup"><strong>Háztól-házig szállítás:</strong> 3+ pár síléc esetén díjmentes felvétel és visszahozatal 10 km-es körzetben (Délegyháza, Dunavarsány, Dunaharaszti, Taksony, Majosháza stb.).</span>
+                <span data-i18n="dropoffPickup"><strong>Háztól-házig szállítás:</strong> 3+ pár síléc / korcsolya esetén díjmentes felvétel és visszahozatal 20 km-es körzetben (Délegyháza, Dunavarsány, Dunaharaszti, Taksony, Majosháza stb.).</span>
               </li>
             </ul>
           </div>
@@ -294,7 +296,8 @@
       <h4 data-i18n="footerQuickLinks">Gyorslinkek</h4>
       <ul>
         <li><a href="/#about" data-i18n="navAbout">Rólunk</a></li>
-        <li><a href="/szolgaltatasok" data-i18n="navServices">Szolgáltatások</a></li>
+        <li><a href="/szolgaltatasok" data-i18n="navServices">Szolgáltatások</a>
+      <a href="/szolgaltatasok#skates" data-i18n="navSkates">Korcsolyaszerviz</a></li>
         <li><a href="/kapcsolat" data-i18n="navContact">Kapcsolat</a></li>
       </ul>
     </div>

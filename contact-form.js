@@ -130,7 +130,7 @@
     var pickupAddressVal = (pickupAddressInput && isPickupChecked) ? pickupAddressInput.value.trim() : '';
     var pickupSummary = 'Nem kér szállítást (műhely leadás)';
     if (isPickupChecked) {
-      pickupSummary = (selectedPairs === '3+' ? 'Ingyenes háztól-házig szállítás (10 km)' : 'Háztól-házig szállítás kérése (10 km)') +
+      pickupSummary = (selectedPairs === '3+' ? 'Ingyenes háztól-házig szállítás (20 km)' : 'Háztól-házig szállítás kérése (20 km)') +
         (pickupAddressVal ? ' — Cím: ' + pickupAddressVal : '');
     }
 
