@@ -30,6 +30,8 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preload" href="/assets/CarvteX_3D.glb" as="fetch" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
 <script type="application/ld+json">
@@ -139,7 +141,8 @@
           <canvas id="skiCanvas" aria-label="Interaktív 3D síléc modell"></canvas>
           <div class="ski-loading" id="skiLoading">
             <span class="spinner" aria-hidden="true"></span>
-            <span data-i18n="skiLoading">3D modell betöltése…</span>
+            <span class="ski-loading-text" data-i18n="skiLoading" id="skiLoadingText">3D modell betöltése…</span>
+            <span class="ski-loading-pct" id="skiLoadingPct">0%</span>
           </div>
           <div class="ski-fallback" id="skiFallback">
             <p data-i18n="viewerFallback">A 3D nézethez modern böngésző szükséges — a lentebbi leírások így is elérhetők.</p>
@@ -197,9 +200,9 @@
       </div>
 
       <div class="ba-preset-controls reveal">
-        <button type="button" class="ba-preset-btn" data-ba-pos="90">Előtte (Elhasznált léc)</button>
+        <button type="button" class="ba-preset-btn" data-ba-pos="95">Előtte (Elhasznált léc)</button>
         <button type="button" class="ba-preset-btn" data-ba-pos="50">50 / 50 Összehasonlítás</button>
-        <button type="button" class="ba-preset-btn active" data-ba-pos="10">Utána (CarvteX Prémium)</button>
+        <button type="button" class="ba-preset-btn active" data-ba-pos="5">Utána (CarvteX Prémium)</button>
       </div>
 
       <div class="before-after-wrapper reveal">
