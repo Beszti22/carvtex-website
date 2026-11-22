@@ -216,8 +216,12 @@ section:first-of-type{border-top:none;}
   box-shadow:0 6px 20px rgba(0,0,0,0.25);
 }
 .svc-tab-icon{
-  font-size:16px;
   line-height:1;
+  display:inline-flex;
+}
+.svc-tab-icon .icon{
+  width:16px;
+  height:16px;
 }
 .svc-tab-badge{
   display:inline-block;
@@ -270,6 +274,13 @@ header.site-header{
   display:none;background:none;border:none;color:#fff;padding:8px;min-width:44px;min-height:44px;
   align-items:center;justify-content:center;
 }
+.nav-toggle #menuIcon line{transition:transform 220ms ease, opacity 150ms ease;}
+.nav-toggle #menuIcon line:nth-child(1){transform-origin:12px 6px;}
+.nav-toggle #menuIcon line:nth-child(2){transform-origin:12px 12px;}
+.nav-toggle #menuIcon line:nth-child(3){transform-origin:12px 18px;}
+.nav-toggle[aria-expanded="true"] #menuIcon line:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.nav-toggle[aria-expanded="true"] #menuIcon line:nth-child(2){opacity:0;}
+.nav-toggle[aria-expanded="true"] #menuIcon line:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
 @media (max-width:960px){
   .nav-links{
     position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;
@@ -549,8 +560,12 @@ header.site-header{
   color:#fff;
 }
 .badge-skate .badge-icon{
-  font-size:15px;
   line-height:1;
+  display:inline-flex;
+}
+.badge-skate .badge-icon .icon{
+  width:15px;
+  height:15px;
 }
 
 @media (max-width:860px){
@@ -791,9 +806,14 @@ header.site-header{
   border-color: var(--color-accent);
 }
 .mp-perk-icon {
-  font-size: 24px;
   line-height: 1;
   flex-shrink: 0;
+  display: inline-flex;
+  color: var(--color-accent);
+}
+.mp-perk-icon .icon {
+  width: 24px;
+  height: 24px;
 }
 .mp-perk-item strong {
   display: block;
@@ -1328,7 +1348,8 @@ header.site-header{
 .ba-callout-card:hover{
   border-color:var(--color-accent);transform:translateY(-2px);
 }
-.ba-card-icon{font-size:22px;margin-bottom:8px;}
+.ba-card-icon{margin-bottom:8px;color:var(--color-accent);}
+.ba-card-icon .icon{width:22px;height:22px;}
 .ba-callout-card h4{font-size:18px;color:#fff;margin:0 0 8px;}
 .ba-callout-card p{color:rgba(255,255,255,0.75);font-size:13.5px;line-height:1.6;margin:0;}
 
@@ -1946,6 +1967,7 @@ header.site-header{
 @media (prefers-reduced-motion: reduce){
   .reveal{opacity:1 !important;transform:none !important;transition:none !important;}
   .mask-reveal > span{animation:none !important;transform:none !important;}
+  .nav-toggle #menuIcon line{transition:none !important;}
 }
 
 /* ---------- Door-to-door pickup toggle (Form integration) ---------- */
@@ -2250,9 +2272,13 @@ header.site-header{
   box-shadow: var(--shadow-md);
 }
 .teaser-icon {
-  font-size: 36px;
   line-height: 1;
   margin-bottom: 12px;
+  color: var(--color-accent);
+}
+.teaser-icon .icon {
+  width: 36px;
+  height: 36px;
 }
 .teaser-badge {
   display: inline-block;

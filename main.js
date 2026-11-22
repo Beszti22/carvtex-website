@@ -295,13 +295,13 @@
         if(state.quantity === '2'){
           promoEl.style.display = 'block';
           promoEl.innerHTML = (lang === 'en')
-            ? '🎿 <strong>Family/Duo Bonus:</strong> -10% discount on total service fee!'
-            : '🎿 <strong>Páros kedvezmény:</strong> -10% kedvezmény a teljes munkadíjból!';
+            ? '<strong>Family/Duo Bonus:</strong> -10% discount on total service fee!'
+            : '<strong>Páros kedvezmény:</strong> -10% kedvezmény a teljes munkadíjból!';
         } else if(state.quantity === '3+'){
           promoEl.style.display = 'block';
           promoEl.innerHTML = (lang === 'en')
-            ? '🚚 <strong>Family Special:</strong> -15% discount + FREE pickup & return delivery within 20 km!'
-            : '🚚 <strong>Családi csomag:</strong> -15% kedvezmény + INGYENES háztól-házig szállítás 20 km-en belül!';
+            ? '<strong>Family Special:</strong> -15% discount + FREE pickup & return delivery within 20 km!'
+            : '<strong>Családi csomag:</strong> -15% kedvezmény + INGYENES háztól-házig szállítás 20 km-en belül!';
         } else {
           promoEl.style.display = 'none';
           promoEl.innerHTML = '';
