@@ -1790,11 +1790,15 @@ header.site-header{
 
 /* ---------- CONTACT PAGE ---------- */
 .contact-grid{display:grid;grid-template-columns:1.2fr 0.8fr;gap:var(--space-2xl);align-items:start;}
+.contact-grid > *{min-width:0;}
 .contact-form{
   background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-md);
   padding:var(--space-xl);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:18px;
+  min-width:0;
 }
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;min-width:0;}
+.form-row .form-group{min-width:0;}
+.form-group input, .form-group select, .form-group textarea{width:100%;max-width:100%;}
 .form-group{display:flex;flex-direction:column;gap:6px;}
 .form-group label{font-size:13px;font-weight:700;color:var(--color-primary);letter-spacing:0.02em;text-transform:uppercase;}
 .form-group input, .form-group select, .form-group textarea{
