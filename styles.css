@@ -1866,7 +1866,7 @@ header.site-header{
   .contact-grid{grid-template-columns:1fr;gap:var(--space-xl);}
   .form-row{grid-template-columns:1fr;}
   /* Show quick contact details (phone/address/hours) before the long form on mobile */
-  .contact-grid .info-card{order:-1;}
+  .contact-grid .contact-info{order:-1;}
 }
 
 /* ---------- FOOTER ---------- */
