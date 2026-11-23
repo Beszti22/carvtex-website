@@ -35,14 +35,23 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "SportsActivityLocation",
+  "@type": ["LocalBusiness", "SportsActivityLocation"],
+  "@id": "https://www.carvtex.hu/#localbusiness",
   "name": "CarvteX Síszerviz",
+  "alternateName": "CarvteX",
+  "description": "Alpesi sílécek, snowboardok és korcsolyák precíziós kézi élezése, professzionális melegwaxolása és DIN kötésbeállítása Délegyházán, volt válogatott síedzőtől.",
   "url": "https://www.carvtex.hu/",
+  "logo": "https://www.carvtex.hu/assets/logo-icon.png",
   "image": "https://www.carvtex.hu/assets/hero-banner.jpg",
-  "priceRange": "$$",
-  "description": "Síléc élezés, waxolás, talpfeltöltés és kötésbeállítás Szappanos Bence alpesi síedzőtől.",
-  "telephone": "+36308849273",
+  "telephone": "+36 30 884 9273",
   "email": "carvtexszerviz@gmail.com",
+  "priceRange": "$$",
+  "hasMap": "https://www.google.com/maps?q=D%C3%A9legyh%C3%A1za",
+  "founder": {
+    "@type": "Person",
+    "name": "Szappanos Bence",
+    "jobTitle": "Alpesi síedző és síszerviz alapító"
+  },
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Délegyháza",
@@ -52,25 +61,83 @@
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 47.2472,
-    "longitude": 19.0433
+    "latitude": 47.2439,
+    "longitude": 19.0789
   },
   "areaServed": [
-    "Délegyháza",
-    "Dunavarsány",
-    "Taksony",
-    "Dunaharaszti",
-    "Szigetszentmiklós",
-    "Kiskunlacháza",
-    "Ráckeve",
-    "Budapest",
-    "Pest vármegye"
+    {"@type": "City", "name": "Délegyháza"},
+    {"@type": "City", "name": "Dunavarsány"},
+    {"@type": "City", "name": "Taksony"},
+    {"@type": "City", "name": "Dunaharaszti"},
+    {"@type": "City", "name": "Szigetszentmiklós"},
+    {"@type": "City", "name": "Majosháza"},
+    {"@type": "City", "name": "Budapest"}
   ],
-  "hasMap": "https://www.google.com/maps?q=D%C3%A9legyh%C3%A1za",
-  "founder": {
-    "@type": "Person",
-    "name": "Szappanos Bence"
-  }
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "opens": "08:00",
+      "closes": "20:00",
+      "description": "Előzetes időpont-egyeztetés alapján"
+    }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Síszerviz és korcsolyaélezés szolgáltatások",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "price": "8500",
+        "priceCurrency": "HUF",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Alapszerviz (síléc és snowboard)",
+          "description": "Gépi élélezés, kézi diamond-köves élfinomítás és melegwaxolás."
+        }
+      },
+      {
+        "@type": "Offer",
+        "price": "11000",
+        "priceCurrency": "HUF",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Prémium síszerviz és talprestauráció",
+          "description": "P-Tex talpfeltöltés, élélezés, kézi finomítás, több fázisú melegwaxolás és DIN kötéskalibráció."
+        }
+      },
+      {
+        "@type": "Offer",
+        "price": "15000",
+        "priceCurrency": "HUF",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "CarvteX Race versenyszerviz",
+          "description": "Maximális teljesítmény versenyzői szintre hangolva: egyedi élszög, komplex talpreparáció és speciális versenyszintű wax."
+        }
+      },
+      {
+        "@type": "Offer",
+        "price": "2900",
+        "priceCurrency": "HUF",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Precíziós korcsolyaélezés",
+          "description": "Jégkorong, műkorcsolya és szabadidős korcsolyák gépi horonyköszörülése és kézi sorjátlanítása."
+        }
+      }
+    ]
+  },
+  "sameAs": [
+    "https://www.facebook.com/profile.php?id=61595442238344"
+  ]
 }
 </script>
 </head>
