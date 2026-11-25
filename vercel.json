@@ -1,3 +1,16 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "carvtex-website.vercel.app"
+        }
+      ],
+      "destination": "https://www.carvtex.hu/$1",
+      "permanent": true
+    }
+  ]
 }
