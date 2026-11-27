@@ -282,12 +282,12 @@
         descEl.setAttribute('data-i18n', isPremium ? 'finderRecReasonPrem' : 'finderRecReasonBase');
         if(isPremium){
           descEl.textContent = (lang === 'en')
-            ? 'Complete ski restoration: deep gouge repair with P-Tex, machine edge tuning, performance hot waxing and DIN binding calibration.'
-            : 'Mély sérülések feltöltése P-Tex anyaggal, oldal- és alsó él precíziós gépi élezése, hőillesztett melegwaxolás és biztonsági kötéskalibráció.';
+            ? 'Complete ski restoration: deep gouge repair with P-Tex, hand edge tuning, performance hot waxing and DIN binding calibration.'
+            : 'Mély sérülések feltöltése P-Tex anyaggal, oldal- és alsó él precíziós kézi élezése, hőillesztett melegwaxolás és biztonsági kötéskalibráció.';
         } else {
           descEl.textContent = (lang === 'en')
-            ? 'Ideal for regular in-season maintenance: machine edge sharpening, hot iron wax and multi-brush polishing for skis with sound bases.'
-            : 'Ideális szezonközi frissítéshez: gépi élélezés, hőillesztett melegwaxolás és többkefés polírozás ép talpú léceknek.';
+            ? 'Ideal for regular in-season maintenance: hand edge sharpening, hot iron wax and multi-brush polishing for skis with sound bases.'
+            : 'Ideális szezonközi frissítéshez: kézi élélezés, hőillesztett melegwaxolás és többkefés polírozás ép talpú léceknek.';
         }
       }
 
